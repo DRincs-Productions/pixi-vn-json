@@ -10,8 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
-    "test": "vitest"
+    "build": "tsup"
   },
   "repository": {
     "type": "git",
