@@ -67,6 +67,6 @@ narration.callLabel(`back_in_london`, {})
 
 ## PixiVNJson Model
 
-You can see the `PixiVNJson` model in the [PixiVNJson.ts](https://github.com/DRincs-Productions/pixi-vn/blob/main/src/interface/PixiVNJson.ts) file.
+You can see the `PixiVNJson` model in the [PixiVNJson.ts](https://github.com/DRincs-Productions/pixi-vn-json/blob/main/src/interface/PixiVNJson.ts) file.
 
 Now `PixiVNJson` is currently in continuous change, more documentation will be written in the future.
