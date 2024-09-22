@@ -1,10 +1,10 @@
-import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
+import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, LabelProps, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
 import LabelAbstract from "@drincs/pixi-vn/dist/classes/LabelAbstract"
 import { LabelIdType } from "@drincs/pixi-vn/dist/types/LabelIdType"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
 import { geLogichValue, getValue, getValueFromConditionalStatements, setStorageJson } from "../functions/utility"
-import { LabelProps, PixiVNJsonIfElse, PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
+import { PixiVNJsonIfElse, PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
