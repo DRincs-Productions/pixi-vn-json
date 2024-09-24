@@ -19,7 +19,7 @@ export function getValueFromConditionalStatements<T>(
     params: any[]
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {
-        return undefined
+        return statement
     }
     else if (statement && typeof statement === "object" && "type" in statement) {
         switch (statement.type) {
@@ -35,7 +35,7 @@ export function getValueFromConditionalStatements<T>(
             case "stepswitch":
                 let elements = getValueFromConditionalStatements(statement.elements, params) || []
                 if (elements.length === 0) {
-                    console.error("[Pixi'VN] getValueFromConditionalStatements elements.length === 0")
+                    console.error("[Pixi'VN Json] getValueFromConditionalStatements elements.length === 0")
                     return undefined
                 }
                 switch (statement.choiceType) {
@@ -65,12 +65,14 @@ export function getValueFromConditionalStatements<T>(
                         if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
                             let obj = NarrationManagerStatic.getCurrentStepTimesCounterData(statement.nestedId)
                             if (!obj || !obj?.usedRandomNumbers) {
+                                console.warn("[Pixi'VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
                                 return undefined
                             }
                             let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`]
                             return getValueFromConditionalStatements(elements[lastItem[lastItem.length - 1]], params)
                         }
                         if (randomIndexWhitExclude == undefined) {
+                            console.warn("[Pixi'VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
                             return undefined
                         }
                         return getValueFromConditionalStatements(elements[randomIndexWhitExclude], params)
@@ -100,6 +102,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     })
     let toCheck = first ? [first, ...second] : second
     if (toCheck.length === 0) {
+        console.warn("[Pixi'VN Json] combinateResult toCheck.length === 0")
         return undefined
     }
 
@@ -210,6 +213,7 @@ export function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet
                         if (params && params.length - 1 >= (value.key as number)) {
                             return params[(value.key as number)] as unknown as T
                         }
+                        console.warn("[Pixi'VN Json] getValue params not found")
                         return undefined
                 }
             }

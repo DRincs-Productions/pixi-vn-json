@@ -29,7 +29,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
      * Get the steps of the label.
      */
     public get steps(): StepLabelType<T>[] {
-        return this._steps.map(this.stepConverter)
+        return this._steps.map((step) => {
+            return this.stepConverter(step)
+        })
     }
 
     private operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined
@@ -296,7 +298,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             }
                         }
                         else {
-                            console.error(`[Pixi'VN] Image with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi'VN Json] Image with alias ${operation.alias} not found.`)
                         }
                         break
                     case "remove":
@@ -342,7 +344,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             }
                         }
                         else {
-                            console.error(`[Pixi'VN] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                     case "remove":
@@ -354,7 +356,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             videoPause.paused = true
                         }
                         else {
-                            console.error(`[Pixi'VN] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                     case "resume":
@@ -363,7 +365,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             videoResume.paused = false
                         }
                         else {
-                            console.error(`[Pixi'VN] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                 }
