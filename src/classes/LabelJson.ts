@@ -1,11 +1,11 @@
-import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, LabelAbstract, LabelProps, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
+import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
-import { geLogichValue, setStorageJson } from "../functions/utility"
-import { PixiVNJsonIfElse, PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
+import { runOperation } from "../functions/operationUtility"
+import { geLogichValue } from "../functions/utility"
+import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
-import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 
 export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJson<T>, T> {
     /**
@@ -112,7 +112,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             }
             if (step.operation) {
                 for (let operation of step.operation) {
-                    await this.runOperation(operation, params)
+                    await runOperation(operation, params, this.operationStringConvert)
                 }
             }
 
