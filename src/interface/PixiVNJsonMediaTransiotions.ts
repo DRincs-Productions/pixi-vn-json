@@ -1,4 +1,4 @@
-import { MoveInOutProps, ShowWithDissolveTransitionProps, ShowWithFadeTransitionProps, ZoomInOutProps } from "@drincs/pixi-vn/dist/functions/canvas/CanvasTransition"
+import { MoveInOutProps, ShowWithDissolveTransitionProps, ShowWithFadeTransitionProps, ZoomInOutProps } from "@drincs/pixi-vn"
 import { UPDATE_PRIORITY } from "pixi.js"
 
 type DissolveTransition = {

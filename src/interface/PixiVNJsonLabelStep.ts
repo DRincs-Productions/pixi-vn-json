@@ -1,5 +1,4 @@
 import { LabelRunModeType, StepLabelPropsType, StorageObjectType } from "@drincs/pixi-vn"
-import { LabelIdType } from "@drincs/pixi-vn/dist/types/LabelIdType"
 import { PIXIVNJSON_PARAM_ID } from "../constants"
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements"
 import { PixiVNJsonLabel } from "./PixiVNJsonLabels"
@@ -14,7 +13,7 @@ export type PixiVNJsonChoice = {
     /**
      * The label id to be opened.
      */
-    label: LabelIdType
+    label: string
     /**
      * Label opening mode
      */

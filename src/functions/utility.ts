@@ -1,6 +1,4 @@
-import { getFlag, narration, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
-import { default as NarrationManagerStatic } from "@drincs/pixi-vn/dist/managers/NarrationManagerStatic";
-import { default as StorageManagerStatic } from "@drincs/pixi-vn/dist/managers/StorageManagerStatic";
+import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType, StorageManagerStatic } from "@drincs/pixi-vn";
 import { PixiVNJsonConditions, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";

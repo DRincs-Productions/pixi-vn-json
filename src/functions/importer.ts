@@ -1,4 +1,4 @@
-import { saveLabel } from "@drincs/pixi-vn/dist/decorators/LabelDecorator"
+import { saveLabel } from "@drincs/pixi-vn"
 import { LabelJson } from "../classes"
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface"
 import { PixiVNJsonOperation } from "../interface/PixiVNJsonOperations"

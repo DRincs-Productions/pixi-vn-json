@@ -1,6 +1,4 @@
-import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, LabelProps, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
-import LabelAbstract from "@drincs/pixi-vn/dist/classes/LabelAbstract"
-import { LabelIdType } from "@drincs/pixi-vn/dist/types/LabelIdType"
+import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, LabelAbstract, LabelProps, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
 import { geLogichValue, getValue, getValueFromConditionalStatements, setStorageJson } from "../functions/utility"
@@ -16,7 +14,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
      * @param props is the properties of the label
      */
     constructor(
-        id: LabelIdType,
+        id: string,
         steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[],
         props?: LabelProps<LabelJson<T>>,
         operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,

@@ -1,5 +1,4 @@
-import { ICanvasImageMemory, SoundOptions, SoundPlayOptions } from "@drincs/pixi-vn"
-import ICanvasVideoMemory from "@drincs/pixi-vn/dist/interface/canvas/ICanvasVideoMemory"
+import { ICanvasImageMemory, ICanvasVideoMemory, SoundOptions, SoundPlayOptions } from "@drincs/pixi-vn"
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions"
 
 type PixiVNJsonCanvasShow = {
