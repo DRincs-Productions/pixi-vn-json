@@ -19,11 +19,11 @@ export function importPixiVNJson(
         }
     }
     catch (e) {
-        console.error("[Pixi'VN Json] Error parsing imported Pixi'VN JSON", e)
+        console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON", e)
         return
     }
     if (typeof data !== "object") {
-        console.error("[Pixi'VN Json] Error parsing imported Pixi'VN JSON: data is not an object")
+        console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON: data is not an object")
         return
     }
     if (data.labels) {
@@ -35,7 +35,7 @@ export function importPixiVNJson(
                 saveLabel(label)
             }
             catch (e) {
-                console.error(`[Pixi'VN Json] Error creating JSON label ${labelId}`, e)
+                console.error(`[Pixi’VN Json] Error creating JSON label ${labelId}`, e)
             }
         }
     }

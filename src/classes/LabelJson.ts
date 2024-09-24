@@ -1,7 +1,7 @@
 import { canvas, CanvasImage, CanvasVideo, ChoiceMenuOption, LabelAbstract, LabelProps, moveIn, narration, setFlag, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelType, storage, zoomIn } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
-import { geLogichValue, getValue, getValueFromConditionalStatements, setStorageJson } from "../functions/utility"
+import { geLogichValue, setStorageJson } from "../functions/utility"
 import { PixiVNJsonIfElse, PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
@@ -73,14 +73,14 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         else {
             let res = geLogichValue<string | any[]>(origin, params) || ""
             if (res && !Array.isArray(res) && typeof res === "object") {
-                res = getValue<string | string[]>(res, params) || ""
+                res = geLogichValue<string | string[]>(res, params) || ""
             }
             text = res
         }
         return text
     }
     private getDialogue(origin: PixiVNJsonDialog<PixiVNJsonDialogText> | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>> | undefined, params: any[]): PixiVNJsonDialog<string | string[]> | undefined {
-        let d = getValueFromConditionalStatements(origin, params)
+        let d = geLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin, params)
         let dialogue: PixiVNJsonDialog<string | string[]> | undefined = undefined
         if (d) {
             if (typeof d === "object" && "character" in d && "text" in d) {
@@ -97,9 +97,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private getChoices(origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined, params: any[]): PixiVNJsonChoice[] | undefined {
-        const choices = getValueFromConditionalStatements(origin, params)
+        const choices = geLogichValue<PixiVNJsonChoices>(origin, params)
         const options = choices?.map((option) => {
-            return getValueFromConditionalStatements(option, params)
+            return geLogichValue<PixiVNJsonChoice>(option, params)
         }).filter((option) => option !== undefined)
         return options
     }
@@ -117,7 +117,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             }
 
             let choices = this.getChoices(step.choices, params)
-            let glueEnabled = getValueFromConditionalStatements(step.glueEnabled, params)
+            let glueEnabled = geLogichValue<boolean>(step.glueEnabled, params)
             let dialogue: PixiVNJsonDialog<string | string[]> | undefined = this.getDialogue(step.dialogue, params)
             let labelToOpen: PixiVNJsonLabelToOpen[] = []
             if (step.labelToOpen) {
@@ -125,14 +125,14 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     step.labelToOpen = [step.labelToOpen]
                 }
                 step.labelToOpen.forEach((label) => {
-                    let i = getValueFromConditionalStatements(label, params)
+                    let i = geLogichValue<PixiVNJsonLabelToOpen<{}>>(label, params)
                     if (i) {
                         labelToOpen.push(i)
                     }
                 })
             }
-            let goNextStep = getValueFromConditionalStatements(step.goNextStep, params)
-            let end = getValueFromConditionalStatements(step.end, params)
+            let goNextStep = geLogichValue<boolean>(step.goNextStep, params)
+            let end = geLogichValue<"game_end" | "label_end">(step.end, params)
 
             if (choices) {
                 let options = choices.map((option) => {
@@ -144,9 +144,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                                 texts.push(t)
                             }
                             else if (t && typeof t === "object") {
-                                let res = getValueFromConditionalStatements(t, params)
+                                let res = geLogichValue<string | any[]>(t, params)
                                 if (res && !Array.isArray(res) && typeof res === "object") {
-                                    res = getValue<string | string[]>(res, params) || ""
+                                    res = geLogichValue<string | string[]>(res, params) || ""
                                 }
                                 if (res) {
                                     if (Array.isArray(res)) {
@@ -196,7 +196,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             labelToOpen.forEach((label) => {
                 let labelString = label.label
                 if (typeof labelString === "object") {
-                    labelString = getValue<string>(labelString, params) || ""
+                    labelString = geLogichValue<string>(labelString, params) || ""
                 }
                 let labelParams = label.params?.map((param) => {
                     return geLogichValue(param, params)
@@ -229,7 +229,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private async runOperation(origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString, params: any[]) {
-        let operation = getValueFromConditionalStatements(origin, params)
+        let operation = geLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin, params)
         if (!operation) {
             return
         }
@@ -295,7 +295,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             }
                         }
                         else {
-                            console.error(`[Pixi'VN Json] Image with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi’VN Json] Image with alias ${operation.alias} not found.`)
                         }
                         break
                     case "remove":
@@ -341,7 +341,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             }
                         }
                         else {
-                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                     case "remove":
@@ -353,7 +353,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             videoPause.paused = true
                         }
                         else {
-                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                     case "resume":
@@ -362,7 +362,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             videoResume.paused = false
                         }
                         else {
-                            console.error(`[Pixi'VN Json] Video with alias ${operation.alias} not found.`)
+                            console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`)
                         }
                         break
                 }
