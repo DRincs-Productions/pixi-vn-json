@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
@@ -19,18 +19,20 @@
   "author": "DRincs-Productions",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/DRincs-Productions/pixi-vn/issues"
+    "url": "https://github.com/DRincs-Productions/pixi-vn-json/issues"
   },
-  "homepage": "https://pixi-vn.web.app/",
+  "homepage": "https://pixi-vn.web.app/advanced/pixi-vn-json.html",
   "funding": "https://github.com/DRincs-Productions/pixi-vn?sponsor=1",
   "devDependencies": {
-    "@drincs/pixi-vn": "^0.8.0",
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
     "pixi.js": "^8.4.1",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.2"
+  },
+  "peerDependencies": {
+    "@drincs/pixi-vn": ">=0.8.0"
   },
   "keywords": [
     "game",
