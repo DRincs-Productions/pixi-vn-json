@@ -87,16 +87,12 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
             let i = geLogichValue<T>(item as any, params)
-            if (i) {
-                second.push(i)
-            }
+            second.push(i as any)
         }
         else {
             item.forEach((i) => {
-                let j = geLogichValue<any>(i, params)
-                if (j) {
-                    second.push(j)
-                }
+                let j = geLogichValue<T>(i, params)
+                second.push(j as any)
             })
         }
     })
@@ -194,7 +190,7 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
  * @param value is the value to get
  * @returns the value from the storage or the value
  */
-function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet | PixiVNJsonConditions, params: any[]): T | undefined {
+function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, params: any[]): T | undefined {
     if (value && typeof value === "object") {
         if ("type" in value) {
             if (value.type === "value" && value.storageOperationType === "get") {
@@ -216,9 +212,6 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet | Pixi
                         console.warn("[Pixi’VN Json] getValue params not found")
                         return undefined
                 }
-            }
-            else {
-                return geLogichValue<T>(value, params)
             }
         }
     }
