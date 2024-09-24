@@ -97,14 +97,11 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private getChoices(origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined, params: any[]): PixiVNJsonChoice[] | undefined {
-        let choices = getValueFromConditionalStatements(origin, params)
-        if (choices) {
-            let options: PixiVNJsonChoice[] = choices.map((option) => {
-                return getValueFromConditionalStatements(option, params)
-            }).filter((option) => option !== undefined)
-            return options
-        }
-        return undefined
+        const choices = getValueFromConditionalStatements(origin, params)
+        const options = choices?.map((option) => {
+            return getValueFromConditionalStatements(option, params)
+        }).filter((option) => option !== undefined)
+        return options
     }
 
     private stepConverter(step: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
