@@ -54,10 +54,10 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     texts.push(t)
                 }
                 else if (t && typeof t === "object") {
-                    let res = getValueFromConditionalStatements(t, params)
+                    let res = geLogichValue<string | any[]>(t, params)
                     if (res) {
                         if (res && !Array.isArray(res) && typeof res === "object") {
-                            res = getValue<string | string[]>(res, params) || ""
+                            res = geLogichValue<string | string[]>(res, params) || ""
                         }
                         if (Array.isArray(res)) {
                             texts = texts.concat(res)
@@ -71,7 +71,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             text = texts
         }
         else {
-            let res = getValueFromConditionalStatements(origin, params) || ""
+            let res = geLogichValue<string | any[]>(origin, params) || ""
             if (res && !Array.isArray(res) && typeof res === "object") {
                 res = getValue<string | string[]>(res, params) || ""
             }
