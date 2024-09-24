@@ -2,6 +2,7 @@ import { saveLabel } from "@drincs/pixi-vn"
 import { LabelJson } from "../classes"
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface"
 import { PixiVNJsonOperation } from "../interface/PixiVNJsonOperations"
+import { runOperation } from "./operationUtility"
 
 /**
  * Import a Pixi'VN JSON to the system.
@@ -25,6 +26,11 @@ export function importPixiVNJson(
     if (typeof data !== "object") {
         console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON: data is not an object")
         return
+    }
+    if (data.initialOperations) {
+        for (let operation of data.initialOperations) {
+            runOperation(operation, [], operationStringConvert)
+        }
     }
     if (data.labels) {
         let labels = data.labels
