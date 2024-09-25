@@ -104,12 +104,30 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return options
     }
 
+    private getConditionalStep(step: PixiVNJsonLabelStep, params: any[]): PixiVNJsonLabelStep {
+        if (step.conditionalStep) {
+            let conditionalStep = geLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any, params)
+            if (conditionalStep) {
+                step.conditionalStep = undefined
+                step = {
+                    ...step,
+                    ...conditionalStep
+                }
+                return this.getConditionalStep(step, params)
+            }
+        }
+        return step
+    }
+
     private stepConverter(step: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
             let params: any[] = props[PIXIVNJSON_PARAM_ID]
             if (typeof step === "function") {
                 step = step()
             }
+
+            step = this.getConditionalStep(step, params)
+
             if (step.operation) {
                 for (let operation of step.operation) {
                     await runOperation(operation, params, this.operationStringConvert)
