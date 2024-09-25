@@ -40,7 +40,7 @@ function getValueFromConditionalStatements<T>(
                 }
                 switch (statement.choiceType) {
                     case "random":
-                        let randomIndex = randomIntFromInterval(0, elements.length)
+                        let randomIndex = randomIntFromInterval(0, elements.length - 1)
                         return geLogichValue<T>(elements[randomIndex] as any, params)
                     case "loop":
                         let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
