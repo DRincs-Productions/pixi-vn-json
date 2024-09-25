@@ -1,4 +1,4 @@
-import { saveLabel } from "@drincs/pixi-vn"
+import { saveLabel, StorageManagerStatic } from "@drincs/pixi-vn"
 import { LabelJson } from "../classes"
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface"
 import { PixiVNJsonOperation } from "../interface/PixiVNJsonOperations"
@@ -31,6 +31,7 @@ export function importPixiVNJson(
         for (let operation of data.initialOperations) {
             runOperation(operation, [], operationStringConvert)
         }
+        StorageManagerStatic.saveStorageAsBasicStorage()
     }
     if (data.labels) {
         let labels = data.labels
