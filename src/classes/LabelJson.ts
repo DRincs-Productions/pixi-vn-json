@@ -183,14 +183,14 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 narration.choiceMenuOptions = undefined
             }
 
+            if (dialogue) {
+                narration.dialogue = (dialogue)
+            }
             if (glueEnabled) {
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)
             }
             else if (glueEnabled === false) {
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
-            }
-            if (dialogue) {
-                narration.dialogue = (dialogue)
             }
 
             labelToOpen.forEach((label) => {
