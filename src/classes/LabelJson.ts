@@ -1,4 +1,4 @@
-import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
+import { ChoiceMenuOption, getFlag, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
 import { runOperation } from "../functions/operationUtility"
@@ -115,6 +115,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 }
                 return this.getConditionalStep(obj, params)
             }
+            else if (getFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)) {
+                setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
+            }
         }
         return step
     }
@@ -125,8 +128,6 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             if (typeof step === "function") {
                 step = step()
             }
-
-            console.log("step", step)
 
             step = this.getConditionalStep(step, params)
 
@@ -203,7 +204,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 narration.choiceMenuOptions = undefined
             }
 
-            if (dialogue) {
+            if (dialogue !== undefined) {
                 narration.dialogue = (dialogue)
             }
             if (glueEnabled) {
