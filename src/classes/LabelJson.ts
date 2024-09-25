@@ -108,12 +108,12 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         if (step.conditionalStep) {
             let conditionalStep = geLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any, params)
             if (conditionalStep) {
-                step.conditionalStep = undefined
-                step = {
+                let obj = {
                     ...step,
-                    ...conditionalStep
+                    conditionalStep: undefined,
+                    ...conditionalStep,
                 }
-                return this.getConditionalStep(step, params)
+                return this.getConditionalStep(obj, params)
             }
         }
         return step
@@ -125,6 +125,8 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             if (typeof step === "function") {
                 step = step()
             }
+
+            console.log("step", step)
 
             step = this.getConditionalStep(step, params)
 

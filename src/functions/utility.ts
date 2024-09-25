@@ -43,20 +43,22 @@ function getValueFromConditionalStatements<T>(
                         let randomIndex = randomIntFromInterval(0, elements.length)
                         return geLogichValue<T>(elements[randomIndex] as any, params)
                     case "loop":
-                        if (narration.currentStepTimesCounter > elements.length - 1) {
-                            narration.currentStepTimesCounter = 0
+                        let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
+                        if (currentStepTimesCounter1 > elements.length - 1) {
+                            currentStepTimesCounter1 = 0
                             return geLogichValue<T>(elements[0] as any, params)
                         }
-                        return geLogichValue<T>(elements[NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId)] as any, params)
+                        return geLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
                     case "sequential":
                         let end: T | undefined = undefined
+                        let currentStepTimesCounter2 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (statement.end == "lastItem") {
                             end = geLogichValue<T>(elements[elements.length - 1] as any, params)
                         }
-                        if (narration.currentStepTimesCounter > elements.length - 1) {
+                        if (currentStepTimesCounter2 > elements.length - 1) {
                             return end
                         }
-                        return geLogichValue<T>(elements[NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId)] as any, params)
+                        return geLogichValue<T>(elements[currentStepTimesCounter2] as any, params)
                     case "sequentialrandom":
                         let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(0, elements.length - 1, {
                             nestedId: statement.nestedId,
