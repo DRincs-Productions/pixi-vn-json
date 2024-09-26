@@ -9,7 +9,7 @@ export type PixiVNJsonChoice = {
     /**
      * The text to be displayed.
      */
-    text: PixiVNJsonDialogText
+    text?: PixiVNJsonDialogText
     /**
      * The label id to be opened.
      */
@@ -26,6 +26,11 @@ export type PixiVNJsonChoice = {
      * If this is true, the choice can only be made once.
      */
     oneTime?: boolean
+    /**
+     * If this is true, the choice can see only if there are no other choices. For example, all choices are one-time choices.
+     * If the text is undefined, the choice is selected automatically (the label is opened automatically).
+     */
+    onlyHaveNoChoice?: boolean
 }
 export type PixiVNJsonChoices = (PixiVNJsonChoice | PixiVNJsonConditionalStatements<PixiVNJsonChoice>)[]
 
