@@ -157,7 +157,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             if (choices) {
                 let options = choices.map((option) => {
-                    let text: string | undefined = undefined
+                    let text: string = ""
                     if (Array.isArray(option.text)) {
                         let texts: string[] = []
                         option.text.forEach((t) => {
@@ -188,6 +188,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                         type: option.type,
                         oneTime: option.oneTime,
                         onlyHaveNoChoice: option.onlyHaveNoChoice,
+                        autoSelect: option.autoSelect,
                     })
                 })
                 narration.choiceMenuOptions = options
