@@ -188,6 +188,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                         type: option.type,
                         oneTime: option.oneTime,
                         onlyHaveNoChoice: option.onlyHaveNoChoice,
+                        autoSelect: option.autoSelect,
                     })
                 })
                 narration.choiceMenuOptions = options
