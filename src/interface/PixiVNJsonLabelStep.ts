@@ -27,7 +27,7 @@ export type PixiVNJsonChoice = {
      */
     oneTime?: boolean
     /**
-     * If this is true, the choice can see only if there are no other choices. For example, all choices are one-time choices.
+     * If this is true, the choice can see only if there are no other choices. For example, all choices are one-time choices and they are already selected.
      * If the text is undefined, the choice is selected automatically (the label is opened automatically).
      */
     onlyHaveNoChoice?: boolean
