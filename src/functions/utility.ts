@@ -112,8 +112,12 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
         let dialogue = steps.map((step) => step.dialogue).join("")
         let end = steps.find((step) => step.end)
         let choices = steps.find((step) => step.choices)
-        let glueEnabled = steps.find((step) => step.glueEnabled)
-        let goNextStep = steps.find((step) => step.goNextStep)
+        let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
+        let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
+        if (steps.length > 0) {
+            glueEnabled = steps[steps.length - 1].glueEnabled
+            goNextStep = steps[steps.length - 1].goNextStep
+        }
         let labelToOpen = steps.find((step) => step.labelToOpen)
         let operation = steps.find((step) => step.operation)
 
@@ -121,8 +125,8 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
             dialogue,
             end: end?.end,
             choices: choices?.choices,
-            glueEnabled: glueEnabled?.glueEnabled,
-            goNextStep: goNextStep?.goNextStep,
+            glueEnabled: glueEnabled,
+            goNextStep: goNextStep,
             labelToOpen: labelToOpen?.labelToOpen,
             operation: operation?.operation
         }
