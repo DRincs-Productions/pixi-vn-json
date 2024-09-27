@@ -1,5 +1,5 @@
 import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
-import { geLogichValue, setStorageJson } from "../functions/utility"
+import { getLogichValue, setStorageJson } from "../functions/utility"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 
@@ -8,7 +8,7 @@ export async function runOperation(
     params: any[],
     operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
 ) {
-    let operation = geLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin, params)
+    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin, params)
     if (!operation) {
         return
     }
@@ -157,7 +157,7 @@ export async function runOperation(
                         stringOperation += value
                     }
                     else {
-                        let res = geLogichValue<string>(value, params)
+                        let res = getLogichValue<string>(value, params)
                         stringOperation += `${res}`
                     }
                 })

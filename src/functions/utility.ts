@@ -1,5 +1,5 @@
 import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType, StorageManagerStatic } from "@drincs/pixi-vn";
-import { PixiVNJsonConditions, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
+import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -26,14 +26,16 @@ function getValueFromConditionalStatements<T>(
             case "resulttocombine":
                 return combinateResult(statement, params)
             case "ifelse":
-                let conditionResult = geLogichValue<boolean>(statement.condition, params)
+                let conditionResult = getLogichValue<boolean>(statement.condition, params)
                 if (conditionResult) {
-                    return geLogichValue<T>(statement.then as any, params)
+                    console.log("then", statement.then)
+                    return getLogichValue<T>(statement.then as any, params)
                 } else {
-                    return geLogichValue<T>(statement.else as any, params)
+                    console.log("else", statement.else)
+                    return getLogichValue<T>(statement.else as any, params)
                 }
             case "stepswitch":
-                let elements = geLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements, params) || []
+                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements, params) || []
                 if (elements.length === 0) {
                     console.error("[Pixi’VN Json] getValueFromConditionalStatements elements.length === 0")
                     return undefined
@@ -41,24 +43,24 @@ function getValueFromConditionalStatements<T>(
                 switch (statement.choiceType) {
                     case "random":
                         let randomIndex = randomIntFromInterval(0, elements.length - 1)
-                        return geLogichValue<T>(elements[randomIndex] as any, params)
+                        return getLogichValue<T>(elements[randomIndex] as any, params)
                     case "loop":
                         let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (currentStepTimesCounter1 > elements.length - 1) {
                             currentStepTimesCounter1 = 0
-                            return geLogichValue<T>(elements[0] as any, params)
+                            return getLogichValue<T>(elements[0] as any, params)
                         }
-                        return geLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
+                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
                     case "sequential":
                         let end: T | undefined = undefined
                         let currentStepTimesCounter2 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (statement.end == "lastItem") {
-                            end = geLogichValue<T>(elements[elements.length - 1] as any, params)
+                            end = getLogichValue<T>(elements[elements.length - 1] as any, params)
                         }
                         if (currentStepTimesCounter2 > elements.length - 1) {
                             return end
                         }
-                        return geLogichValue<T>(elements[currentStepTimesCounter2] as any, params)
+                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any, params)
                     case "sequentialrandom":
                         let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(0, elements.length - 1, {
                             nestedId: statement.nestedId,
@@ -71,13 +73,13 @@ function getValueFromConditionalStatements<T>(
                                 return undefined
                             }
                             let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`]
-                            return geLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any, params)
+                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any, params)
                         }
                         if (randomIndexWhitExclude == undefined) {
                             console.warn("[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
                             return undefined
                         }
-                        return geLogichValue<T>(elements[randomIndexWhitExclude] as any, params)
+                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any, params)
                 }
         }
     }
@@ -88,12 +90,12 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     let second: T[] = []
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
-            let i = geLogichValue<T>(item as any, params)
+            let i = getLogichValue<T>(item as any, params)
             second.push(i as any)
         }
         else {
             item.forEach((i) => {
-                let j = geLogichValue<T>(i, params)
+                let j = getLogichValue<T>(i, params)
                 second.push(j as any)
             })
         }
@@ -109,7 +111,29 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     }
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[]
-        let dialogue = steps.map((step) => step.dialogue).join("")
+        let dialogueArray = steps.map((step) => getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || "")
+        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0], params)
+        let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
+        let dialogues: string[] = dialogueArray.map((dialogue) => {
+            let text: PixiVNJsonDialogText
+            if (typeof dialogue === "object" && "text" in dialogue) {
+                text = dialogue.text
+            }
+            else {
+                text = dialogue
+            }
+            let textEasy: string
+            if (Array.isArray(text)) {
+                textEasy = text.map((t) => {
+                    let value = getLogichValue<string>(t, params)
+                    return value || ""
+                }).join("")
+            }
+            else {
+                textEasy = getLogichValue<string>(text, params) || ""
+            }
+            return textEasy
+        })
         let end = steps.find((step) => step.end)
         let choices = steps.find((step) => step.choices)
         let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
@@ -122,7 +146,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
         let operation = steps.find((step) => step.operation)
 
         let res: PixiVNJsonLabelStep = {
-            dialogue,
+            dialogue: character ? {
+                character: character,
+                text: dialogues
+            } : dialogues,
             end: end?.end,
             choices: choices?.choices,
             glueEnabled: glueEnabled,
@@ -130,6 +157,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
             labelToOpen: labelToOpen?.labelToOpen,
             operation: operation?.operation
         }
+        console.log("combinateResult", res)
         return res as T
     }
 }
@@ -151,8 +179,8 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
     }
     switch (condition.type) {
         case "compare":
-            let leftValue = geLogichValue<any>(condition.leftValue, params)
-            let rightValue = geLogichValue<any>(condition.rightValue, params)
+            let leftValue = getLogichValue<any>(condition.leftValue, params)
+            let rightValue = getLogichValue<any>(condition.rightValue, params)
             switch (condition.operator) {
                 case "==":
                     return leftValue === rightValue
@@ -171,7 +199,7 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
             }
             break
         case "valueCondition":
-            return geLogichValue(condition.value, params) ? true : false
+            return getLogichValue(condition.value, params) ? true : false
         case "union":
             return getUnionConditionResult(condition as PixiVNJsonUnionCondition, params)
         case "labelcondition":
@@ -210,7 +238,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, param
                     case "label":
                         return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T
                     case "logic":
-                        return geLogichValue((value as PixiVNJsonLogicGet).operation, params) as unknown as T
+                        return getLogichValue((value as PixiVNJsonLogicGet).operation, params) as unknown as T
                     case "params":
                         if (params && params.length - 1 >= (value.key as number)) {
                             return params[(value.key as number)] as unknown as T
@@ -231,11 +259,11 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, param
  */
 function getUnionConditionResult(condition: PixiVNJsonUnionCondition, params: any[]): boolean {
     if (condition.unionType === "not") {
-        return !geLogichValue<boolean>(condition.condition, params)
+        return !getLogichValue<boolean>(condition.condition, params)
     }
     let result: boolean = condition.unionType === "and" ? true : false
     for (let i = 0; i < condition.conditions.length; i++) {
-        result = geLogichValue<boolean>(condition.conditions[i], params) || false
+        result = getLogichValue<boolean>(condition.conditions[i], params) || false
         if (condition.unionType === "and") {
             if (!result) {
                 return false
@@ -250,10 +278,10 @@ function getUnionConditionResult(condition: PixiVNJsonUnionCondition, params: an
 }
 
 export function setStorageJson(value: PixiVNJsonValueSet, params: any[]) {
-    let v = geLogichValue<StorageElementType>(value.value, params)
+    let v = getLogichValue<StorageElementType>(value.value, params)
     let valueToSet: StorageElementType
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = geLogichValue<StorageElementType>(v, params)
+        valueToSet = getLogichValue<StorageElementType>(v, params)
     }
     else {
         valueToSet = v
@@ -276,7 +304,7 @@ export function setStorageJson(value: PixiVNJsonValueSet, params: any[]) {
     }
 }
 
-export function geLogichValue<T = StorageElementType>(
+export function getLogichValue<T = StorageElementType>(
     value: T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions | PixiVNJsonConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>,
     params: any[]
 ): T | undefined {
@@ -300,10 +328,10 @@ export function geLogichValue<T = StorageElementType>(
     return v as T
 }
 function getValueFromArithmeticOperations<T = StorageElementType>(operation: PixiVNJsonArithmeticOperations, params: any[]): T | undefined {
-    let leftValue = geLogichValue(operation.leftValue, params)
+    let leftValue = getLogichValue(operation.leftValue, params)
     switch (operation.type) {
         case "arithmetic":
-            let rightValue = geLogichValue(operation.rightValue, params)
+            let rightValue = getLogichValue(operation.rightValue, params)
             switch (operation.operator) {
                 case "*":
                     return (leftValue as any) * (rightValue as any) as T

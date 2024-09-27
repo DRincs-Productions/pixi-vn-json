@@ -1,3 +1,3 @@
 export { importPixiVNJson } from './importer';
-export { geLogichValue, setStorageJson } from './utility';
+export { getLogichValue as geLogichValue, setStorageJson } from './utility';
 
