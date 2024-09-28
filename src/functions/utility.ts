@@ -28,10 +28,8 @@ function getValueFromConditionalStatements<T>(
             case "ifelse":
                 let conditionResult = getLogichValue<boolean>(statement.condition, params)
                 if (conditionResult) {
-                    console.log("then", statement.then)
                     return getLogichValue<T>(statement.then as any, params)
                 } else {
-                    console.log("else", statement.else)
                     return getLogichValue<T>(statement.else as any, params)
                 }
             case "stepswitch":
@@ -85,6 +83,25 @@ function getValueFromConditionalStatements<T>(
     }
     return statement
 }
+
+export function getConditionalStep(step: PixiVNJsonLabelStep, params: any[]): PixiVNJsonLabelStep {
+    if (step.conditionalStep) {
+        let conditionalStep = getLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any, params)
+        if (conditionalStep) {
+            let obj = {
+                ...step,
+                conditionalStep: undefined,
+                ...conditionalStep,
+            }
+            return getConditionalStep(obj, params)
+        }
+        else if (getFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)) {
+            setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
+        }
+    }
+    return step
+}
+
 function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, params: any[]): undefined | T {
     let first = value.firstItem
     let second: T[] = []
@@ -111,10 +128,13 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     }
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[]
-        let dialogueArray = steps.map((step) => getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || "")
+        let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step) => {
+            step = getConditionalStep(step, params)
+            return getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || ""
+        })
         let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0], params)
         let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
-        let dialogues: string[] = dialogueArray.map((dialogue) => {
+        let dialogues: string = dialogueArray.map((dialogue) => {
             let text: PixiVNJsonDialogText
             if (typeof dialogue === "object" && "text" in dialogue) {
                 text = dialogue.text
@@ -133,7 +153,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
                 textEasy = getLogichValue<string>(text, params) || ""
             }
             return textEasy
-        })
+        }).join("")
         let end = steps.find((step) => step.end)
         let choices = steps.find((step) => step.choices)
         let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
@@ -157,7 +177,6 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
             labelToOpen: labelToOpen?.labelToOpen,
             operation: operation?.operation
         }
-        console.log("combinateResult", res)
         return res as T
     }
 }

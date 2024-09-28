@@ -1,8 +1,8 @@
-import { ChoiceMenuOption, getFlag, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
+import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
 import { runOperation } from "../functions/operationUtility"
-import { getLogichValue } from "../functions/utility"
+import { getConditionalStep, getLogichValue } from "../functions/utility"
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
@@ -104,24 +104,6 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return options
     }
 
-    private getConditionalStep(step: PixiVNJsonLabelStep, params: any[]): PixiVNJsonLabelStep {
-        if (step.conditionalStep) {
-            let conditionalStep = getLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any, params)
-            if (conditionalStep) {
-                let obj = {
-                    ...step,
-                    conditionalStep: undefined,
-                    ...conditionalStep,
-                }
-                return this.getConditionalStep(obj, params)
-            }
-            else if (getFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)) {
-                setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
-            }
-        }
-        return step
-    }
-
     private stepConverter(step: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
             let params: any[] = props[PIXIVNJSON_PARAM_ID]
@@ -129,7 +111,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 step = step()
             }
 
-            step = this.getConditionalStep(step, params)
+            step = getConditionalStep(step, params)
 
             if (step.operation) {
                 for (let operation of step.operation) {
