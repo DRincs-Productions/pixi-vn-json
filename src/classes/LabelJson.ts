@@ -95,6 +95,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 return this.getDialogueText(d, params)
             }
         }
+        if (d === undefined || d === null) {
+            return
+        }
         return `${d}`
     }
 
