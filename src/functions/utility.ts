@@ -1,4 +1,4 @@
-import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType, StorageManagerStatic } from "@drincs/pixi-vn";
+import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
 import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
@@ -249,9 +249,8 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, param
             if (value.type === "value" && value.storageOperationType === "get") {
                 switch (value.storageType) {
                     case "storage":
-                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T
                     case "tempstorage":
-                        return StorageManagerStatic.getTempVariable((value as PixiVNJsonStorageGet).key) as unknown as T
+                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T
                     case "flagStorage":
                         return getFlag((value as PixiVNJsonStorageGet).key) as unknown as T
                     case "label":
@@ -313,7 +312,7 @@ export function setStorageJson(value: PixiVNJsonValueSet, params: any[]) {
             storage.setVariable(value.key, valueToSet)
             break
         case "tempstorage":
-            StorageManagerStatic.setTempVariable(value.key, valueToSet)
+            storage.setTempVariable(value.key, valueToSet)
             break
         case "params":
             if (params && params.length - 1 >= (value.key as number)) {
@@ -365,7 +364,7 @@ function getValueFromArithmeticOperations<T = StorageElementType>(operation: Pix
                 case "POW":
                     return Math.pow(leftValue as any, rightValue as any) as T
                 case "RANDOM":
-                    return Math.floor(Math.random() * ((rightValue as any) - (leftValue as any) + 1)) + (leftValue as any)
+                    return narration.getRandomNumber(leftValue as any, rightValue as any) as T
             }
         case "arithmeticsingle":
             switch (operation.operator) {
