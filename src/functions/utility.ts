@@ -136,7 +136,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
         let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
         let dialogues: string = dialogueArray.map((dialogue) => {
             let text: PixiVNJsonDialogText
-            if (typeof dialogue === "object" && "text" in dialogue) {
+            if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
                 text = dialogue.text
             }
             else {
@@ -146,7 +146,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
             if (Array.isArray(text)) {
                 textEasy = text.map((t) => {
                     let value = getLogichValue<string>(t, params)
-                    return value || ""
+                    return `${value}`
                 }).join("")
             }
             else {

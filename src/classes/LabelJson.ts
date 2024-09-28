@@ -63,8 +63,11 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             texts = texts.concat(res)
                         }
                         else {
-                            texts.push(res)
+                            texts.push(`${res}`)
                         }
+                    }
+                    else {
+                        texts.push(`${t}`)
                     }
                 }
             })
@@ -77,23 +80,22 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             }
             text = res
         }
-        return text
+        return `${text}`
     }
     private getDialogue(origin: PixiVNJsonDialog<PixiVNJsonDialogText> | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>> | undefined, params: any[]): PixiVNJsonDialog<string | string[]> | undefined {
         let d = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin, params)
-        let dialogue: PixiVNJsonDialog<string | string[]> | undefined = undefined
         if (d) {
             if (typeof d === "object" && "character" in d && "text" in d) {
-                dialogue = {
+                return {
                     character: d.character,
                     text: this.getDialogueText(d.text, params)
                 }
             }
             else {
-                dialogue = this.getDialogueText(d, params)
+                return this.getDialogueText(d, params)
             }
         }
-        return dialogue
+        return `${d}`
     }
 
     private getChoices(origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined, params: any[]): PixiVNJsonChoice[] | undefined {
