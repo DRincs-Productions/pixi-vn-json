@@ -45,8 +45,8 @@ function getValueFromConditionalStatements<T>(
                     case "loop":
                         let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (currentStepTimesCounter1 > elements.length - 1) {
-                            currentStepTimesCounter1 = 0
-                            return getLogichValue<T>(elements[0] as any, params)
+                            currentStepTimesCounter1 = currentStepTimesCounter1 % elements.length
+                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
                         }
                         return getLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
                     case "sequential":
