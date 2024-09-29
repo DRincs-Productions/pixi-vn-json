@@ -128,9 +128,21 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
     }
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[]
-        let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step) => {
+        let beforeIsGlueEnabled: undefined | boolean = undefined
+        let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
             step = getConditionalStep(step, params)
-            return getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || ""
+            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled, params) || false
+            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || ""
+            if (index === 0) {
+                return value
+            }
+            else if (typeof value === "object" && "text" in value) {
+                value = value.character + ": " + value.text
+            }
+            if (beforeIsGlueEnabled === false) {
+                return "\n\n" + value
+            }
+            return value
         })
         let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0], params)
         let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
