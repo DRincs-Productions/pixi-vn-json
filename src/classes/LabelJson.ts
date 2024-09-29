@@ -185,7 +185,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             }
 
             if (dialogue !== undefined) {
-                narration.dialogue = (dialogue)
+                narration.dialogue = dialogue
             }
             if (glueEnabled) {
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)

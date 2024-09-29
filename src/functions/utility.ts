@@ -159,6 +159,9 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
         let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
         let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
         if (steps.length > 0) {
+            if (steps[0].glueEnabled && steps[0].goNextStep && steps[0].dialogue === undefined) {
+                setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)
+            }
             glueEnabled = steps[steps.length - 1].glueEnabled
             goNextStep = steps[steps.length - 1].goNextStep
         }
