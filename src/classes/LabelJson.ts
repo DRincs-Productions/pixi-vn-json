@@ -45,7 +45,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return sha1String.toString()
     }
 
-    private getDialogueText(origin: PixiVNJsonDialogText, params: any[]): string | string[] {
+    private getDialogueText(origin: PixiVNJsonDialogText): string | string[] {
         let text: string | string[] = ""
         if (Array.isArray(origin)) {
             let texts: string[] = []
@@ -54,10 +54,10 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     texts.push(t)
                 }
                 else if (t && typeof t === "object") {
-                    let res = getLogichValue<string | any[]>(t, params)
+                    let res = getLogichValue<string | any[]>(t)
                     if (res) {
                         if (res && !Array.isArray(res) && typeof res === "object") {
-                            res = getLogichValue<string | string[]>(res, params) || ""
+                            res = getLogichValue<string | string[]>(res) || ""
                         }
                         if (Array.isArray(res)) {
                             texts = texts.concat(res)
@@ -74,25 +74,25 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             text = texts
         }
         else {
-            let res = getLogichValue<string | any[]>(origin, params) || ""
+            let res = getLogichValue<string | any[]>(origin) || ""
             if (res && !Array.isArray(res) && typeof res === "object") {
-                res = getLogichValue<string | string[]>(res, params) || ""
+                res = getLogichValue<string | string[]>(res) || ""
             }
             text = res
         }
         return `${text}`
     }
-    private getDialogue(origin: PixiVNJsonDialog<PixiVNJsonDialogText> | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>> | undefined, params: any[]): PixiVNJsonDialog<string | string[]> | undefined {
-        let d = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin, params)
+    private getDialogue(origin: PixiVNJsonDialog<PixiVNJsonDialogText> | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>> | undefined): PixiVNJsonDialog<string | string[]> | undefined {
+        let d = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin)
         if (d) {
             if (typeof d === "object" && "character" in d && "text" in d) {
                 return {
                     character: d.character,
-                    text: this.getDialogueText(d.text, params)
+                    text: this.getDialogueText(d.text)
                 }
             }
             else {
-                return this.getDialogueText(d, params)
+                return this.getDialogueText(d)
             }
         }
         if (d === undefined || d === null) {
@@ -101,46 +101,45 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return `${d}`
     }
 
-    private getChoices(origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined, params: any[]): PixiVNJsonChoice[] | undefined {
-        const choices = getLogichValue<PixiVNJsonChoices>(origin, params)
+    private getChoices(origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined): PixiVNJsonChoice[] | undefined {
+        const choices = getLogichValue<PixiVNJsonChoices>(origin)
         const options = choices?.map((option) => {
-            return getLogichValue<PixiVNJsonChoice>(option, params)
+            return getLogichValue<PixiVNJsonChoice>(option)
         }).filter((option) => option !== undefined)
         return options
     }
 
     private stepConverter(step: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
-            let params: any[] = props[PIXIVNJSON_PARAM_ID]
             if (typeof step === "function") {
                 step = step()
             }
 
-            step = getConditionalStep(step, params)
+            step = getConditionalStep(step)
 
             if (step.operation) {
                 for (let operation of step.operation) {
-                    await runOperation(operation, params, this.operationStringConvert)
+                    await runOperation(operation, this.operationStringConvert)
                 }
             }
 
-            let choices = this.getChoices(step.choices, params)
-            let glueEnabled = getLogichValue<boolean>(step.glueEnabled, params)
-            let dialogue: PixiVNJsonDialog<string | string[]> | undefined = this.getDialogue(step.dialogue, params)
+            let choices = this.getChoices(step.choices)
+            let glueEnabled = getLogichValue<boolean>(step.glueEnabled)
+            let dialogue: PixiVNJsonDialog<string | string[]> | undefined = this.getDialogue(step.dialogue)
             let labelToOpen: PixiVNJsonLabelToOpen[] = []
             if (step.labelToOpen) {
                 if (!Array.isArray(step.labelToOpen)) {
                     step.labelToOpen = [step.labelToOpen]
                 }
                 step.labelToOpen.forEach((label) => {
-                    let i = getLogichValue<PixiVNJsonLabelToOpen<{}>>(label, params)
+                    let i = getLogichValue<PixiVNJsonLabelToOpen<{}>>(label)
                     if (i) {
                         labelToOpen.push(i)
                     }
                 })
             }
-            let goNextStep = getLogichValue<boolean>(step.goNextStep, params)
-            let end = getLogichValue<"game_end" | "label_end">(step.end, params)
+            let goNextStep = getLogichValue<boolean>(step.goNextStep)
+            let end = getLogichValue<"game_end" | "label_end">(step.end)
 
             if (choices) {
                 let options = choices.map((option) => {
@@ -152,9 +151,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                                 texts.push(t)
                             }
                             else if (t && typeof t === "object") {
-                                let res = getLogichValue<string | any[]>(t, params)
+                                let res = getLogichValue<string | any[]>(t)
                                 if (res && !Array.isArray(res) && typeof res === "object") {
-                                    res = getLogichValue<string | string[]>(res, params) || ""
+                                    res = getLogichValue<string | string[]>(res) || ""
                                 }
                                 if (res) {
                                     if (Array.isArray(res)) {
@@ -197,20 +196,22 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             labelToOpen.forEach((label) => {
                 let labelString = label.label
                 if (typeof labelString === "object") {
-                    labelString = getLogichValue<string>(labelString, params) || ""
+                    labelString = getLogichValue<string>(labelString) || ""
                 }
                 let labelParams = label.params?.map((param) => {
-                    return getLogichValue(param, params)
+                    return getLogichValue(param)
                 })
                 props = {
                     ...props,
                     ...label.props,
-                    [PIXIVNJSON_PARAM_ID]: labelParams
                 }
                 if (label.type === "jump") {
-                    narration.jumpLabel(labelString, props)
+                    narration.closeCurrentLabel()
+                    storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams)
+                    narration.callLabel(labelString, props)
                 }
                 else {
+                    storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams)
                     narration.callLabel(labelString, props)
                 }
             })

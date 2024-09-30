@@ -5,10 +5,9 @@ import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
-    params: any[],
     operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
 ) {
-    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin, params)
+    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin)
     if (!operation) {
         return
     }
@@ -147,7 +146,7 @@ export async function runOperation(
             }
             break
         case "value":
-            setStorageJson(operation, params)
+            setStorageJson(operation)
             break
         case "oprationtoconvert":
             if (operationStringConvert) {
@@ -157,13 +156,13 @@ export async function runOperation(
                         stringOperation += value
                     }
                     else {
-                        let res = getLogichValue<string>(value, params)
+                        let res = getLogichValue<string>(value)
                         stringOperation += `${res}`
                     }
                 })
                 let op = operationStringConvert(stringOperation)
                 if (op) {
-                    await runOperation(op, params)
+                    await runOperation(op)
                 }
             }
             break

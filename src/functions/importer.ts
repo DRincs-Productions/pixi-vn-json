@@ -29,7 +29,7 @@ export function importPixiVNJson(
     }
     if (data.initialOperations) {
         for (let operation of data.initialOperations) {
-            runOperation(operation, [], operationStringConvert)
+            runOperation(operation, operationStringConvert)
         }
         StorageManagerStatic.saveStorageAsBasicStorage()
     }

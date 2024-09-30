@@ -1,4 +1,5 @@
 import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
+import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
@@ -16,7 +17,6 @@ function randomIntFromInterval(min: number, max: number) {
  */
 function getValueFromConditionalStatements<T>(
     statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined,
-    params: any[]
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {
         return statement
@@ -24,16 +24,16 @@ function getValueFromConditionalStatements<T>(
     else if (statement && typeof statement === "object" && "type" in statement) {
         switch (statement.type) {
             case "resulttocombine":
-                return combinateResult(statement, params)
+                return combinateResult(statement)
             case "ifelse":
-                let conditionResult = getLogichValue<boolean>(statement.condition, params)
+                let conditionResult = getLogichValue<boolean>(statement.condition)
                 if (conditionResult) {
-                    return getLogichValue<T>(statement.then as any, params)
+                    return getLogichValue<T>(statement.then as any)
                 } else {
-                    return getLogichValue<T>(statement.else as any, params)
+                    return getLogichValue<T>(statement.else as any)
                 }
             case "stepswitch":
-                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements, params) || []
+                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || []
                 if (elements.length === 0) {
                     console.error("[Pixi’VN Json] getValueFromConditionalStatements elements.length === 0")
                     return undefined
@@ -41,24 +41,24 @@ function getValueFromConditionalStatements<T>(
                 switch (statement.choiceType) {
                     case "random":
                         let randomIndex = randomIntFromInterval(0, elements.length - 1)
-                        return getLogichValue<T>(elements[randomIndex] as any, params)
+                        return getLogichValue<T>(elements[randomIndex] as any)
                     case "loop":
                         let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (currentStepTimesCounter1 > elements.length - 1) {
                             currentStepTimesCounter1 = currentStepTimesCounter1 % elements.length
-                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
+                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any)
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any, params)
+                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any)
                     case "sequential":
                         let end: T | undefined = undefined
                         let currentStepTimesCounter2 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
                         if (statement.end == "lastItem") {
-                            end = getLogichValue<T>(elements[elements.length - 1] as any, params)
+                            end = getLogichValue<T>(elements[elements.length - 1] as any)
                         }
                         if (currentStepTimesCounter2 > elements.length - 1) {
                             return end
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any, params)
+                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any)
                     case "sequentialrandom":
                         let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(0, elements.length - 1, {
                             nestedId: statement.nestedId,
@@ -71,29 +71,29 @@ function getValueFromConditionalStatements<T>(
                                 return undefined
                             }
                             let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`]
-                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any, params)
+                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any)
                         }
                         if (randomIndexWhitExclude == undefined) {
                             console.warn("[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
                             return undefined
                         }
-                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any, params)
+                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any)
                 }
         }
     }
     return statement
 }
 
-export function getConditionalStep(step: PixiVNJsonLabelStep, params: any[]): PixiVNJsonLabelStep {
+export function getConditionalStep(step: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
     if (step.conditionalStep) {
-        let conditionalStep = getLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any, params)
+        let conditionalStep = getLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any)
         if (conditionalStep) {
             let obj = {
                 ...step,
                 conditionalStep: undefined,
                 ...conditionalStep,
             }
-            return getConditionalStep(obj, params)
+            return getConditionalStep(obj)
         }
         else if (getFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)) {
             setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
@@ -102,17 +102,17 @@ export function getConditionalStep(step: PixiVNJsonLabelStep, params: any[]): Pi
     return step
 }
 
-function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, params: any[]): undefined | T {
+function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): undefined | T {
     let first = value.firstItem
     let second: T[] = []
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
-            let i = getLogichValue<T>(item as any, params)
+            let i = getLogichValue<T>(item as any)
             second.push(i as any)
         }
         else {
             item.forEach((i) => {
-                let j = getLogichValue<T>(i, params)
+                let j = getLogichValue<T>(i)
                 second.push(j as any)
             })
         }
@@ -130,21 +130,22 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
         let steps = toCheck as PixiVNJsonLabelStep[]
         let beforeIsGlueEnabled: undefined | boolean = undefined
         let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
-            step = getConditionalStep(step, params)
-            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled, params) || false
-            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, params) || ""
+            step = getConditionalStep(step)
+            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || ""
             if (index === 0) {
+                beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false
                 return value
             }
             else if (typeof value === "object" && "text" in value) {
                 value = value.character + ": " + value.text
             }
             if (beforeIsGlueEnabled === false) {
-                return "\n\n" + value
+                value = "\n\n" + value
             }
+            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false
             return value
         })
-        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0], params)
+        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0])
         let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
         let dialogues: string = dialogueArray.map((dialogue) => {
             let text: PixiVNJsonDialogText
@@ -157,12 +158,12 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
             let textEasy: string
             if (Array.isArray(text)) {
                 textEasy = text.map((t) => {
-                    let value = getLogichValue<string>(t, params)
+                    let value = getLogichValue<string>(t)
                     return `${value}`
                 }).join("")
             }
             else {
-                textEasy = getLogichValue<string>(text, params) || ""
+                textEasy = getLogichValue<string>(text) || ""
             }
             return textEasy
         }).join("")
@@ -201,7 +202,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, para
  * @param condition is the condition object
  * @returns the result of the condition
  */
-function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boolean {
+function getConditionResult(condition: PixiVNJsonConditions): boolean {
     if (!condition) {
         return false
     }
@@ -213,8 +214,8 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
     }
     switch (condition.type) {
         case "compare":
-            let leftValue = getLogichValue<any>(condition.leftValue, params)
-            let rightValue = getLogichValue<any>(condition.rightValue, params)
+            let leftValue = getLogichValue<any>(condition.leftValue)
+            let rightValue = getLogichValue<any>(condition.rightValue)
             switch (condition.operator) {
                 case "==":
                     return leftValue === rightValue
@@ -233,9 +234,9 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
             }
             break
         case "valueCondition":
-            return getLogichValue(condition.value, params) ? true : false
+            return getLogichValue(condition.value) ? true : false
         case "union":
-            return getUnionConditionResult(condition as PixiVNJsonUnionCondition, params)
+            return getUnionConditionResult(condition as PixiVNJsonUnionCondition)
         case "labelcondition":
             if ("operator" in condition && "label" in condition) {
                 switch (condition.operator) {
@@ -258,7 +259,7 @@ function getConditionResult(condition: PixiVNJsonConditions, params: any[]): boo
  * @param value is the value to get
  * @returns the value from the storage or the value
  */
-function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, params: any[]): T | undefined {
+function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | undefined {
     if (value && typeof value === "object") {
         if ("type" in value) {
             if (value.type === "value" && value.storageOperationType === "get") {
@@ -271,8 +272,9 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, param
                     case "label":
                         return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T
                     case "logic":
-                        return getLogichValue((value as PixiVNJsonLogicGet).operation, params) as unknown as T
+                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T
                     case "params":
+                        let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || []
                         if (params && params.length - 1 >= (value.key as number)) {
                             return params[(value.key as number)] as unknown as T
                         }
@@ -290,13 +292,13 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, param
  * @param condition is the union condition object
  * @returns the result of the union condition
  */
-function getUnionConditionResult(condition: PixiVNJsonUnionCondition, params: any[]): boolean {
+function getUnionConditionResult(condition: PixiVNJsonUnionCondition): boolean {
     if (condition.unionType === "not") {
-        return !getLogichValue<boolean>(condition.condition, params)
+        return !getLogichValue<boolean>(condition.condition)
     }
     let result: boolean = condition.unionType === "and" ? true : false
     for (let i = 0; i < condition.conditions.length; i++) {
-        result = getLogichValue<boolean>(condition.conditions[i], params) || false
+        result = getLogichValue<boolean>(condition.conditions[i]) || false
         if (condition.unionType === "and") {
             if (!result) {
                 return false
@@ -310,11 +312,11 @@ function getUnionConditionResult(condition: PixiVNJsonUnionCondition, params: an
     return result
 }
 
-export function setStorageJson(value: PixiVNJsonValueSet, params: any[]) {
-    let v = getLogichValue<StorageElementType>(value.value, params)
+export function setStorageJson(value: PixiVNJsonValueSet) {
+    let v = getLogichValue<StorageElementType>(value.value)
     let valueToSet: StorageElementType
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = getLogichValue<StorageElementType>(v, params)
+        valueToSet = getLogichValue<StorageElementType>(v)
     }
     else {
         valueToSet = v
@@ -330,41 +332,42 @@ export function setStorageJson(value: PixiVNJsonValueSet, params: any[]) {
             storage.setTempVariable(value.key, valueToSet)
             break
         case "params":
+            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1})`) || []
             if (params && params.length - 1 >= (value.key as number)) {
                 params[(value.key as number)] = valueToSet
             }
+            storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params)
             break
     }
 }
 
 export function getLogichValue<T = StorageElementType>(
     value: T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions | PixiVNJsonConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>,
-    params: any[]
 ): T | undefined {
-    let v = getValueFromConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>(value, params)
+    let v = getValueFromConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>(value)
     if (
         v && typeof v === "object" && "type" in v
     ) {
         switch (v.type) {
             case "value":
-                return getValue<T>(v, params)
+                return getValue<T>(v)
             case "arithmetic":
             case "arithmeticsingle":
-                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations, params)
+                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations)
             case "compare":
             case "valueCondition":
             case "union":
             case "labelcondition":
-                return getConditionResult(v, params) as T
+                return getConditionResult(v) as T
         }
     }
     return v as T
 }
-function getValueFromArithmeticOperations<T = StorageElementType>(operation: PixiVNJsonArithmeticOperations, params: any[]): T | undefined {
-    let leftValue = getLogichValue(operation.leftValue, params)
+function getValueFromArithmeticOperations<T = StorageElementType>(operation: PixiVNJsonArithmeticOperations): T | undefined {
+    let leftValue = getLogichValue(operation.leftValue)
     switch (operation.type) {
         case "arithmetic":
-            let rightValue = getLogichValue(operation.rightValue, params)
+            let rightValue = getLogichValue(operation.rightValue)
             switch (operation.operator) {
                 case "*":
                     return (leftValue as any) * (rightValue as any) as T
