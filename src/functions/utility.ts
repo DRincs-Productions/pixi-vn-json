@@ -84,12 +84,33 @@ function getValueFromConditionalStatements<T>(
     return statement
 }
 
-export function getConditionalStep(step: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
-    if (step.conditionalStep) {
-        let conditionalStep = getLogichValue<PixiVNJsonLabelStep>(step.conditionalStep as any)
+export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
+    if (originalStep.conditionalStep) {
+        let conditionalStep = createExportableElement(getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any))
+        if (conditionalStep?.glueEnabled === undefined) {
+            delete conditionalStep?.glueEnabled
+        }
+        if (conditionalStep?.goNextStep === undefined) {
+            delete conditionalStep?.goNextStep
+        }
+        if (conditionalStep?.end === undefined) {
+            delete conditionalStep?.end
+        }
+        if (conditionalStep?.choices === undefined) {
+            delete conditionalStep?.choices
+        }
+        if (conditionalStep?.dialogue === undefined) {
+            delete conditionalStep?.dialogue
+        }
+        if (conditionalStep?.labelToOpen === undefined) {
+            delete conditionalStep?.labelToOpen
+        }
+        if (conditionalStep?.operation === undefined) {
+            delete conditionalStep?.operation
+        }
         if (conditionalStep) {
             let obj = {
-                ...step,
+                ...originalStep,
                 conditionalStep: undefined,
                 ...conditionalStep,
             }
@@ -99,7 +120,7 @@ export function getConditionalStep(step: PixiVNJsonLabelStep): PixiVNJsonLabelSt
             setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
         }
     }
-    return step
+    return originalStep
 }
 
 function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): undefined | T {
