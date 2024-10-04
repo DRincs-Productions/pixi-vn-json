@@ -5,6 +5,7 @@ import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOpe
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
 import { PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
+import { createExportableElement } from "./ExportUtility";
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -353,7 +354,7 @@ export function setStorageJson(value: PixiVNJsonValueSet) {
             storage.setTempVariable(value.key, valueToSet)
             break
         case "params":
-            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1})`) || []
+            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || []
             if (params && params.length - 1 >= (value.key as number)) {
                 params[(value.key as number)] = valueToSet
             }
