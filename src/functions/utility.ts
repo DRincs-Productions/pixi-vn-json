@@ -297,7 +297,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T
                     case "params":
                         let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || []
-                        if (params && params.length - 1 >= (value.key as number)) {
+                        if (params && params.length > (value.key as number)) {
                             return params[(value.key as number)] as unknown as T
                         }
                         console.warn("[Pixi’VN Json] getValue params not found")
