@@ -1,6 +1,6 @@
 import { createExportableElement, getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
+import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonOperations, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -200,7 +200,14 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             goNextStep = steps[steps.length - 1].goNextStep
         }
         let labelToOpen = steps.find((step) => step.labelToOpen)
-        let operation = steps.find((step) => step.operation)
+        let operations: PixiVNJsonOperations = []
+        steps.forEach((step) => {
+            if (step.operation) {
+                operations.forEach((operation) => {
+                    operations.push(operation)
+                })
+            }
+        })
 
         let res: PixiVNJsonLabelStep = {
             dialogue: character ? {
@@ -212,7 +219,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             glueEnabled: glueEnabled,
             goNextStep: goNextStep,
             labelToOpen: labelToOpen?.labelToOpen,
-            operation: operation?.operation
+            operation: operations
         }
         return res as T
     }
