@@ -197,7 +197,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)
             }
             glueEnabled = steps[steps.length - 1].glueEnabled
-            goNextStep = steps[steps.length - 1].goNextStep
+            goNextStep = steps.reverse().find((step) => !(step.operation && (!step.dialogue || !step.choices)))?.goNextStep
         }
         let labelToOpen = steps.find((step) => step.labelToOpen)
         let operations: PixiVNJsonOperations = []
