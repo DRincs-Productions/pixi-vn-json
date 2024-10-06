@@ -1,11 +1,10 @@
-import { getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
+import { createExportableElement, getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
 import { PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
-import { createExportableElement } from "./ExportUtility";
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
