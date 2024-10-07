@@ -4,7 +4,7 @@ import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJso
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
-import { PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
+import { PixiVNJsonChoiceGet, PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -265,16 +265,6 @@ function getConditionResult(condition: PixiVNJsonConditions): boolean {
             return getLogichValue(condition.value) ? true : false
         case "union":
             return getUnionConditionResult(condition as PixiVNJsonUnionCondition)
-        case "labelcondition":
-            if ("operator" in condition && "label" in condition) {
-                switch (condition.operator) {
-                    case "started":
-                        return narration.getTimesLabelOpened(condition.label as string) > 0
-                    case "completed":
-                        return narration.isLabelAlreadyCompleted(condition.label as string)
-                }
-            }
-            break
     }
     if (condition) {
         return true
@@ -299,6 +289,8 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         return getFlag((value as PixiVNJsonStorageGet).key) as unknown as T
                     case "label":
                         return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T
+                    case "choice":
+                        return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T
                     case "logic":
                         return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T
                     case "params":
@@ -385,7 +377,6 @@ export function getLogichValue<T = StorageElementType>(
             case "compare":
             case "valueCondition":
             case "union":
-            case "labelcondition":
                 return getConditionResult(v) as T
         }
     }

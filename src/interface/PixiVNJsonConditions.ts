@@ -1,6 +1,5 @@
 import { StorageElementType } from "@drincs/pixi-vn"
 import PixiVNJsonArithmeticOperations from "./PixiVNJsonArithmeticOperations"
-import PixiVNJsonLabelCondition from "./PixiVNJsonLabelCondition"
 import PixiVNJsonUnionCondition from "./PixiVNJsonUnionCondition"
 import { PixiVNJsonValueGet } from "./PixiVNJsonValue"
 
@@ -29,6 +28,6 @@ type PixiVNJsonValueCondition = StorageElementType | PixiVNJsonValueGet
 /**
  * Conditions for PixiVNJson
  */
-type PixiVNJsonConditions = PixiVNJsonComparation | PixiVNJsonValueCondition | PixiVNJsonUnionCondition | PixiVNJsonLabelCondition | PixiVNJsonArithmeticOperations
+type PixiVNJsonConditions = PixiVNJsonComparation | PixiVNJsonValueCondition | PixiVNJsonUnionCondition | PixiVNJsonArithmeticOperations
 
 export default PixiVNJsonConditions

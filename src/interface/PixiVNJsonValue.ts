@@ -39,13 +39,25 @@ export type PixiVNJsonLabelGet = {
      */
     storageType: "label",
 }
+export type PixiVNJsonChoiceGet = {
+    type: "value"
+    storageOperationType: "get",
+    /**
+     * index of the choice
+     */
+    index: number,
+    /**
+     * If it is a choice, the value will be get with the function {@link narration.getTimesChoiceOpened}
+     */
+    storageType: "choice",
+}
 export type PixiVNJsonLogicGet = {
     type: "value"
     storageOperationType: "get",
     operation: PixiVNJsonArithmeticOperations | PixiVNJsonConditions,
     storageType: "logic",
 }
-export type PixiVNJsonValueGet = PixiVNJsonStorageGet | PixiVNJsonParamGet | PixiVNJsonLabelGet | PixiVNJsonLogicGet
+export type PixiVNJsonValueGet = PixiVNJsonStorageGet | PixiVNJsonParamGet | PixiVNJsonLabelGet | PixiVNJsonChoiceGet | PixiVNJsonLogicGet
 
 type PixiVNJsonOnlyStorageSet = {
     type: "value"
