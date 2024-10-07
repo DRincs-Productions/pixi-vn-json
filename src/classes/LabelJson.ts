@@ -7,6 +7,17 @@ import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
 
+export type LabelJsonOptions = {
+    /**
+     * Function that converts a string to a {@link PixiVNJsonOperation}.
+     */
+    operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
+    /**
+     * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
+     */
+    skipEmptyDialogs?: boolean
+}
+
 export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJson<T>, T> {
     /**
      * @param id is the id of the label
@@ -17,11 +28,12 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         id: string,
         steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[],
         props?: LabelProps<LabelJson<T>>,
-        operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
+        options: LabelJsonOptions = {}
     ) {
         super(id, props)
         this._steps = steps
-        this.operationStringConvert = operationStringConvert
+        this.operationStringConvert = options.operationStringConvert
+        this.skipEmptyDialogs = options.skipEmptyDialogs || false
     }
 
     private _steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[]
@@ -35,6 +47,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined
+    private skipEmptyDialogs: boolean = false
 
     public getStepSha1(index: number): string | undefined {
         if (index < 0 || index >= this.steps.length) {
@@ -185,6 +198,13 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             if (dialogue !== undefined) {
                 narration.dialogue = dialogue
+                if (
+                    this.skipEmptyDialogs &&
+                    typeof dialogue === "string" &&
+                    (dialogue === "" || RegExp(/^\s+$/).test(dialogue))
+                ) {
+                    goNextStep = true
+                }
             }
             if (glueEnabled) {
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)

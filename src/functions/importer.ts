@@ -1,7 +1,7 @@
 import { saveLabel, StorageManagerStatic } from "@drincs/pixi-vn"
 import { LabelJson } from "../classes"
+import { LabelJsonOptions } from "../classes/LabelJson"
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface"
-import { PixiVNJsonOperation } from "../interface/PixiVNJsonOperations"
 import { runOperation } from "./operationUtility"
 
 /**
@@ -12,8 +12,9 @@ import { runOperation } from "./operationUtility"
  */
 export function importPixiVNJson(
     data: PixiVNJson | string,
-    operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined
+    options: LabelJsonOptions = {}
 ) {
+    let operationStringConvert = options?.operationStringConvert
     try {
         if (typeof data === "string") {
             data = JSON.parse(data) as PixiVNJson
@@ -38,7 +39,7 @@ export function importPixiVNJson(
         for (const labelId in labels) {
             try {
                 const steps: PixiVNJsonLabelStep[] = labels[labelId]
-                let label = new LabelJson(labelId, steps, undefined, operationStringConvert)
+                let label = new LabelJson(labelId, steps, undefined, options)
                 saveLabel(label)
             }
             catch (e) {
