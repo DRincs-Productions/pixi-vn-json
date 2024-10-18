@@ -213,7 +213,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
             }
 
-            labelToOpen.forEach((label) => {
+            for (let label of labelToOpen) {
                 let labelString = label.label
                 if (typeof labelString === "object") {
                     labelString = getLogichValue<string>(labelString) || ""
@@ -228,13 +228,13 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 if (label.type === "jump") {
                     narration.closeCurrentLabel()
                     storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams)
-                    narration.callLabel(labelString, props)
+                    await narration.callLabel(labelString, props)
                 }
                 else {
                     storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams)
-                    narration.callLabel(labelString, props)
+                    await narration.callLabel(labelString, props)
                 }
-            })
+            }
 
             if (end === "game_end") {
                 narration.closeAllLabels()
