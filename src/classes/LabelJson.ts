@@ -6,6 +6,7 @@ import { getConditionalStep, getLogichValue } from "../functions/utility"
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelToOpen } from "../interface/PixiVNJsonLabelStep"
+import TranslatorManager from "../managers/TranslateManager"
 
 export type LabelJsonOptions = {
     /**
@@ -101,11 +102,11 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             if (typeof d === "object" && "character" in d && "text" in d) {
                 return {
                     character: d.character,
-                    text: this.getDialogueText(d.text)
+                    text: TranslatorManager.t(this.getDialogueText(d.text))
                 }
             }
             else {
-                return this.getDialogueText(d)
+                return TranslatorManager.t(this.getDialogueText(d))
             }
         }
         if (d === undefined || d === null) {
@@ -161,7 +162,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                         let texts: string[] = []
                         option.text.forEach((t) => {
                             if (typeof t === "string") {
-                                texts.push(t)
+                                texts.push(TranslatorManager.t(t))
                             }
                             else if (t && typeof t === "object") {
                                 let res = getLogichValue<string | any[]>(t)
@@ -170,10 +171,10 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                                 }
                                 if (res) {
                                     if (Array.isArray(res)) {
-                                        texts = texts.concat(res)
+                                        texts = texts.concat(TranslatorManager.t(res))
                                     }
                                     else {
-                                        texts.push(res)
+                                        texts.push(TranslatorManager.t(res))
                                     }
                                 }
                             }
@@ -181,7 +182,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                         text = texts.join()
                     }
                     else if (typeof option.text === "string") {
-                        text = option.text
+                        text = TranslatorManager.t(option.text)
                     }
                     return new ChoiceMenuOption(text, option.label, option.props, {
                         type: option.type,
