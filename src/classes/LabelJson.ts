@@ -1,7 +1,7 @@
 import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
-import { runOperation } from "../functions/operationUtility"
+import { runOperation } from "../functions/operation-utility"
 import { getConditionalStep, getLogichValue } from "../functions/utility"
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
 import PixiVNJsonConditionalStatements from '../interface/PixiVNJsonConditionalStatements'
