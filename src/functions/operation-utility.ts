@@ -1,7 +1,7 @@
 import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
-import { getLogichValue, setStorageJson } from "../functions/utility"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
+import { getLogichValue, setStorageJson } from "./utility"
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
