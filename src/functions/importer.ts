@@ -2,7 +2,7 @@ import { saveLabel, StorageManagerStatic } from "@drincs/pixi-vn"
 import { LabelJson } from "../classes"
 import { LabelJsonOptions } from "../classes/LabelJson"
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface"
-import { runOperation } from "./operationUtility"
+import { runOperation } from "./operation-utility"
 
 /**
  * Import a Pixi'VN JSON to the system.
