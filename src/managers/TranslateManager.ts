@@ -12,14 +12,22 @@ export default class TranslatorManager {
         TranslatorManager._translate = value;
     }
 
-    addKey(json: any, key: string[] | string) {
+    addKey(json: any, key: string[] | string, options: {
+        defaultValue?: "empty_string" | "copy_key"
+    }) {
+        let defaultValue = options.defaultValue || "empty_string";
         if (typeof key === "string") {
             key = [key];
         }
         if (Array.isArray(key)) {
             key.forEach((k) => {
                 if (json[k] === undefined) {
-                    json[k] = "";
+                    if (defaultValue === "empty_string") {
+                        json[k] = "";
+                    }
+                    else if (defaultValue === "copy_key") {
+                        json[k] = k;
+                    }
                 }
             });
         }
@@ -80,7 +88,13 @@ export default class TranslatorManager {
         return res
     }
 
-    generateNewTranslateFile(labels: PixiVNJsonLabelStep[], json: object = {}) {
+    generateNewTranslateFile(labels: PixiVNJsonLabelStep[], json: object = {}, options: {
+        /**
+         * Default value to set if the key is not found
+         * @default "empty_string"
+         */
+        defaultValue?: "empty_string" | "copy_key"
+    } = {}) {
         labels.forEach((label) => {
             if (label.choices) {
                 let multichoices: PixiVNJsonChoices[] = []
@@ -106,26 +120,26 @@ export default class TranslatorManager {
                                     if (Array.isArray(t)) {
                                         t.forEach((tt) => {
                                             if (typeof tt === "string") {
-                                                this.addKey(json, tt)
+                                                this.addKey(json, tt, options)
                                             }
                                             else {
                                                 this.getConditionalsThenElse(tt).forEach((t) => {
                                                     if (Array.isArray(t)) {
                                                         t.forEach((tt) => {
                                                             if (typeof tt === "string") {
-                                                                this.addKey(json, tt)
+                                                                this.addKey(json, tt, options)
                                                             }
                                                         })
                                                     }
                                                     else if (typeof t === "string") {
-                                                        this.addKey(json, t)
+                                                        this.addKey(json, t, options)
                                                     }
                                                 })
                                             }
                                         })
                                     }
                                     else if (typeof t === "string") {
-                                        this.addKey(json, t)
+                                        this.addKey(json, t, options)
                                     }
                                 })
                             }
@@ -143,29 +157,29 @@ export default class TranslatorManager {
                 }
                 dialogues.forEach((dialogue) => {
                     if (typeof dialogue === "string") {
-                        this.addKey(json, dialogue)
+                        this.addKey(json, dialogue, options)
                     }
                     else if ("text" in dialogue) {
                         if (Array.isArray(dialogue.text)) {
                             dialogue.text.forEach((text) => {
                                 if (typeof text === "string") {
-                                    this.addKey(json, text)
+                                    this.addKey(json, text, options)
                                 }
                                 else {
                                     let t = this.getConditionalsThenElse(text)
                                     t.forEach((tt) => {
                                         if (typeof tt === "string") {
-                                            this.addKey(json, tt)
+                                            this.addKey(json, tt, options)
                                         }
                                         else if (Array.isArray(tt)) {
                                             tt.forEach((ttt) => {
                                                 if (typeof ttt === "string") {
-                                                    this.addKey(json, ttt)
+                                                    this.addKey(json, ttt, options)
                                                 }
                                                 else {
                                                     this.getConditionalsThenElse(ttt).forEach((t) => {
                                                         if (typeof t === "string") {
-                                                            this.addKey(json, t)
+                                                            this.addKey(json, t, options)
                                                         }
                                                     })
                                                 }
@@ -182,10 +196,10 @@ export default class TranslatorManager {
                 let l = this.getConditionalsThenElse(label.conditionalStep)
                 l.forEach((item) => {
                     if (Array.isArray(item)) {
-                        this.generateNewTranslateFile(item, json)
+                        this.generateNewTranslateFile(item, json, options)
                     }
                     else {
-                        this.generateNewTranslateFile([item], json)
+                        this.generateNewTranslateFile([item], json, options)
                     }
                 })
             }
