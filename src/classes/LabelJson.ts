@@ -11,8 +11,9 @@ import TranslatorManager from "../managers/TranslateManager"
 export type LabelJsonOptions = {
     /**
      * Function that converts a string to a {@link PixiVNJsonOperation}.
+     * If is a special operation you can return undefined and can run the operation.
      */
-    operationStringConvert?: (value: string, props: StepLabelPropsType<any>) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string, props: StepLabelPropsType) => PixiVNJsonOperation | undefined,
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
@@ -47,7 +48,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         })
     }
 
-    private operationStringConvert?: (value: string, props: StepLabelPropsType<any>) => PixiVNJsonOperation | undefined
+    private operationStringConvert?: (value: string, props: StepLabelPropsType) => PixiVNJsonOperation | undefined
     private skipEmptyDialogs: boolean = false
 
     public getStepSha1(index: number): string | undefined {
@@ -133,7 +134,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             if (step.operation) {
                 for (let operation of step.operation) {
-                    await runOperation(operation, props, this.operationStringConvert)
+                    await runOperation(operation, this.operationStringConvert ? (value) => this.operationStringConvert!(value, props) : undefined)
                 }
             }
 

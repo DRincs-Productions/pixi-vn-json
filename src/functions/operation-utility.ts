@@ -1,12 +1,11 @@
-import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, StepLabelPropsType, zoomIn } from "@drincs/pixi-vn"
+import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
-    props: StepLabelPropsType<any>,
-    operationStringConvert?: (value: string, props: StepLabelPropsType<any>) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
 ) {
     let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin)
     if (!operation) {
@@ -161,9 +160,9 @@ export async function runOperation(
                         stringOperation += `${res}`
                     }
                 })
-                let op = operationStringConvert(stringOperation, props)
+                let op = operationStringConvert(stringOperation)
                 if (op) {
-                    await runOperation(op, props, operationStringConvert)
+                    await runOperation(op, operationStringConvert)
                 }
             }
             break
