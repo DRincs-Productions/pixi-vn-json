@@ -88,7 +88,7 @@ export default class TranslatorManager {
         return res
     }
 
-    static generateTranslateJson(labels: PixiVNJsonLabelStep[], json: object = {}, options: {
+    static generateJsonTranslation(labels: PixiVNJsonLabelStep[], json: object = {}, options: {
         defaultValue?: "empty_string" | "copy_key"
     } = {}) {
         labels.forEach((label) => {
@@ -192,10 +192,10 @@ export default class TranslatorManager {
                 let l = TranslatorManager.getConditionalsThenElse(label.conditionalStep)
                 l.forEach((item) => {
                     if (Array.isArray(item)) {
-                        TranslatorManager.generateTranslateJson(item, json, options)
+                        TranslatorManager.generateJsonTranslation(item, json, options)
                     }
                     else {
-                        TranslatorManager.generateTranslateJson([item], json, options)
+                        TranslatorManager.generateJsonTranslation([item], json, options)
                     }
                 })
             }
