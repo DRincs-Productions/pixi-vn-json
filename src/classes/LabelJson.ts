@@ -13,7 +13,7 @@ export type LabelJsonOptions = {
      * Function that converts a string to a {@link PixiVNJsonOperation}.
      * If is a special operation you can return undefined and can run the operation.
      */
-    operationStringConvert?: (value: string, props: StepLabelPropsType | {}) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string, props: StepLabelPropsType | {}) => Promise<PixiVNJsonOperation | undefined>,
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
@@ -48,7 +48,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         })
     }
 
-    private operationStringConvert?: (value: string, props: StepLabelPropsType) => PixiVNJsonOperation | undefined
+    private operationStringConvert?: (value: string, props: StepLabelPropsType) => Promise<PixiVNJsonOperation | undefined>
     private skipEmptyDialogs: boolean = false
 
     public getStepSha1(index: number): string | undefined {

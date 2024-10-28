@@ -5,7 +5,7 @@ import { getLogichValue, setStorageJson } from "./utility"
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
-    operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>,
 ) {
     let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin)
     if (!operation) {
@@ -160,7 +160,7 @@ export async function runOperation(
                         stringOperation += `${res}`
                     }
                 })
-                let op = operationStringConvert(stringOperation)
+                let op = await operationStringConvert(stringOperation)
                 if (op) {
                     await runOperation(op, operationStringConvert)
                 }
