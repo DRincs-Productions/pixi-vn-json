@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
@@ -26,10 +26,10 @@
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
-    "pixi.js": "^8.4.1",
+    "pixi.js": "^8.5.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.3.0",
-    "typescript": "^5.6.2"
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
   },
   "peerDependencies": {
     "@drincs/pixi-vn": ">=0.8.2"

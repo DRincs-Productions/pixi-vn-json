@@ -12,7 +12,7 @@ export default class TranslatorManager {
         TranslatorManager._translate = value;
     }
 
-    addKey(json: any, key: string[] | string, options: {
+    private static addKey(json: any, key: string[] | string, options: {
         defaultValue?: "empty_string" | "copy_key"
     }) {
         let defaultValue = options.defaultValue || "empty_string";
@@ -32,49 +32,49 @@ export default class TranslatorManager {
             });
         }
     }
-    getConditionalsThenElse<T>(data: PixiVNJsonConditionalStatements<T> | PixiVNJsonConditionalResultToCombine<T> | T, res: T[] = []): T[] {
+    private static getConditionalsThenElse<T>(data: PixiVNJsonConditionalStatements<T> | PixiVNJsonConditionalResultToCombine<T> | T, res: T[] = []): T[] {
         if (typeof data === "object" && data && "type" in data) {
             if (data.type === "ifelse") {
                 if (data.then) {
-                    this.getConditionalsThenElse(data.then, res);
+                    TranslatorManager.getConditionalsThenElse(data.then, res);
                 }
                 if (data.else) {
-                    this.getConditionalsThenElse(data.else, res);
+                    TranslatorManager.getConditionalsThenElse(data.else, res);
                 }
             }
             else if (data.type === "stepswitch") {
                 if (data.elements) {
                     if (Array.isArray(data.elements)) {
                         data.elements.forEach((element) => {
-                            this.getConditionalsThenElse(element, res);
+                            TranslatorManager.getConditionalsThenElse(element, res);
                         });
                     }
                     else {
                         if (data.elements.type === "ifelse") {
                             let tempRes: T[][] = []
-                            this.getConditionalsThenElse(data.elements, tempRes);
+                            TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item)
                             })
                         } else if (data.elements.type === "stepswitch") {
                             let tempRes: T[][] = []
-                            this.getConditionalsThenElse(data.elements, tempRes);
+                            TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item)
                             })
                         } else {
-                            this.getConditionalsThenElse(data.elements, res);
+                            TranslatorManager.getConditionalsThenElse(data.elements, res);
                         }
                     }
                 }
             }
             else if (data.type === "resulttocombine") {
                 if (data.firstItem) {
-                    this.getConditionalsThenElse(data.firstItem, res);
+                    TranslatorManager.getConditionalsThenElse(data.firstItem, res);
                 }
                 if (data.secondConditionalItem) {
                     data.secondConditionalItem.forEach((item) => {
-                        this.getConditionalsThenElse(item, res);
+                        TranslatorManager.getConditionalsThenElse(item, res);
                     })
                 }
             }
@@ -88,18 +88,14 @@ export default class TranslatorManager {
         return res
     }
 
-    generateNewTranslateFile(labels: PixiVNJsonLabelStep[], json: object = {}, options: {
-        /**
-         * Default value to set if the key is not found
-         * @default "empty_string"
-         */
+    static generateTranslateJson(labels: PixiVNJsonLabelStep[], json: object = {}, options: {
         defaultValue?: "empty_string" | "copy_key"
     } = {}) {
         labels.forEach((label) => {
             if (label.choices) {
                 let multichoices: PixiVNJsonChoices[] = []
                 if (!Array.isArray(label.choices)) {
-                    multichoices = this.getConditionalsThenElse(label.choices)
+                    multichoices = TranslatorManager.getConditionalsThenElse(label.choices)
                 }
                 else {
                     multichoices = [label.choices]
@@ -108,38 +104,38 @@ export default class TranslatorManager {
                     if ("type" in choice) {
                         let res: PixiVNJsonChoice[] = []
                         if (choice.type === "ifelse" || choice.type === "stepswitch") {
-                            this.getConditionalsThenElse(choice, res)
+                            TranslatorManager.getConditionalsThenElse(choice, res)
                         }
                         else {
                             res = [choice]
                         }
-                        let texts = res.map((item) => this.getConditionalsThenElse(item.text))
+                        let texts = res.map((item) => TranslatorManager.getConditionalsThenElse(item.text))
                         texts.forEach((text) => {
                             if (Array.isArray(text)) {
                                 text.forEach((t) => {
                                     if (Array.isArray(t)) {
                                         t.forEach((tt) => {
                                             if (typeof tt === "string") {
-                                                this.addKey(json, tt, options)
+                                                TranslatorManager.addKey(json, tt, options)
                                             }
                                             else {
-                                                this.getConditionalsThenElse(tt).forEach((t) => {
+                                                TranslatorManager.getConditionalsThenElse(tt).forEach((t) => {
                                                     if (Array.isArray(t)) {
                                                         t.forEach((tt) => {
                                                             if (typeof tt === "string") {
-                                                                this.addKey(json, tt, options)
+                                                                TranslatorManager.addKey(json, tt, options)
                                                             }
                                                         })
                                                     }
                                                     else if (typeof t === "string") {
-                                                        this.addKey(json, t, options)
+                                                        TranslatorManager.addKey(json, t, options)
                                                     }
                                                 })
                                             }
                                         })
                                     }
                                     else if (typeof t === "string") {
-                                        this.addKey(json, t, options)
+                                        TranslatorManager.addKey(json, t, options)
                                     }
                                 })
                             }
@@ -150,36 +146,36 @@ export default class TranslatorManager {
             if (label.dialogue) {
                 let dialogues: PixiVNJsonDialog<PixiVNJsonDialogText>[] = []
                 if (!Array.isArray(label.dialogue)) {
-                    dialogues = this.getConditionalsThenElse(label.dialogue)
+                    dialogues = TranslatorManager.getConditionalsThenElse(label.dialogue)
                 }
                 else {
                     dialogues = [label.dialogue]
                 }
                 dialogues.forEach((dialogue) => {
                     if (typeof dialogue === "string") {
-                        this.addKey(json, dialogue, options)
+                        TranslatorManager.addKey(json, dialogue, options)
                     }
                     else if ("text" in dialogue) {
                         if (Array.isArray(dialogue.text)) {
                             dialogue.text.forEach((text) => {
                                 if (typeof text === "string") {
-                                    this.addKey(json, text, options)
+                                    TranslatorManager.addKey(json, text, options)
                                 }
                                 else {
-                                    let t = this.getConditionalsThenElse(text)
+                                    let t = TranslatorManager.getConditionalsThenElse(text)
                                     t.forEach((tt) => {
                                         if (typeof tt === "string") {
-                                            this.addKey(json, tt, options)
+                                            TranslatorManager.addKey(json, tt, options)
                                         }
                                         else if (Array.isArray(tt)) {
                                             tt.forEach((ttt) => {
                                                 if (typeof ttt === "string") {
-                                                    this.addKey(json, ttt, options)
+                                                    TranslatorManager.addKey(json, ttt, options)
                                                 }
                                                 else {
-                                                    this.getConditionalsThenElse(ttt).forEach((t) => {
+                                                    TranslatorManager.getConditionalsThenElse(ttt).forEach((t) => {
                                                         if (typeof t === "string") {
-                                                            this.addKey(json, t, options)
+                                                            TranslatorManager.addKey(json, t, options)
                                                         }
                                                     })
                                                 }
@@ -193,13 +189,13 @@ export default class TranslatorManager {
                 })
             }
             if (label.conditionalStep) {
-                let l = this.getConditionalsThenElse(label.conditionalStep)
+                let l = TranslatorManager.getConditionalsThenElse(label.conditionalStep)
                 l.forEach((item) => {
                     if (Array.isArray(item)) {
-                        this.generateNewTranslateFile(item, json, options)
+                        TranslatorManager.generateTranslateJson(item, json, options)
                     }
                     else {
-                        this.generateNewTranslateFile([item], json, options)
+                        TranslatorManager.generateTranslateJson([item], json, options)
                     }
                 })
             }
