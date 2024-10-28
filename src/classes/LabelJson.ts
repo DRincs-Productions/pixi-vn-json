@@ -13,7 +13,7 @@ export type LabelJsonOptions = {
      * Function that converts a string to a {@link PixiVNJsonOperation}.
      * If is a special operation you can return undefined and can run the operation.
      */
-    operationStringConvert?: (value: string, props: StepLabelPropsType) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string, props: StepLabelPropsType | {}) => PixiVNJsonOperation | undefined,
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
