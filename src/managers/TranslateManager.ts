@@ -1,4 +1,4 @@
-import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonConditionalResultToCombine, PixiVNJsonConditionalStatements, PixiVNJsonLabelStep } from "../interface";
+import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonConditionalResultToCombine, PixiVNJsonConditionalStatements, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelStep } from "../interface";
 
 export default class TranslatorManager {
     private static _translate: (key: string) => string = (key: string) => key;
@@ -132,6 +132,62 @@ export default class TranslatorManager {
                         })
                     }
                 }))
+            }
+            if (label.dialogue) {
+                let dialogues: PixiVNJsonDialog<PixiVNJsonDialogText>[] = []
+                if (!Array.isArray(label.dialogue)) {
+                    dialogues = this.getConditionalsThenElse(label.dialogue)
+                }
+                else {
+                    dialogues = [label.dialogue]
+                }
+                dialogues.forEach((dialogue) => {
+                    if (typeof dialogue === "string") {
+                        this.addKey(json, dialogue)
+                    }
+                    else if ("text" in dialogue) {
+                        if (Array.isArray(dialogue.text)) {
+                            dialogue.text.forEach((text) => {
+                                if (typeof text === "string") {
+                                    this.addKey(json, text)
+                                }
+                                else {
+                                    let t = this.getConditionalsThenElse(text)
+                                    t.forEach((tt) => {
+                                        if (typeof tt === "string") {
+                                            this.addKey(json, tt)
+                                        }
+                                        else if (Array.isArray(tt)) {
+                                            tt.forEach((ttt) => {
+                                                if (typeof ttt === "string") {
+                                                    this.addKey(json, ttt)
+                                                }
+                                                else {
+                                                    this.getConditionalsThenElse(ttt).forEach((t) => {
+                                                        if (typeof t === "string") {
+                                                            this.addKey(json, t)
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+            if (label.conditionalStep) {
+                let l = this.getConditionalsThenElse(label.conditionalStep)
+                l.forEach((item) => {
+                    if (Array.isArray(item)) {
+                        this.generateNewTranslateFile(item, json)
+                    }
+                    else {
+                        this.generateNewTranslateFile([item], json)
+                    }
+                })
             }
         });
         return json;
