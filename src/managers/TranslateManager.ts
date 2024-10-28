@@ -1,4 +1,4 @@
-import { PixiVNJsonLabelStep } from "../interface";
+import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonConditionalResultToCombine, PixiVNJsonConditionalStatements, PixiVNJsonLabelStep } from "../interface";
 
 export default class TranslatorManager {
     private static _translate: (key: string) => string = (key: string) => key;
@@ -24,16 +24,114 @@ export default class TranslatorManager {
             });
         }
     }
+    getConditionalsThenElse<T>(data: PixiVNJsonConditionalStatements<T> | PixiVNJsonConditionalResultToCombine<T> | T, res: T[] = []): T[] {
+        if (typeof data === "object" && data && "type" in data) {
+            if (data.type === "ifelse") {
+                if (data.then) {
+                    this.getConditionalsThenElse(data.then, res);
+                }
+                if (data.else) {
+                    this.getConditionalsThenElse(data.else, res);
+                }
+            }
+            else if (data.type === "stepswitch") {
+                if (data.elements) {
+                    if (Array.isArray(data.elements)) {
+                        data.elements.forEach((element) => {
+                            this.getConditionalsThenElse(element, res);
+                        });
+                    }
+                    else {
+                        if (data.elements.type === "ifelse") {
+                            let tempRes: T[][] = []
+                            this.getConditionalsThenElse(data.elements, tempRes);
+                            tempRes.forEach((item) => {
+                                res.push(...item)
+                            })
+                        } else if (data.elements.type === "stepswitch") {
+                            let tempRes: T[][] = []
+                            this.getConditionalsThenElse(data.elements, tempRes);
+                            tempRes.forEach((item) => {
+                                res.push(...item)
+                            })
+                        } else {
+                            this.getConditionalsThenElse(data.elements, res);
+                        }
+                    }
+                }
+            }
+            else if (data.type === "resulttocombine") {
+                if (data.firstItem) {
+                    this.getConditionalsThenElse(data.firstItem, res);
+                }
+                if (data.secondConditionalItem) {
+                    data.secondConditionalItem.forEach((item) => {
+                        this.getConditionalsThenElse(item, res);
+                    })
+                }
+            }
+            else {
+                res.push(data);
+            }
+        }
+        else if (data) {
+            res.push(data);
+        }
+        return res
+    }
+
     generateNewTranslateFile(labels: PixiVNJsonLabelStep[], json: object = {}) {
         labels.forEach((label) => {
             if (label.choices) {
-                if (Array.isArray(label.choices)) {
-                    label.choices.forEach((choice) => {
-                        if ("text" in choice) {
-                            this.addKey(json, choice.text);
-                        }
-                    });
+                let multichoices: PixiVNJsonChoices[] = []
+                if (!Array.isArray(label.choices)) {
+                    multichoices = this.getConditionalsThenElse(label.choices)
                 }
+                else {
+                    multichoices = [label.choices]
+                }
+                multichoices.forEach((c) => c.forEach((choice) => {
+                    if ("type" in choice) {
+                        let res: PixiVNJsonChoice[] = []
+                        if (choice.type === "ifelse" || choice.type === "stepswitch") {
+                            this.getConditionalsThenElse(choice, res)
+                        }
+                        else {
+                            res = [choice]
+                        }
+                        let texts = res.map((item) => this.getConditionalsThenElse(item.text))
+                        texts.forEach((text) => {
+                            if (Array.isArray(text)) {
+                                text.forEach((t) => {
+                                    if (Array.isArray(t)) {
+                                        t.forEach((tt) => {
+                                            if (typeof tt === "string") {
+                                                this.addKey(json, tt)
+                                            }
+                                            else {
+                                                this.getConditionalsThenElse(tt).forEach((t) => {
+                                                    if (Array.isArray(t)) {
+                                                        t.forEach((tt) => {
+                                                            if (typeof tt === "string") {
+                                                                this.addKey(json, tt)
+                                                            }
+                                                        })
+                                                    }
+                                                    else if (typeof t === "string") {
+                                                        this.addKey(json, t)
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                    else if (typeof t === "string") {
+                                        this.addKey(json, t)
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }))
             }
         });
         return json;
