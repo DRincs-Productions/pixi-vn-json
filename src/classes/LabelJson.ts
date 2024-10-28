@@ -1,4 +1,4 @@
-import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelType, storage } from "@drincs/pixi-vn"
+import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelPropsType, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
 import { runOperation } from "../functions/operation-utility"
@@ -12,7 +12,7 @@ export type LabelJsonOptions = {
     /**
      * Function that converts a string to a {@link PixiVNJsonOperation}.
      */
-    operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined,
+    operationStringConvert?: (value: string, props: StepLabelPropsType<any>) => PixiVNJsonOperation | undefined,
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
@@ -47,7 +47,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         })
     }
 
-    private operationStringConvert?: (value: string) => PixiVNJsonOperation | undefined
+    private operationStringConvert?: (value: string, props: StepLabelPropsType<any>) => PixiVNJsonOperation | undefined
     private skipEmptyDialogs: boolean = false
 
     public getStepSha1(index: number): string | undefined {
@@ -133,7 +133,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             if (step.operation) {
                 for (let operation of step.operation) {
-                    await runOperation(operation, this.operationStringConvert)
+                    await runOperation(operation, props, this.operationStringConvert)
                 }
             }
 
