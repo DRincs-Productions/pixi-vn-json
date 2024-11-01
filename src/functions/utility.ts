@@ -5,7 +5,7 @@ import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOpe
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
 import { PixiVNJsonChoiceGet, PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
-import { TranslateManager } from "../managers";
+import { translator } from "../managers";
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -146,7 +146,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
     }
 
     if (typeof toCheck[0] === "string") {
-        return TranslateManager.t(toCheck).join("") as T
+        return translator.t(toCheck).join("") as T
     }
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[]
@@ -181,13 +181,13 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             if (Array.isArray(text)) {
                 textEasy = text.map((t) => {
                     let value = getLogichValue<string>(t)
-                    return TranslateManager.t(`${value}`)
+                    return translator.t(`${value}`)
                 }).join("")
             }
             else {
                 textEasy = getLogichValue<string>(text) || ""
             }
-            return TranslateManager.t(textEasy)
+            return translator.t(textEasy)
         }).join("")
         let end = steps.find((step) => step.end)
         let choices = steps.find((step) => step.choices)

@@ -1,6 +1,6 @@
 import TranslateManager from './TranslateManager';
 
-const translator = new TranslateManager()
+const translator = TranslateManager
 
 export { translator };
 
