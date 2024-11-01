@@ -1,2 +1,6 @@
-export { default as TranslateManager } from './TranslateManager';
+import TranslateManager from './TranslateManager';
+
+const translator = new TranslateManager()
+
+export { translator };
 
