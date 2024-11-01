@@ -1,5 +1,7 @@
 # Pixi’VN + Json Integration
 
+![pixi-vn-cover-json](https://github.com/user-attachments/assets/ec9aa39e-6e3c-4198-8a65-e1fce1f1d637)
+
 Pixi’VN can be integrated with JSON files to create a visual novel. This method is useful for:
 
 * Add a new narrative to Pixi’VN (It was used to create the integration with [Ink](https://pixi-vn.web.app/ink/ink.html) and [Ren'Py](https://pixi-vn.web.app/renpy/renpy.html))
