@@ -106,8 +106,8 @@ export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJso
         if (conditionalStep?.labelToOpen === undefined) {
             delete conditionalStep?.labelToOpen
         }
-        if (conditionalStep?.operation === undefined) {
-            delete conditionalStep?.operation
+        if (conditionalStep?.operations === undefined) {
+            delete conditionalStep?.operations
         }
         if (conditionalStep) {
             let obj = {
@@ -198,12 +198,12 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                 setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)
             }
             glueEnabled = steps[steps.length - 1].glueEnabled
-            goNextStep = steps.reverse().find((step) => !(step.operation && (!step.dialogue || !step.choices)))?.goNextStep
+            goNextStep = steps.reverse().find((step) => !(step.operations && (!step.dialogue || !step.choices)))?.goNextStep
         }
         let labelToOpen = steps.find((step) => step.labelToOpen)
         let operations: PixiVNJsonOperations = []
         steps.forEach((step) => {
-            if (step.operation) {
+            if (step.operations) {
                 operations.forEach((operation) => {
                     operations.push(operation)
                 })
@@ -220,7 +220,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             glueEnabled: glueEnabled,
             goNextStep: goNextStep,
             labelToOpen: labelToOpen?.labelToOpen,
-            operation: operations
+            operations: operations
         }
         return res as T
     }

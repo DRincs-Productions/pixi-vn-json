@@ -132,8 +132,8 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             step = getConditionalStep(step)
 
-            if (step.operation) {
-                for (let operation of step.operation) {
+            if (step.operations) {
+                for (let operation of step.operations) {
                     await runOperation(operation, this.operationStringConvert ? (value) => this.operationStringConvert!(value, props) : undefined)
                 }
             }

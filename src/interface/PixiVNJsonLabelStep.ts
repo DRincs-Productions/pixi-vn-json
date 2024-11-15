@@ -73,14 +73,14 @@ export type PixiVNJsonLabelToOpen<T extends {} = {}> = {
 /**
  * Steps of a {@link PixiVNJsonLabel}.
  * Order of operations:
- * 1. run all {@link PixiVNJsonLabelStep.operation}
+ * 1. run all {@link PixiVNJsonLabelStep.operations}
  * 2. set {@link PixiVNJsonLabelStep.choices}, {@link PixiVNJsonLabelStep.dialogue}, {@link PixiVNJsonLabelStep.glueEnabled}
  * 3. open {@link PixiVNJsonLabelStep.labelToOpen}
  * 4. go to next step if {@link PixiVNJsonLabelStep.goNextStep} is true
  * 5. end the label if {@link PixiVNJsonLabelStep.end} is "label_end"
  */
 type PixiVNJsonLabelStep = {
-    operation?: PixiVNJsonOperations
+    operations?: PixiVNJsonOperations
     /**
      * Variable used to display a choice menu.
      */
