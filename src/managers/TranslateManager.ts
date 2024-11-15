@@ -1,15 +1,36 @@
 import { PixiVNJsonChoice, PixiVNJsonChoices, PixiVNJsonConditionalResultToCombine, PixiVNJsonConditionalStatements, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelStep } from "../interface";
 
 export default class TranslatorManager {
+    private static _beforeToTranslate: ((key: string) => string) | undefined = undefined;
     private static _translate: (key: string) => string = (key: string) => key;
+    private static _afterToTranslate: ((key: string) => string) | undefined = undefined;
     static t<T = string | string[]>(key: T): T {
         if (Array.isArray(key)) {
-            return key.map((k?: string) => TranslatorManager._translate(`${k}`)) as T;
+            return key.map((k?: string) => TranslatorManager.translate(`${k}`)) as T;
         }
-        return TranslatorManager._translate(`${key}`) as T;
+        return TranslatorManager.translate(`${key}`) as T;
+    }
+    static set beforeToTranslate(value: (key: string) => string) {
+        TranslatorManager._beforeToTranslate = value;
     }
     static set translate(value: (key: string) => string) {
         TranslatorManager._translate = value;
+    }
+    static get translate(): (key: string) => string {
+        return (key: string) => {
+            let text = ""
+            if (TranslatorManager._beforeToTranslate) {
+                text = TranslatorManager._beforeToTranslate(key);
+            }
+            text = TranslatorManager._translate(text);
+            if (TranslatorManager._afterToTranslate) {
+                text = TranslatorManager._afterToTranslate(text);
+            }
+            return text;
+        }
+    }
+    static set afterToTranslate(value: (key: string) => string) {
+        TranslatorManager._afterToTranslate = value;
     }
 
     private static addKey(json: any, key: string[] | string, options: {
@@ -26,7 +47,12 @@ export default class TranslatorManager {
                         json[k] = "";
                     }
                     else if (defaultValue === "copy_key") {
-                        json[k] = k;
+                        if (TranslatorManager._beforeToTranslate) {
+                            json[k] = TranslatorManager._beforeToTranslate(k);
+                        }
+                        else {
+                            json[k] = k;
+                        }
                     }
                 }
             });
