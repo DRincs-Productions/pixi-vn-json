@@ -18,9 +18,9 @@ export default class TranslatorManager {
     }
     static get translate(): (key: string) => string {
         return (key: string) => {
-            let text = ""
+            let text = key
             if (TranslatorManager._beforeToTranslate) {
-                text = TranslatorManager._beforeToTranslate(key);
+                text = TranslatorManager._beforeToTranslate(text);
             }
             text = TranslatorManager._translate(text);
             if (TranslatorManager._afterToTranslate) {
