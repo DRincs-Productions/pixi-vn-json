@@ -1,4 +1,4 @@
-import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
+import { Assets, canvas, CanvasImage, CanvasVideo, moveIn, narration, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
@@ -37,6 +37,12 @@ export async function runOperation(
                     break
             }
             break
+        case "assets":
+            switch (operation.operationType) {
+                case "load":
+                    await Assets.load(operation.assets)
+                    break
+            }
         case "image":
             switch (operation.operationType) {
                 case "show":

@@ -32,8 +32,13 @@ type PixiVNJsonVideoPauseResume = {
     operationType: "pause" | "resume",
     alias: string,
 }
+type PixiVNJsonAssetsLoad = {
+    type: "assets",
+    operationType: "load",
+    assets: string[],
+}
 
-export type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume)
+export type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad)
 
 type PixiVNJsonSoundAdd = {
     type: "sound",
