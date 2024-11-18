@@ -32,7 +32,7 @@
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=0.8.2"
+    "@drincs/pixi-vn": ">=0.8.5"
   },
   "keywords": [
     "game",

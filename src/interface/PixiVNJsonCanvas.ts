@@ -1,4 +1,4 @@
-import { ICanvasImageMemory, ICanvasVideoMemory } from "@drincs/pixi-vn"
+import { CanvasImageMemory, CanvasVideoMemory } from "@drincs/pixi-vn"
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions"
 
 type PixiVNJsonCanvasShow = {
@@ -6,20 +6,20 @@ type PixiVNJsonCanvasShow = {
     operationType: "show",
     alias: string,
     url: string,
-    props?: Partial<ICanvasImageMemory>
+    props?: Partial<CanvasImageMemory>
     transition?: PixiVNJsonMediaTransiotions
 }
 type PixiVNJsonImageEdit = {
     type: "image",
     operationType: "edit",
     alias: string,
-    props?: Partial<ICanvasImageMemory>
+    props?: Partial<CanvasImageMemory>
 }
 type PixiVNJsonVideoEdit = {
     type: "video",
     operationType: "edit",
     alias: string,
-    props?: Partial<ICanvasVideoMemory>
+    props?: Partial<CanvasVideoMemory>
 }
 type PixiVNJsonCanvasRemove = {
     type: "image" | "video",
