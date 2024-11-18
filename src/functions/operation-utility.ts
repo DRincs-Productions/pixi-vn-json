@@ -1,4 +1,4 @@
-import { Assets, canvas, CanvasImage, CanvasVideo, moveIn, narration, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
+import { Assets, canvas, CanvasImage, CanvasVideo, moveIn, moveOut, narration, removeWithDissolveTransition, removeWithFadeTransition, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
@@ -50,9 +50,15 @@ export async function runOperation(
                     if (operation.transition) {
                         switch (operation.transition.type) {
                             case "fade":
+                                if (!operation.props || !("alpha" in operation.props)) {
+                                    imageToShow.alpha = 0
+                                }
                                 await showWithFadeTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
+                                if (!operation.props || !("alpha" in operation.props)) {
+                                    imageToShow.alpha = 0
+                                }
                                 await showWithDissolveTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "movein":
@@ -85,7 +91,27 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    canvas.remove(operation.alias)
+                    if (operation.transition) {
+                        switch (operation.transition.type) {
+                            case "fade":
+                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "dissolve":
+                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "movein":
+                            case "moveout":
+                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "zoomin":
+                            case "zoomout":
+                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                        }
+                    }
+                    else {
+                        canvas.remove(operation.alias)
+                    }
                     break
             }
             break
@@ -96,9 +122,15 @@ export async function runOperation(
                     if (operation.transition) {
                         switch (operation.transition.type) {
                             case "fade":
+                                if (!operation.props || !("alpha" in operation.props)) {
+                                    videoToShow.alpha = 0
+                                }
                                 await showWithFadeTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
+                                if (!operation.props || !("alpha" in operation.props)) {
+                                    videoToShow.alpha = 0
+                                }
                                 await showWithDissolveTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "movein":
@@ -131,7 +163,27 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    canvas.remove(operation.alias)
+                    if (operation.transition) {
+                        switch (operation.transition.type) {
+                            case "fade":
+                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "dissolve":
+                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "movein":
+                            case "moveout":
+                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "zoomin":
+                            case "zoomout":
+                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                        }
+                    }
+                    else {
+                        canvas.remove(operation.alias)
+                    }
                     break
                 case "pause":
                     let videoPause = canvas.find<CanvasVideo>(operation.alias)
