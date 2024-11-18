@@ -1,4 +1,4 @@
-import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showImage, showVideo, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
+import { canvas, CanvasImage, CanvasVideo, moveIn, narration, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
@@ -40,26 +40,28 @@ export async function runOperation(
         case "image":
             switch (operation.operationType) {
                 case "show":
+                    let imageToShow = new CanvasImage(operation.props, operation.url)
                     if (operation.transition) {
                         switch (operation.transition.type) {
                             case "fade":
-                                await showWithFadeTransition(operation.alias, operation.url, operation.transition.props, operation.transition.priority)
+                                await showWithFadeTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
-                                await showWithDissolveTransition(operation.alias, operation.url, operation.transition.props, operation.transition.priority)
+                                await showWithDissolveTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "movein":
                             case "moveout":
-                                await moveIn(operation.alias, operation.url, operation.transition.props, operation.transition.priority)
+                                await moveIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "zoomin":
                             case "zoomout":
-                                await zoomIn(operation.alias, operation.url, operation.transition.props, operation.transition.priority)
+                                await zoomIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                         }
                     }
                     else {
-                        await showImage(operation.alias, operation.url)
+                        canvas.add(operation.alias, imageToShow)
+                        await imageToShow.load()
                     }
                     break
                 case "edit":
@@ -84,28 +86,28 @@ export async function runOperation(
         case "video":
             switch (operation.operationType) {
                 case "show":
+                    let videoToShow = new CanvasVideo(operation.props, operation.url)
                     if (operation.transition) {
-                        let video = new CanvasVideo()
-                        video.videoLink = operation.url
                         switch (operation.transition.type) {
                             case "fade":
-                                await showWithFadeTransition(operation.alias, video, operation.transition.props, operation.transition.priority)
+                                await showWithFadeTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
-                                await showWithDissolveTransition(operation.alias, video, operation.transition.props, operation.transition.priority)
+                                await showWithDissolveTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "movein":
                             case "moveout":
-                                await moveIn(operation.alias, video, operation.transition.props, operation.transition.priority)
+                                await moveIn(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "zoomin":
                             case "zoomout":
-                                await zoomIn(operation.alias, video, operation.transition.props, operation.transition.priority)
+                                await zoomIn(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                         }
                     }
                     else {
-                        await showVideo(operation.alias, operation.url)
+                        canvas.add(operation.alias, videoToShow)
+                        await videoToShow.load()
                     }
                     break
                 case "edit":

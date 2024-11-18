@@ -6,6 +6,7 @@ type PixiVNJsonCanvasShow = {
     operationType: "show",
     alias: string,
     url: string,
+    props?: Partial<ICanvasImageMemory>
     transition?: PixiVNJsonMediaTransiotions
 }
 type PixiVNJsonImageEdit = {
