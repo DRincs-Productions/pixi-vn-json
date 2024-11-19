@@ -1,7 +1,7 @@
 import { CanvasImageMemory, CanvasVideoMemory } from "@drincs/pixi-vn"
-import PixiVNJsonEffect from "./PixiVNJsonEffect"
+import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect"
+import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker"
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions"
-import PixiVNJsonTicker from "./PixiVNJsonTicker"
 
 type PixiVNJsonCanvasShow = {
     type: "image" | "video",
@@ -40,5 +40,5 @@ type PixiVNJsonAssetsLoad = {
     assets: string[],
 }
 
-type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonTicker | PixiVNJsonEffect)
+type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonCanvasTicker | PixiVNJsonCanvasEffect)
 export default PixiVNJsonCanvas

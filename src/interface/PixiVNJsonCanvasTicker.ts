@@ -30,5 +30,5 @@ type PixiVNJsonTickerZoom = {
     priority?: UPDATE_PRIORITY
 }
 
-type PixiVNJsonTicker = (PixiVNJsonTickerFade | PixiVNJsonTickerMove | PixiVNJsonTickerRotate | PixiVNJsonTickerZoom)
-export default PixiVNJsonTicker
+type PixiVNJsonCanvasTicker = (PixiVNJsonTickerFade | PixiVNJsonTickerMove | PixiVNJsonTickerRotate | PixiVNJsonTickerZoom)
+export default PixiVNJsonCanvasTicker

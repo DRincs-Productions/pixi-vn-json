@@ -8,5 +8,5 @@ type PixiVNJsonEffectShake = {
     priority?: UPDATE_PRIORITY
 }
 
-type PixiVNJsonEffect = (PixiVNJsonEffectShake)
-export default PixiVNJsonEffect
+type PixiVNJsonCanvasEffect = (PixiVNJsonEffectShake)
+export default PixiVNJsonCanvasEffect

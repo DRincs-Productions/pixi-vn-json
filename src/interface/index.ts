@@ -1,6 +1,8 @@
 export type { default as PixiVNJson } from './PixiVNJson';
 export type { default as PixiVNJsonArithmeticOperations } from './PixiVNJsonArithmeticOperations';
 export type { default as PixiVNJsonCanvas } from './PixiVNJsonCanvas';
+export type { default as PixiVNJsonCanvasEffect } from './PixiVNJsonCanvasEffect';
+export type { default as PixiVNJsonCanvasTicker } from './PixiVNJsonCanvasTicker';
 export type { default as PixiVNJsonConditionalResultToCombine } from './PixiVNJsonConditionalResultToCombine';
 export type { default as PixiVNJsonConditionalStatements } from './PixiVNJsonConditionalStatements';
 export type { PixiVNJsonComparation, default as PixiVNJsonConditions } from './PixiVNJsonConditions';
@@ -12,7 +14,6 @@ export type { default as PixiVNJsonMediaTransiotions } from './PixiVNJsonMediaTr
 export type { PixiVNJsonOperation, PixiVNJsonOperationString, default as PixiVNJsonOperations } from './PixiVNJsonOperations';
 export type { default as PixiVNJsonSound } from './PixiVNJsonSound';
 export type { default as PixiVNJsonStepSwitch, PixiVNJsonStepSwitchElementType, PixiVNJsonStepSwitchElementsType } from './PixiVNJsonStepSwitch';
-export type { default as PixiVNJsonTicker } from './PixiVNJsonTicker';
 export type { default as PixiVNJsonUnionCondition } from './PixiVNJsonUnionCondition';
 export type { PixiVNJsonChoiceGet, PixiVNJsonLabelGet, PixiVNJsonLogicGet, PixiVNJsonParamGet, PixiVNJsonStorageGet, PixiVNJsonValueGet, PixiVNJsonValueSet } from './PixiVNJsonValue';
 
