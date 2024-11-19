@@ -1,4 +1,4 @@
-import { Assets, canvas, CanvasImage, CanvasVideo, moveIn, moveOut, narration, removeWithDissolveTransition, removeWithFadeTransition, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut } from "@drincs/pixi-vn"
+import { Assets, canvas, CanvasImage, CanvasVideo, FadeAlphaTicker, moveIn, moveOut, MoveTicker, narration, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
@@ -43,6 +43,7 @@ export async function runOperation(
                     await Assets.load(operation.assets)
                     break
             }
+            break
         case "image":
             switch (operation.operationType) {
                 case "show":
@@ -232,6 +233,25 @@ export async function runOperation(
                     narration.requestInput({ type: operation.valueType })
                     break
             }
+            break
+        case "fade":
+            let tickerFade = new FadeAlphaTicker(operation.props, operation.duration, operation.priority)
+            canvas.addTicker(operation.alias, tickerFade)
+            break
+        case "move":
+            let tickerMove = new MoveTicker(operation.props, operation.duration, operation.priority)
+            canvas.addTicker(operation.alias, tickerMove)
+            break
+        case "rotate":
+            let tickerRotate = new RotateTicker(operation.props, operation.duration, operation.priority)
+            canvas.addTicker(operation.alias, tickerRotate)
+            break
+        case "zoom":
+            let tickerZoom = new ZoomTicker(operation.props, operation.duration, operation.priority)
+            canvas.addTicker(operation.alias, tickerZoom)
+            break
+        case "shake":
+            await shakeEffect(operation.alias, operation.props, operation.priority)
             break
     }
 }
