@@ -12,6 +12,7 @@ export type { default as PixiVNJsonMediaTransiotions } from './PixiVNJsonMediaTr
 export type { PixiVNJsonOperation, PixiVNJsonOperationString, default as PixiVNJsonOperations } from './PixiVNJsonOperations';
 export type { default as PixiVNJsonSound } from './PixiVNJsonSound';
 export type { default as PixiVNJsonStepSwitch, PixiVNJsonStepSwitchElementType, PixiVNJsonStepSwitchElementsType } from './PixiVNJsonStepSwitch';
+export type { default as PixiVNJsonTicker } from './PixiVNJsonTicker';
 export type { default as PixiVNJsonUnionCondition } from './PixiVNJsonUnionCondition';
 export type { PixiVNJsonChoiceGet, PixiVNJsonLabelGet, PixiVNJsonLogicGet, PixiVNJsonParamGet, PixiVNJsonStorageGet, PixiVNJsonValueGet, PixiVNJsonValueSet } from './PixiVNJsonValue';
 
