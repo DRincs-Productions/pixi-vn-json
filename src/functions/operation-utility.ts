@@ -52,12 +52,14 @@ export async function runOperation(
                         switch (operation.transition.type) {
                             case "fade":
                                 if (!operation.props || !("alpha" in operation.props)) {
+                                    await imageToShow.load()
                                     imageToShow.alpha = 0
                                 }
                                 await showWithFadeTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
                                 if (!operation.props || !("alpha" in operation.props)) {
+                                    await imageToShow.load()
                                     imageToShow.alpha = 0
                                 }
                                 await showWithDissolveTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
@@ -124,12 +126,14 @@ export async function runOperation(
                         switch (operation.transition.type) {
                             case "fade":
                                 if (!operation.props || !("alpha" in operation.props)) {
+                                    await videoToShow.load()
                                     videoToShow.alpha = 0
                                 }
                                 await showWithFadeTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
                                 break
                             case "dissolve":
                                 if (!operation.props || !("alpha" in operation.props)) {
+                                    await videoToShow.load()
                                     videoToShow.alpha = 0
                                 }
                                 await showWithDissolveTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
