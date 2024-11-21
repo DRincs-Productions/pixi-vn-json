@@ -1,4 +1,5 @@
 import { MoveInOutProps, ShowWithDissolveTransitionProps, ShowWithFadeTransitionProps, ZoomInOutProps } from "@drincs/pixi-vn"
+import { PushInOutProps } from "@drincs/pixi-vn/dist/interface/canvas/transition-props"
 import { UPDATE_PRIORITY } from "pixi.js"
 
 type DissolveTransition = {
@@ -19,11 +20,17 @@ type MoveInOutTransition = {
     priority?: UPDATE_PRIORITY
 }
 
-type ZoomInOut = {
+type ZoomInOutTransition = {
     type: "zoomin" | "zoomout"
     props?: ZoomInOutProps
     priority?: UPDATE_PRIORITY
 }
 
-type PixiVNJsonMediaTransiotions = (DissolveTransition | FadeTransition | MoveInOutTransition | ZoomInOut)
+type PushInOutTransition = {
+    type: "pushin" | "pushout"
+    props?: PushInOutProps
+    priority?: UPDATE_PRIORITY
+}
+
+type PixiVNJsonMediaTransiotions = (DissolveTransition | FadeTransition | MoveInOutTransition | ZoomInOutTransition | PushInOutTransition)
 export default PixiVNJsonMediaTransiotions

@@ -1,4 +1,5 @@
 import { Assets, canvas, CanvasImage, CanvasVideo, FadeAlphaTicker, moveIn, moveOut, MoveTicker, narration, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
+import { pushIn, pushOut } from "@drincs/pixi-vn/dist/functions/canvas/canvas-transition"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
@@ -64,6 +65,10 @@ export async function runOperation(
                             case "zoomout":
                                 await zoomIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
                                 break
+                            case "pushin":
+                            case "pushout":
+                                await pushIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
+                                break
                         }
                     }
                     else {
@@ -101,6 +106,10 @@ export async function runOperation(
                             case "zoomin":
                             case "zoomout":
                                 zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
+                                break
+                            case "pushin":
+                            case "pushout":
+                                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
                                 break
                         }
                     }
