@@ -13,7 +13,7 @@ export type LabelJsonOptions = {
      * Function that converts a string to a {@link PixiVNJsonOperation}.
      * If is a special operation you can return undefined and can run the operation.
      */
-    operationStringConvert?: (value: string, props: StepLabelPropsType | {}) => Promise<PixiVNJsonOperation | undefined>,
+    operationStringConvert?: (value: string, step: PixiVNJsonLabelStep, props: StepLabelPropsType | {}) => Promise<PixiVNJsonOperation | undefined>,
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
@@ -48,7 +48,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         })
     }
 
-    private operationStringConvert?: (value: string, props: StepLabelPropsType) => Promise<PixiVNJsonOperation | undefined>
+    private operationStringConvert?: (value: string, step: PixiVNJsonLabelStep, props: StepLabelPropsType) => Promise<PixiVNJsonOperation | undefined>
     private skipEmptyDialogs: boolean = false
 
     public getStepSha1(index: number): string | undefined {
@@ -124,17 +124,21 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return options
     }
 
-    private stepConverter(step: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
+    private stepConverter(stepProp: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
-            if (typeof step === "function") {
-                step = step()
+            let step: PixiVNJsonLabelStep
+            if (typeof stepProp === "function") {
+                step = stepProp()
+            }
+            else {
+                step = stepProp
             }
 
             step = getConditionalStep(step)
 
             if (step.operations) {
                 for (let operation of step.operations) {
-                    await runOperation(operation, this.operationStringConvert ? (value) => this.operationStringConvert!(value, props) : undefined)
+                    await runOperation(operation, this.operationStringConvert ? (value) => this.operationStringConvert!(value, step, props) : undefined)
                 }
             }
 
