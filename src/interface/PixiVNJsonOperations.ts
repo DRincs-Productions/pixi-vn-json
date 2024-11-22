@@ -6,7 +6,7 @@ import PixiVNJsonSound from "./PixiVNJsonSound"
 import { PixiVNJsonValueGet, PixiVNJsonValueSet } from "./PixiVNJsonValue"
 
 export type PixiVNJsonOperationString = {
-    type: "oprationtoconvert",
+    type: "operationtoconvert",
     values: (string | PixiVNJsonValueGet | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet>)[]
 }
 

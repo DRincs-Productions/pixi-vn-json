@@ -205,7 +205,7 @@ export async function runOperation(
         case "value":
             setStorageJson(operation)
             break
-        case "oprationtoconvert":
+        case "operationtoconvert":
             if (operationStringConvert) {
                 let stringOperation = ""
                 operation.values.forEach((value) => {
