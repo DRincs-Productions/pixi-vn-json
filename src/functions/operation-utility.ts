@@ -1,5 +1,4 @@
-import { Assets, canvas, CanvasImage, CanvasVideo, FadeAlphaTicker, moveIn, moveOut, MoveTicker, narration, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
-import { pushIn, pushOut } from "@drincs/pixi-vn/dist/functions/canvas/canvas-transition"
+import { Assets, canvas, CanvasImage, CanvasVideo, FadeAlphaTicker, moveIn, moveOut, MoveTicker, narration, pushIn, pushOut, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
