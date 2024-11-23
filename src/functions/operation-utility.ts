@@ -226,8 +226,7 @@ export async function runOperation(
         case "input":
             switch (operation.operationType) {
                 case "request":
-                    narration.requestInput({ type: operation.valueType })
-                    narration.inputValue = operation.defaultValue
+                    narration.requestInput({ type: operation.valueType }, operation.defaultValue)
                     break
             }
             break
