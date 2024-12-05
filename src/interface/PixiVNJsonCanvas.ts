@@ -1,9 +1,9 @@
-import { CanvasImageMemory, CanvasVideoMemory } from "@drincs/pixi-vn"
+import { CanvasImageMemory, CanvasVideoMemory, ContainerMemory, ImageSprite } from "@drincs/pixi-vn"
 import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect"
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker"
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions"
 
-type PixiVNJsonCanvasShow = {
+type PixiVNJsonCanvasImageVideoShow = {
     type: "image" | "video",
     operationType: "show",
     alias: string,
@@ -13,6 +13,14 @@ type PixiVNJsonCanvasShow = {
      */
     url?: string,
     props?: Partial<CanvasImageMemory>
+    transition?: PixiVNJsonMediaTransiotions
+}
+type PixiVNJsonCanvasImageContainerShow = {
+    type: "imagecontainer",
+    operationType: "show",
+    alias: string,
+    urls: string[],
+    props?: Partial<ContainerMemory<ImageSprite>>
     transition?: PixiVNJsonMediaTransiotions
 }
 type PixiVNJsonImageEdit = {
@@ -27,8 +35,14 @@ type PixiVNJsonVideoEdit = {
     alias: string,
     props?: Partial<CanvasVideoMemory>
 }
+type PixiVNJsonImageContainerEdit = {
+    type: "imagecontainer",
+    operationType: "edit",
+    alias: string,
+    props?: Partial<ContainerMemory<ImageSprite>>
+}
 type PixiVNJsonCanvasRemove = {
-    type: "image" | "video",
+    type: "image" | "video" | "imagecontainer",
     operationType: "remove",
     alias: string,
     transition?: PixiVNJsonMediaTransiotions
@@ -44,5 +58,7 @@ type PixiVNJsonAssetsLoad = {
     assets: string[],
 }
 
-type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonCanvasTicker | PixiVNJsonCanvasEffect)
+export type PixiVNJsonCanvasShow = PixiVNJsonCanvasImageContainerShow | PixiVNJsonCanvasImageVideoShow
+
+type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonImageContainerEdit | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonCanvasTicker | PixiVNJsonCanvasEffect)
 export default PixiVNJsonCanvas
