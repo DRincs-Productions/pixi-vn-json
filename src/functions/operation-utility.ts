@@ -206,6 +206,31 @@ export async function runOperation(
                     break
             }
             break
+        case "canvaselement":
+            switch (operation.operationType) {
+                case "edit":
+                    try {
+                        let unknown = canvas.find(operation.alias)
+                        if (unknown) {
+                            if (operation.props) {
+                                unknown.memory = {
+                                    ...unknown.memory,
+                                    ...operation.props,
+                                }
+                            }
+                        }
+                        else {
+                            console.error(`[Pixi’VN Json] Canvas Element with alias ${operation.alias} not found.`)
+                        }
+                    }
+                    catch (e) {
+                        console.error(`[Pixi’VN Json] There was an error while trying to edit the canvas element with alias ${operation.alias}.`, e)
+                    }
+                    break
+                case "remove":
+                    break
+            }
+            break
         case "value":
             setStorageJson(operation)
             break
