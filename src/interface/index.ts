@@ -1,6 +1,6 @@
 export type { default as PixiVNJson } from './PixiVNJson';
 export type { default as PixiVNJsonArithmeticOperations } from './PixiVNJsonArithmeticOperations';
-export type { default as PixiVNJsonCanvas } from './PixiVNJsonCanvas';
+export type { default as PixiVNJsonCanvas, PixiVNJsonCanvasEdit, PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from './PixiVNJsonCanvas';
 export type { default as PixiVNJsonCanvasEffect } from './PixiVNJsonCanvasEffect';
 export type { default as PixiVNJsonCanvasTicker } from './PixiVNJsonCanvasTicker';
 export type { default as PixiVNJsonConditionalResultToCombine } from './PixiVNJsonConditionalResultToCombine';
