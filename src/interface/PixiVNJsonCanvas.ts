@@ -48,7 +48,7 @@ type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     alias: string,
     props?: Partial<T>
 }
-type PixiVNJsonCanvasRemove = {
+export type PixiVNJsonCanvasRemove = {
     type: "image" | "video" | "imagecontainer" | "canvaselement",
     operationType: "remove",
     alias: string,

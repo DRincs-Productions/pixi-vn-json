@@ -1,6 +1,6 @@
 import { Assets, canvas, FadeAlphaTicker, ImageContainer, ImageSprite, moveIn, moveOut, MoveTicker, narration, pushIn, pushOut, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, VideoSprite, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
-import { PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas"
+import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
 
@@ -66,31 +66,7 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "pushin":
-                            case "pushout":
-                                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.remove(operation.alias)
-                    }
+                    removeCanvasElement(operation)
                     break
             }
             break
@@ -115,27 +91,7 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.remove(operation.alias)
-                    }
+                    removeCanvasElement(operation)
                     break
                 case "pause":
                     let videoPause = canvas.find<VideoSprite>(operation.alias)
@@ -178,31 +134,7 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "pushin":
-                            case "pushout":
-                                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.remove(operation.alias)
-                    }
+                    removeCanvasElement(operation)
                     break
             }
             break
@@ -228,6 +160,7 @@ export async function runOperation(
                     }
                     break
                 case "remove":
+                    removeCanvasElement(operation)
                     break
             }
             break
@@ -307,5 +240,33 @@ export async function showCanvasElemet(element: ImageSprite | VideoSprite | Imag
     else {
         canvas.add(operation.alias, element)
         await element.load()
+    }
+}
+
+export function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
+    if (operation.transition) {
+        switch (operation.transition.type) {
+            case "fade":
+                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "dissolve":
+                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "movein":
+            case "moveout":
+                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "zoomin":
+            case "zoomout":
+                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "pushin":
+            case "pushout":
+                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+        }
+    }
+    else {
+        canvas.remove(operation.alias)
     }
 }
