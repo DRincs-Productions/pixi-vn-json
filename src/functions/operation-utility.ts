@@ -1,5 +1,6 @@
-import { Assets, canvas, CanvasImage, CanvasVideo, FadeAlphaTicker, moveIn, moveOut, MoveTicker, narration, pushIn, pushOut, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
+import { Assets, canvas, FadeAlphaTicker, ImageContainer, ImageSprite, moveIn, moveOut, MoveTicker, narration, pushIn, pushOut, removeWithDissolveTransition, removeWithFadeTransition, RotateTicker, shakeEffect, showWithDissolveTransition, showWithFadeTransition, sound, VideoSprite, zoomIn, zoomOut, ZoomTicker } from "@drincs/pixi-vn"
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
+import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas"
 import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
 import { getLogichValue, setStorageJson } from "./utility"
 
@@ -47,36 +48,11 @@ export async function runOperation(
         case "image":
             switch (operation.operationType) {
                 case "show":
-                    let imageToShow = new CanvasImage(operation.props, operation.url || operation.alias)
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                await showWithFadeTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                await showWithDissolveTransition(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                await moveIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                await zoomIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "pushin":
-                            case "pushout":
-                                await pushIn(operation.alias, imageToShow, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.add(operation.alias, imageToShow)
-                        await imageToShow.load()
-                    }
+                    let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias)
+                    await showCanvasElemet(imageToShow, operation)
                     break
                 case "edit":
-                    let image = canvas.find<CanvasImage>(operation.alias)
+                    let image = canvas.find<ImageSprite>(operation.alias)
                     if (image) {
                         if (operation.props) {
                             image.memory = {
@@ -90,63 +66,18 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "pushin":
-                            case "pushout":
-                                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.remove(operation.alias)
-                    }
+                    removeCanvasElement(operation)
                     break
             }
             break
         case "video":
             switch (operation.operationType) {
                 case "show":
-                    let videoToShow = new CanvasVideo(operation.props, operation.url || operation.alias)
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                await showWithFadeTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                await showWithDissolveTransition(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                await moveIn(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                await zoomIn(operation.alias, videoToShow, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.add(operation.alias, videoToShow)
-                        await videoToShow.load()
-                    }
+                    let videoToShow = new VideoSprite(operation.props, operation.url || operation.alias)
+                    await showCanvasElemet(videoToShow, operation)
                     break
                 case "edit":
-                    let video = canvas.find<CanvasVideo>(operation.alias)
+                    let video = canvas.find<VideoSprite>(operation.alias)
                     if (video) {
                         if (operation.props) {
                             video.memory = {
@@ -160,30 +91,10 @@ export async function runOperation(
                     }
                     break
                 case "remove":
-                    if (operation.transition) {
-                        switch (operation.transition.type) {
-                            case "fade":
-                                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "dissolve":
-                                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "movein":
-                            case "moveout":
-                                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                            case "zoomin":
-                            case "zoomout":
-                                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
-                                break
-                        }
-                    }
-                    else {
-                        canvas.remove(operation.alias)
-                    }
+                    removeCanvasElement(operation)
                     break
                 case "pause":
-                    let videoPause = canvas.find<CanvasVideo>(operation.alias)
+                    let videoPause = canvas.find<VideoSprite>(operation.alias)
                     if (videoPause) {
                         videoPause.paused = true
                     }
@@ -192,13 +103,64 @@ export async function runOperation(
                     }
                     break
                 case "resume":
-                    let videoResume = canvas.find<CanvasVideo>(operation.alias)
+                    let videoResume = canvas.find<VideoSprite>(operation.alias)
                     if (videoResume) {
                         videoResume.paused = false
                     }
                     else {
                         console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`)
                     }
+                    break
+            }
+            break
+        case "imagecontainer":
+            switch (operation.operationType) {
+                case "show":
+                    let imageContainerToShow = new ImageContainer(operation.props, operation.urls)
+                    await showCanvasElemet(imageContainerToShow, operation)
+                    break
+                case "edit":
+                    let image = canvas.find<ImageSprite>(operation.alias)
+                    if (image) {
+                        if (operation.props) {
+                            image.memory = {
+                                ...image.memory,
+                                ...operation.props,
+                            }
+                        }
+                    }
+                    else {
+                        console.error(`[Pixi’VN Json] ImageContainer with alias ${operation.alias} not found.`)
+                    }
+                    break
+                case "remove":
+                    removeCanvasElement(operation)
+                    break
+            }
+            break
+        case "canvaselement":
+            switch (operation.operationType) {
+                case "edit":
+                    try {
+                        let unknown = canvas.find(operation.alias)
+                        if (unknown) {
+                            if (operation.props) {
+                                unknown.memory = {
+                                    ...unknown.memory,
+                                    ...operation.props,
+                                }
+                            }
+                        }
+                        else {
+                            console.error(`[Pixi’VN Json] Canvas Element with alias ${operation.alias} not found.`)
+                        }
+                    }
+                    catch (e) {
+                        console.error(`[Pixi’VN Json] There was an error while trying to edit the canvas element with alias ${operation.alias}.`, e)
+                    }
+                    break
+                case "remove":
+                    removeCanvasElement(operation)
                     break
             }
             break
@@ -249,5 +211,62 @@ export async function runOperation(
         case "shake":
             await shakeEffect(operation.alias, operation.props, operation.priority)
             break
+    }
+}
+
+export async function showCanvasElemet(element: ImageSprite | VideoSprite | ImageContainer, operation: PixiVNJsonCanvasShow) {
+    if (operation.transition) {
+        switch (operation.transition.type) {
+            case "fade":
+                await showWithFadeTransition(operation.alias, element, operation.transition.props, operation.transition.priority)
+                break
+            case "dissolve":
+                await showWithDissolveTransition(operation.alias, element, operation.transition.props, operation.transition.priority)
+                break
+            case "movein":
+            case "moveout":
+                await moveIn(operation.alias, element, operation.transition.props, operation.transition.priority)
+                break
+            case "zoomin":
+            case "zoomout":
+                await zoomIn(operation.alias, element, operation.transition.props, operation.transition.priority)
+                break
+            case "pushin":
+            case "pushout":
+                await pushIn(operation.alias, element, operation.transition.props, operation.transition.priority)
+                break
+        }
+    }
+    else {
+        canvas.add(operation.alias, element)
+        await element.load()
+    }
+}
+
+export function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
+    if (operation.transition) {
+        switch (operation.transition.type) {
+            case "fade":
+                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "dissolve":
+                removeWithDissolveTransition(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "movein":
+            case "moveout":
+                moveOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "zoomin":
+            case "zoomout":
+                zoomOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+            case "pushin":
+            case "pushout":
+                pushOut(operation.alias, operation.transition.props, operation.transition.priority)
+                break
+        }
+    }
+    else {
+        canvas.remove(operation.alias)
     }
 }
