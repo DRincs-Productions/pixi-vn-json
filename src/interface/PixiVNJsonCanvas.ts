@@ -59,6 +59,7 @@ type PixiVNJsonAssetsLoad = {
 }
 
 export type PixiVNJsonCanvasShow = PixiVNJsonCanvasImageContainerShow | PixiVNJsonCanvasImageVideoShow
+export type PixiVNJsonCanvasEdit = PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonImageContainerEdit
 
-type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonImageEdit | PixiVNJsonVideoEdit | PixiVNJsonCanvasRemove | PixiVNJsonImageContainerEdit | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonCanvasTicker | PixiVNJsonCanvasEffect)
+type PixiVNJsonCanvas = (PixiVNJsonCanvasShow | PixiVNJsonCanvasEdit | PixiVNJsonCanvasRemove | PixiVNJsonVideoPauseResume | PixiVNJsonAssetsLoad | PixiVNJsonCanvasTicker | PixiVNJsonCanvasEffect)
 export default PixiVNJsonCanvas
