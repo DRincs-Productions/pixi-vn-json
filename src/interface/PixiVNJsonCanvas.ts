@@ -7,7 +7,11 @@ type PixiVNJsonCanvasShow = {
     type: "image" | "video",
     operationType: "show",
     alias: string,
-    url: string,
+    /**
+     * The url of the image or video.
+     * If the url is not provided, the url will be set to the alias. 
+     */
+    url?: string,
     props?: Partial<CanvasImageMemory>
     transition?: PixiVNJsonMediaTransiotions
 }

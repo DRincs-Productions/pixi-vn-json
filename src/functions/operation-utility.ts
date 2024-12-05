@@ -47,7 +47,7 @@ export async function runOperation(
         case "image":
             switch (operation.operationType) {
                 case "show":
-                    let imageToShow = new CanvasImage(operation.props, operation.url)
+                    let imageToShow = new CanvasImage(operation.props, operation.url || operation.alias)
                     if (operation.transition) {
                         switch (operation.transition.type) {
                             case "fade":
@@ -121,7 +121,7 @@ export async function runOperation(
         case "video":
             switch (operation.operationType) {
                 case "show":
-                    let videoToShow = new CanvasVideo(operation.props, operation.url)
+                    let videoToShow = new CanvasVideo(operation.props, operation.url || operation.alias)
                     if (operation.transition) {
                         switch (operation.transition.type) {
                             case "fade":
