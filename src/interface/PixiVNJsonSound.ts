@@ -19,7 +19,7 @@ type PixiVNJsonSoundPlay = {
 }
 type PixiVNJsonSoundRemove = {
     type: "sound",
-    operationType: "remove",
+    operationType: "stop",
     alias: string,
 }
 type PixiVNJsonSoundPauseResume = {

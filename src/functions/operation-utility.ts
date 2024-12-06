@@ -24,8 +24,8 @@ export async function runOperation(
                 case "play":
                     sound.play(operation.alias, operation.props)
                     break
-                case "remove":
-                    sound.remove(operation.alias)
+                case "stop":
+                    sound.stop(operation.alias)
                     break
                 case "pause":
                     sound.pause(operation.alias)
