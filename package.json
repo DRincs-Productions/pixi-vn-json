@@ -26,13 +26,13 @@
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
-    "pixi.js": "^8.6.3",
+    "pixi.js": "^8.6.4",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=0.9.0"
+    "@drincs/pixi-vn": "^0.9.4"
   },
   "keywords": [
     "game",

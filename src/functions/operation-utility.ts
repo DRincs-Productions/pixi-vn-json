@@ -49,10 +49,10 @@ export async function runOperation(
                     let image = canvas.find<ImageSprite>(operation.alias)
                     if (image) {
                         if (operation.props) {
-                            image.memory = {
+                            await image.setMemory({
                                 ...image.memory,
                                 ...operation.props,
-                            }
+                            })
                         }
                     }
                     else {
@@ -74,10 +74,10 @@ export async function runOperation(
                     let video = canvas.find<VideoSprite>(operation.alias)
                     if (video) {
                         if (operation.props) {
-                            video.memory = {
+                            await video.setMemory({
                                 ...video.memory,
                                 ...operation.props,
-                            }
+                            })
                         }
                     }
                     else {
@@ -114,13 +114,13 @@ export async function runOperation(
                     await showCanvasElemet(imageContainerToShow, operation)
                     break
                 case "edit":
-                    let image = canvas.find<ImageSprite>(operation.alias)
+                    let image = canvas.find<ImageContainer>(operation.alias)
                     if (image) {
                         if (operation.props) {
-                            image.memory = {
+                            await image.setMemory({
                                 ...image.memory,
                                 ...operation.props,
-                            }
+                            })
                         }
                     }
                     else {

@@ -1,4 +1,4 @@
-import { CanvasImageMemory, CanvasVideoMemory, ContainerMemory, ImageSprite } from "@drincs/pixi-vn"
+import { CanvasImageMemory, CanvasVideoMemory, ContainerMemory, ImageContainerMemory, ImageContainerOptions, ImageSprite, ImageSpriteOptions } from "@drincs/pixi-vn"
 import { ContainerOptions } from "pixi.js"
 import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect"
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker"
@@ -13,7 +13,7 @@ type PixiVNJsonCanvasImageVideoShow = {
      * If the url is not provided, the url will be set to the alias. 
      */
     url?: string,
-    props?: Partial<CanvasImageMemory>
+    props?: ImageSpriteOptions
     transition?: PixiVNJsonMediaTransiotions
 }
 type PixiVNJsonCanvasImageContainerShow = {
@@ -21,7 +21,7 @@ type PixiVNJsonCanvasImageContainerShow = {
     operationType: "show",
     alias: string,
     urls: string[],
-    props?: Partial<ContainerMemory<ImageSprite>>
+    props?: ImageContainerOptions<ImageSprite>
     transition?: PixiVNJsonMediaTransiotions
 }
 type PixiVNJsonImageEdit = {
@@ -40,7 +40,7 @@ type PixiVNJsonImageContainerEdit = {
     type: "imagecontainer",
     operationType: "edit",
     alias: string,
-    props?: Partial<ContainerMemory<ImageSprite>>
+    props?: Partial<ImageContainerMemory>
 }
 type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     type: "canvaselement",
