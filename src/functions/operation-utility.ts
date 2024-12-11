@@ -35,7 +35,8 @@ export async function runOperation(
         case "assets":
             switch (operation.operationType) {
                 case "load":
-                    await Assets.load(operation.assets)
+                    let prmises = operation.assets.map((asset) => Assets.load(asset))
+                    await Promise.all(prmises)
                     break
             }
             break
