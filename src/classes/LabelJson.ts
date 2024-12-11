@@ -1,6 +1,7 @@
 import { ChoiceMenuOption, LabelAbstract, LabelProps, narration, setFlag, StepLabelPropsType, StepLabelType, storage } from "@drincs/pixi-vn"
 import sha1 from 'crypto-js/sha1'
 import { PIXIVNJSON_PARAM_ID } from '../constants'
+import { loadAssets } from "../functions/assets"
 import { runOperation } from "../functions/operation-utility"
 import { getConditionalStep, getLogichValue } from "../functions/utility"
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface"
@@ -32,6 +33,27 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         props?: LabelProps<LabelJson<T>>,
         options: LabelJsonOptions = {}
     ) {
+        if (!props) {
+            props = {}
+        }
+        props.onLoadingLabel = async () => {
+            for (let stepProp of steps) {
+                let step: PixiVNJsonLabelStep
+                if (typeof stepProp === "function") {
+                    step = stepProp()
+                }
+                else {
+                    step = stepProp
+                }
+
+                step = getConditionalStep(step)
+
+                if (step.operations) {
+                    let promises = step.operations.map((operation) => loadAssets(operation))
+                    await Promise.all(promises)
+                }
+            }
+        }
         super(id, props)
         this._steps = steps
         this.operationStringConvert = options.operationStringConvert
