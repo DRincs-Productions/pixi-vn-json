@@ -1,16 +1,5 @@
-import { SoundOptions, SoundPlayOptions } from "@drincs/pixi-vn"
+import { SoundPlayOptions } from "@drincs/pixi-vn"
 
-type PixiVNJsonSoundAdd = {
-    type: "sound",
-    operationType: "load",
-    alias: string,
-    /**
-     * The url of the image or video.
-     * If the url is not provided, the url will be set to the alias. 
-     */
-    url?: string,
-    props?: SoundOptions
-}
 type PixiVNJsonSoundPlay = {
     type: "sound",
     operationType: "play",
@@ -34,5 +23,5 @@ type PixiVNJsonSoundVolume = {
     value: number,
 }
 
-type PixiVNJsonSound = (PixiVNJsonSoundAdd | PixiVNJsonSoundPlay | PixiVNJsonSoundRemove | PixiVNJsonSoundPauseResume | PixiVNJsonSoundVolume)
+type PixiVNJsonSound = (PixiVNJsonSoundPlay | PixiVNJsonSoundRemove | PixiVNJsonSoundPauseResume | PixiVNJsonSoundVolume)
 export default PixiVNJsonSound
