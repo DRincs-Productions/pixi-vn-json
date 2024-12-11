@@ -15,12 +15,6 @@ export async function runOperation(
     switch (operation.type) {
         case "sound":
             switch (operation.operationType) {
-                case "add":
-                    sound.add(operation.alias, {
-                        ...operation.props,
-                        url: operation.url
-                    })
-                    break
                 case "play":
                     sound.play(operation.alias, operation.props)
                     break
