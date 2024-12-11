@@ -2,7 +2,7 @@ import { SoundOptions, SoundPlayOptions } from "@drincs/pixi-vn"
 
 type PixiVNJsonSoundAdd = {
     type: "sound",
-    operationType: "add",
+    operationType: "load",
     alias: string,
     /**
      * The url of the image or video.

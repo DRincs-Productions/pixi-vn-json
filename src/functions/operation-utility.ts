@@ -15,7 +15,7 @@ export async function runOperation(
     switch (operation.type) {
         case "sound":
             switch (operation.operationType) {
-                case "add":
+                case "load":
                     sound.add(operation.alias, {
                         ...operation.props,
                         url: operation.url
