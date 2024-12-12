@@ -233,8 +233,8 @@ export async function showCanvasElemet(element: ImageSprite | VideoSprite | Imag
         }
     }
     else {
-        canvas.add(operation.alias, element)
         await element.load()
+        canvas.add(operation.alias, element)
     }
 }
 
