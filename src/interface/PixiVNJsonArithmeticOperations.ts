@@ -2,7 +2,7 @@ import { StorageElementType } from "@drincs/pixi-vn"
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements"
 import { PixiVNJsonValueGet } from "./PixiVNJsonValue"
 
-interface PixiVNJsonArithmeticOperationsArithmetic {
+export interface PixiVNJsonArithmeticOperationsArithmetic {
     type: "arithmetic",
     /**
      * Left value of the arithmetic operation
@@ -18,7 +18,7 @@ interface PixiVNJsonArithmeticOperationsArithmetic {
     operator: "*" | "/" | "+" | "-" | "%" | "POW" | "RANDOM"
 }
 
-interface PixiVNJsonArithmeticOperationsArithmeticSingle {
+export interface PixiVNJsonArithmeticOperationsArithmeticSingle {
     type: "arithmeticsingle",
     /**
      * Left value of the arithmetic operation
