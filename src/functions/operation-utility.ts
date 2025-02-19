@@ -22,16 +22,16 @@ import {
     zoomOut,
     ZoomTicker,
 } from "@drincs/pixi-vn";
-import { PixiVNJsonIfElse, PixiVNJsonOperationBase } from "../interface";
+import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import { getLogichValue, setStorageJson } from "./utility";
 
 export async function runOperation(
-    origin: PixiVNJsonOperationBase | PixiVNJsonIfElse<PixiVNJsonOperationBase> | PixiVNJsonOperationString,
-    operationStringConvert?: (value: string) => Promise<PixiVNJsonOperationBase | undefined>
+    origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
+    operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>
 ) {
-    let operation = getLogichValue<PixiVNJsonOperationBase | PixiVNJsonOperationString>(origin);
+    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
     if (!operation) {
         return;
     }

@@ -28,7 +28,7 @@ export type {
 } from "./PixiVNJsonLabelStep";
 export type { default as PixiVNJsonMediaTransiotions } from "./PixiVNJsonMediaTransiotions";
 export type {
-    PixiVNJsonOperationBase,
+    PixiVNJsonOperation,
     default as PixiVNJsonOperations,
     PixiVNJsonOperationString,
 } from "./PixiVNJsonOperations";
