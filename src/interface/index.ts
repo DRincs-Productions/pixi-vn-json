@@ -28,8 +28,8 @@ export type {
 } from "./PixiVNJsonLabelStep";
 export type { default as PixiVNJsonMediaTransiotions } from "./PixiVNJsonMediaTransiotions";
 export type {
+    default as PixiVNJsonConditionalOperation,
     PixiVNJsonOperation,
-    default as PixiVNJsonOperations,
     PixiVNJsonOperationString,
 } from "./PixiVNJsonOperations";
 export type { default as PixiVNJsonSound } from "./PixiVNJsonSound";

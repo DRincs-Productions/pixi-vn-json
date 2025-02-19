@@ -12,6 +12,9 @@ export type PixiVNJsonOperationString = {
 
 export type PixiVNJsonOperation = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonInput;
 
-type PixiVNJsonOperations = (PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString)[];
+type PixiVNJsonConditionalOperation =
+    | PixiVNJsonOperation
+    | PixiVNJsonIfElse<PixiVNJsonOperation>
+    | PixiVNJsonOperationString;
 
-export default PixiVNJsonOperations;
+export default PixiVNJsonConditionalOperation;
