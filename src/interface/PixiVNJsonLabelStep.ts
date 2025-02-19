@@ -1,7 +1,6 @@
 import { LabelRunModeType, narration, StepLabelPropsType, StorageObjectType } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
-import { PixiVNJsonLabel } from "./PixiVNJsonLabels";
 import PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
 import { PixiVNJsonValueGet } from "./PixiVNJsonValue";
 
@@ -77,7 +76,7 @@ export type PixiVNJsonLabelToOpen<T extends {} = {}> = {
 };
 
 /**
- * Steps of a {@link PixiVNJsonLabel}.
+ * Steps of a label.
  * Order of operations:
  * 1. run all {@link PixiVNJsonLabelStep.operations}
  * 2. set {@link PixiVNJsonLabelStep.choices}, {@link PixiVNJsonLabelStep.dialogue}, {@link PixiVNJsonLabelStep.glueEnabled}

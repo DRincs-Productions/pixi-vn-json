@@ -17,7 +17,7 @@ export type { default as PixiVNJsonConditionalStatements } from "./PixiVNJsonCon
 export type { PixiVNJsonComparation, default as PixiVNJsonConditions } from "./PixiVNJsonConditions";
 export type { default as PixiVNJsonIfElse } from "./PixiVNJsonIfElse";
 export type { default as PixiVNJsonInput } from "./PixiVNJsonInput";
-export type { PixiVNJsonLabel, default as PixiVNJsonLabels } from "./PixiVNJsonLabels";
+export type { default as PixiVNJsonLabels } from "./PixiVNJsonLabels";
 export type {
     PixiVNJsonChoice,
     PixiVNJsonChoices,

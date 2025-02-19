@@ -1,13 +1,8 @@
 import PixiVNJsonLabelStep from "./PixiVNJsonLabelStep";
 
 /**
- * Label of the narrative.
- */
-export type PixiVNJsonLabel = PixiVNJsonLabelStep[]
-
-/**
  * Collection of labels to be used in the narrative.
  */
-type PixiVNJsonLabels = { [labelId: string]: PixiVNJsonLabel }
+export type PixiVNJsonLabels = { [labelId: string]: PixiVNJsonLabelStep[] };
 
-export default PixiVNJsonLabels
+export default PixiVNJsonLabels;
