@@ -10,8 +10,12 @@ export type PixiVNJsonOperationString = {
     values: (string | PixiVNJsonValueGet | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet>)[];
 };
 
-export type PixiVNJsonOperation = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonInput;
+export type PixiVNJsonOperationBase = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonInput;
 
-type PixiVNJsonOperations = (PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString)[];
+type PixiVNJsonOperations = (
+    | PixiVNJsonOperationBase
+    | PixiVNJsonIfElse<PixiVNJsonOperationBase>
+    | PixiVNJsonOperationString
+)[];
 
 export default PixiVNJsonOperations;

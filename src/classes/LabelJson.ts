@@ -12,7 +12,7 @@ import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { loadAssets } from "../functions/assets";
 import { runOperation } from "../functions/operation-utility";
 import { getConditionalStep, getLogichValue } from "../functions/utility";
-import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
+import { PixiVNJsonLabelStep, PixiVNJsonOperationBase } from "../interface";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
 import {
     PixiVNJsonChoice,
@@ -25,14 +25,14 @@ import TranslatorManager from "../managers/TranslateManager";
 
 export type LabelJsonOptions = {
     /**
-     * Function that converts a string to a {@link PixiVNJsonOperation}.
+     * Function that converts a string to a {@link PixiVNJsonOperationBase}.
      * If is a special operation you can return undefined and can run the operation.
      */
     operationStringConvert?: (
         value: string,
         step: PixiVNJsonLabelStep,
         props: StepLabelPropsType | {}
-    ) => Promise<PixiVNJsonOperation | undefined>;
+    ) => Promise<PixiVNJsonOperationBase | undefined>;
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
@@ -91,7 +91,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         value: string,
         step: PixiVNJsonLabelStep,
         props: StepLabelPropsType
-    ) => Promise<PixiVNJsonOperation | undefined>;
+    ) => Promise<PixiVNJsonOperationBase | undefined>;
     private skipEmptyDialogs: boolean = false;
 
     public getStepSha1(index: number): string | undefined {

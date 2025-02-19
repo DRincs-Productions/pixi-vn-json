@@ -1,22 +1,22 @@
-import { Assets } from "@drincs/pixi-vn"
-import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface"
-import { PixiVNJsonOperationString } from '../interface/PixiVNJsonOperations'
-import { getLogichValue } from "./utility"
+import { Assets } from "@drincs/pixi-vn";
+import { PixiVNJsonIfElse, PixiVNJsonOperationBase } from "../interface";
+import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import { getLogichValue } from "./utility";
 
 export async function loadAssets(
-    origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
+    origin: PixiVNJsonOperationBase | PixiVNJsonIfElse<PixiVNJsonOperationBase> | PixiVNJsonOperationString
 ) {
-    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin)
+    let operation = getLogichValue<PixiVNJsonOperationBase | PixiVNJsonOperationString>(origin);
     if (!operation) {
-        return
+        return;
     }
     switch (operation.type) {
         case "assets":
             switch (operation.operationType) {
                 case "load":
-                    await Assets.load(operation.assets)
-                    break
+                    await Assets.load(operation.assets);
+                    break;
             }
-            break
+            break;
     }
 }
