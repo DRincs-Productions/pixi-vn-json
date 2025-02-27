@@ -6,6 +6,7 @@ import {
     StepLabelPropsType,
     StepLabelType,
     storage,
+    SYSTEM_RESERVED_STORAGE_KEYS,
 } from "@drincs/pixi-vn";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
@@ -260,9 +261,15 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 }
             }
             if (glueEnabled) {
-                storage.setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true);
+                storage.setFlag(
+                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
+                    true
+                );
             } else if (glueEnabled === false) {
-                storage.setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false);
+                storage.setFlag(
+                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
+                    false
+                );
             }
 
             for (let label of labelToOpen) {

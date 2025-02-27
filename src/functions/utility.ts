@@ -1,6 +1,25 @@
-import { createExportableElement, getFlag, narration, NarrationManagerStatic, setFlag, storage, StorageElementType } from "@drincs/pixi-vn";
+import {
+    createExportableElement,
+    narration,
+    NarrationManagerStatic,
+    storage,
+    StorageElementType,
+    SYSTEM_RESERVED_STORAGE_KEYS,
+} from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { PixiVNJsonConditions, PixiVNJsonDialog, PixiVNJsonDialogText, PixiVNJsonLabelGet, PixiVNJsonLabelStep, PixiVNJsonOperations, PixiVNJsonStepSwitchElementType, PixiVNJsonStorageGet, PixiVNJsonUnionCondition, PixiVNJsonValueGet, PixiVNJsonValueSet } from "../interface";
+import {
+    PixiVNJsonConditions,
+    PixiVNJsonDialog,
+    PixiVNJsonDialogText,
+    PixiVNJsonLabelGet,
+    PixiVNJsonLabelStep,
+    PixiVNJsonOperation,
+    PixiVNJsonStepSwitchElementType,
+    PixiVNJsonStorageGet,
+    PixiVNJsonUnionCondition,
+    PixiVNJsonValueGet,
+    PixiVNJsonValueSet,
+} from "../interface";
 import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
 import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -17,212 +36,228 @@ function randomIntFromInterval(min: number, max: number) {
  * @returns the value from the conditional statements
  */
 function getValueFromConditionalStatements<T>(
-    statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined,
+    statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {
-        return statement
-    }
-    else if (statement && typeof statement === "object" && "type" in statement) {
+        return statement;
+    } else if (statement && typeof statement === "object" && "type" in statement) {
         switch (statement.type) {
             case "resulttocombine":
-                return combinateResult(statement)
+                return combinateResult(statement);
             case "ifelse":
-                let conditionResult = getLogichValue<boolean>(statement.condition)
+                let conditionResult = getLogichValue<boolean>(statement.condition);
                 if (conditionResult) {
-                    return getLogichValue<T>(statement.then as any)
+                    return getLogichValue<T>(statement.then as any);
                 } else {
-                    return getLogichValue<T>(statement.else as any)
+                    return getLogichValue<T>(statement.else as any);
                 }
             case "stepswitch":
-                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || []
+                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || [];
                 if (elements.length === 0) {
-                    console.error("[Pixi’VN Json] getValueFromConditionalStatements elements.length === 0")
-                    return undefined
+                    console.error("[Pixi’VN Json] getValueFromConditionalStatements elements.length === 0");
+                    return undefined;
                 }
                 switch (statement.choiceType) {
                     case "random":
-                        let randomIndex = randomIntFromInterval(0, elements.length - 1)
-                        return getLogichValue<T>(elements[randomIndex] as any)
+                        let randomIndex = randomIntFromInterval(0, elements.length - 1);
+                        return getLogichValue<T>(elements[randomIndex] as any);
                     case "loop":
-                        let currentStepTimesCounter1 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
+                        let currentStepTimesCounter1 =
+                            NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1;
                         if (currentStepTimesCounter1 > elements.length - 1) {
-                            currentStepTimesCounter1 = currentStepTimesCounter1 % elements.length
-                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any)
+                            currentStepTimesCounter1 = currentStepTimesCounter1 % elements.length;
+                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any);
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any)
+                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any);
                     case "sequential":
-                        let end: T | undefined = undefined
-                        let currentStepTimesCounter2 = NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1
+                        let end: T | undefined = undefined;
+                        let currentStepTimesCounter2 =
+                            NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1;
                         if (statement.end == "lastItem") {
-                            end = getLogichValue<T>(elements[elements.length - 1] as any)
+                            end = getLogichValue<T>(elements[elements.length - 1] as any);
                         }
                         if (currentStepTimesCounter2 > elements.length - 1) {
-                            return end
+                            return end;
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any)
+                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any);
                     case "sequentialrandom":
                         let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(0, elements.length - 1, {
                             nestedId: statement.nestedId,
-                            onceOnly: true
-                        })
+                            onceOnly: true,
+                        });
                         if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
-                            let obj = NarrationManagerStatic.getCurrentStepTimesCounterData(statement.nestedId)
+                            let obj = NarrationManagerStatic.getCurrentStepTimesCounterData(statement.nestedId);
                             if (!obj || !obj?.usedRandomNumbers) {
-                                console.warn("[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
-                                return undefined
+                                console.warn(
+                                    "[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined"
+                                );
+                                return undefined;
                             }
-                            let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`]
-                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any)
+                            let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`];
+                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any);
                         }
                         if (randomIndexWhitExclude == undefined) {
-                            console.warn("[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined")
-                            return undefined
+                            console.warn(
+                                "[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined"
+                            );
+                            return undefined;
                         }
-                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any)
+                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any);
                 }
         }
     }
-    return statement
+    return statement;
 }
 
 export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
     if (originalStep.conditionalStep) {
-        let conditionalStep = createExportableElement(getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any))
+        let conditionalStep = createExportableElement(
+            getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any)
+        );
         if (conditionalStep?.glueEnabled === undefined) {
-            delete conditionalStep?.glueEnabled
+            delete conditionalStep?.glueEnabled;
         }
         if (conditionalStep?.goNextStep === undefined) {
-            delete conditionalStep?.goNextStep
+            delete conditionalStep?.goNextStep;
         }
         if (conditionalStep?.end === undefined) {
-            delete conditionalStep?.end
+            delete conditionalStep?.end;
         }
         if (conditionalStep?.choices === undefined) {
-            delete conditionalStep?.choices
+            delete conditionalStep?.choices;
         }
         if (conditionalStep?.dialogue === undefined) {
-            delete conditionalStep?.dialogue
+            delete conditionalStep?.dialogue;
         }
         if (conditionalStep?.labelToOpen === undefined) {
-            delete conditionalStep?.labelToOpen
+            delete conditionalStep?.labelToOpen;
         }
         if (conditionalStep?.operations === undefined) {
-            delete conditionalStep?.operations
+            delete conditionalStep?.operations;
         }
         if (conditionalStep) {
             let obj = {
                 ...originalStep,
                 conditionalStep: undefined,
                 ...conditionalStep,
-            }
-            return getConditionalStep(obj)
-        }
-        else if (getFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)) {
-            setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false)
+            };
+            return getConditionalStep(obj);
+        } else if (
+            storage.getFlag(SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)
+        ) {
+            storage.setFlag(SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false);
         }
     }
-    return originalStep
+    return originalStep;
 }
 
 function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): undefined | T {
-    let first = value.firstItem
-    let second: T[] = []
+    let first = value.firstItem;
+    let second: T[] = [];
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
-            let i = getLogichValue<T>(item as any)
-            second.push(i as any)
-        }
-        else {
+            let i = getLogichValue<T>(item as any);
+            second.push(i as any);
+        } else {
             item.forEach((i) => {
-                let j = getLogichValue<T>(i)
-                second.push(j as any)
-            })
+                let j = getLogichValue<T>(i);
+                second.push(j as any);
+            });
         }
-    })
-    let toCheck = first ? [first, ...second] : second
+    });
+    let toCheck = first ? [first, ...second] : second;
     if (toCheck.length === 0) {
-        console.warn("[Pixi’VN Json] combinateResult toCheck.length === 0")
-        return undefined
+        console.warn("[Pixi’VN Json] combinateResult toCheck.length === 0");
+        return undefined;
     }
 
     if (typeof toCheck[0] === "string") {
-        return translator.t(toCheck).join("") as T
+        return translator.t(toCheck).join("") as T;
     }
     if (typeof toCheck[0] === "object") {
-        let steps = toCheck as PixiVNJsonLabelStep[]
-        let beforeIsGlueEnabled: undefined | boolean = undefined
+        let steps = toCheck as PixiVNJsonLabelStep[];
+        let beforeIsGlueEnabled: undefined | boolean = undefined;
         let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
-            step = getConditionalStep(step)
-            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || ""
+            step = getConditionalStep(step);
+            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || "";
             if (index === 0) {
-                beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false
-                return value
-            }
-            else if (typeof value === "object" && "text" in value) {
-                value = value.character + ": " + value.text
+                beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false;
+                return value;
+            } else if (typeof value === "object" && "text" in value) {
+                value = value.character + ": " + value.text;
             }
             if (beforeIsGlueEnabled === false) {
-                value = "\n\n" + value
+                value = "\n\n" + value;
             }
-            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false
-            return value
-        })
-        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0])
-        let character = typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined
-        let dialogues: string = dialogueArray.map((dialogue) => {
-            let text: PixiVNJsonDialogText
-            if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
-                text = dialogue.text
-            }
-            else {
-                text = dialogue
-            }
-            let textEasy: string
-            if (Array.isArray(text)) {
-                textEasy = text.map((t) => {
-                    let value = getLogichValue<string>(t)
-                    return translator.t(`${value}`)
-                }).join("")
-            }
-            else {
-                textEasy = getLogichValue<string>(text) || ""
-            }
-            return translator.t(textEasy)
-        }).join("")
-        let end = steps.find((step) => step.end)
-        let choices = steps.find((step) => step.choices)
-        let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
-        let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false
+            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false;
+            return value;
+        });
+        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0]);
+        let character =
+            typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined;
+        let dialogues: string = dialogueArray
+            .map((dialogue) => {
+                let text: PixiVNJsonDialogText;
+                if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
+                    text = dialogue.text;
+                } else {
+                    text = dialogue;
+                }
+                let textEasy: string;
+                if (Array.isArray(text)) {
+                    textEasy = text
+                        .map((t) => {
+                            let value = getLogichValue<string>(t);
+                            return translator.t(`${value}`);
+                        })
+                        .join("");
+                } else {
+                    textEasy = getLogichValue<string>(text) || "";
+                }
+                return translator.t(textEasy);
+            })
+            .join("");
+        let end = steps.find((step) => step.end);
+        let choices = steps.find((step) => step.choices);
+        let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;
+        let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;
         if (steps.length > 0) {
             if (steps[0].glueEnabled && steps[0].goNextStep && steps[0].dialogue === undefined) {
-                setFlag(storage.keysSystem.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, true)
+                storage.setFlag(
+                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
+                    true
+                );
             }
-            glueEnabled = steps[steps.length - 1].glueEnabled
-            goNextStep = steps.reverse().find((step) => !(step.operations && (!step.dialogue || !step.choices)))?.goNextStep
+            glueEnabled = steps[steps.length - 1].glueEnabled;
+            goNextStep = steps
+                .reverse()
+                .find((step) => !(step.operations && (!step.dialogue || !step.choices)))?.goNextStep;
         }
-        let labelToOpen = steps.find((step) => step.labelToOpen)
-        let operations: PixiVNJsonOperations = []
+        let labelToOpen = steps.find((step) => step.labelToOpen);
+        let operations: PixiVNJsonOperation[] = [];
         steps.forEach((step) => {
             if (step.operations) {
                 operations.forEach((operation) => {
-                    operations.push(operation)
-                })
+                    operations.push(operation);
+                });
             }
-        })
+        });
 
         let res: PixiVNJsonLabelStep = {
-            dialogue: character ? {
-                character: character,
-                text: dialogues
-            } : dialogues,
+            dialogue: character
+                ? {
+                      character: character,
+                      text: dialogues,
+                  }
+                : dialogues,
             end: end?.end,
             choices: choices?.choices,
             glueEnabled: glueEnabled,
             goNextStep: goNextStep,
             labelToOpen: labelToOpen?.labelToOpen,
-            operations: operations
-        }
-        return res as T
+            operations: operations,
+        };
+        return res as T;
     }
 }
 
@@ -233,44 +268,44 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
  */
 function getConditionResult(condition: PixiVNJsonConditions): boolean {
     if (!condition) {
-        return false
+        return false;
     }
     if (typeof condition !== "object" || !("type" in condition)) {
         if (condition) {
-            return true
+            return true;
         }
-        return false
+        return false;
     }
     switch (condition.type) {
         case "compare":
-            let leftValue = getLogichValue<any>(condition.leftValue)
-            let rightValue = getLogichValue<any>(condition.rightValue)
+            let leftValue = getLogichValue<any>(condition.leftValue);
+            let rightValue = getLogichValue<any>(condition.rightValue);
             switch (condition.operator) {
                 case "==":
-                    return leftValue === rightValue
+                    return leftValue === rightValue;
                 case "!=":
-                    return leftValue !== rightValue
+                    return leftValue !== rightValue;
                 case "<":
-                    return leftValue < rightValue
+                    return leftValue < rightValue;
                 case "<=":
-                    return leftValue <= rightValue
+                    return leftValue <= rightValue;
                 case ">":
-                    return leftValue > rightValue
+                    return leftValue > rightValue;
                 case ">=":
-                    return leftValue >= rightValue
+                    return leftValue >= rightValue;
                 case "CONTAINS":
-                    return leftValue.toString().includes(rightValue.toString())
+                    return leftValue.toString().includes(rightValue.toString());
             }
-            break
+            break;
         case "valueCondition":
-            return getLogichValue(condition.value) ? true : false
+            return getLogichValue(condition.value) ? true : false;
         case "union":
-            return getUnionConditionResult(condition as PixiVNJsonUnionCondition)
+            return getUnionConditionResult(condition as PixiVNJsonUnionCondition);
     }
     if (condition) {
-        return true
+        return true;
     }
-    return false
+    return false;
 }
 
 /**
@@ -285,27 +320,28 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                 switch (value.storageType) {
                     case "storage":
                     case "tempstorage":
-                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T
+                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "flagStorage":
-                        return getFlag((value as PixiVNJsonStorageGet).key) as unknown as T
+                        return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "label":
-                        return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T
+                        return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T;
                     case "choice":
-                        return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T
+                        return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T;
                     case "logic":
-                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T
+                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
                     case "params":
-                        let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || []
+                        let params: any[] =
+                            storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
                         if (params && params.length > (value.key as number)) {
-                            return params[(value.key as number)] as unknown as T
+                            return params[value.key as number] as unknown as T;
                         }
-                        console.warn("[Pixi’VN Json] getValue params not found")
-                        return undefined
+                        console.warn("[Pixi’VN Json] getValue params not found");
+                        return undefined;
                 }
             }
         }
     }
-    return value as T
+    return value as T;
 }
 
 /**
@@ -315,104 +351,112 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
  */
 function getUnionConditionResult(condition: PixiVNJsonUnionCondition): boolean {
     if (condition.unionType === "not") {
-        return !getLogichValue<boolean>(condition.condition)
+        return !getLogichValue<boolean>(condition.condition);
     }
-    let result: boolean = condition.unionType === "and" ? true : false
+    let result: boolean = condition.unionType === "and" ? true : false;
     for (let i = 0; i < condition.conditions.length; i++) {
-        result = getLogichValue<boolean>(condition.conditions[i]) || false
+        result = getLogichValue<boolean>(condition.conditions[i]) || false;
         if (condition.unionType === "and") {
             if (!result) {
-                return false
+                return false;
             }
         } else {
             if (result) {
-                return true
+                return true;
             }
         }
     }
-    return result
+    return result;
 }
 
 export function setStorageJson(value: PixiVNJsonValueSet) {
-    let v = getLogichValue<StorageElementType>(value.value)
-    let valueToSet: StorageElementType
+    let v = getLogichValue<StorageElementType>(value.value);
+    let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = getLogichValue<StorageElementType>(v)
-    }
-    else {
-        valueToSet = v
+        valueToSet = getLogichValue<StorageElementType>(v);
+    } else {
+        valueToSet = v;
     }
     switch (value.storageType) {
         case "flagStorage":
-            setFlag(value.key, value.value)
-            break
+            storage.setFlag(value.key, value.value);
+            break;
         case "storage":
-            storage.setVariable(value.key, valueToSet)
-            break
+            storage.setVariable(value.key, valueToSet);
+            break;
         case "tempstorage":
-            storage.setTempVariable(value.key, valueToSet)
-            break
+            storage.setTempVariable(value.key, valueToSet);
+            break;
         case "params":
-            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || []
+            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
             if (params && params.length - 1 >= (value.key as number)) {
-                params[(value.key as number)] = valueToSet
+                params[value.key as number] = valueToSet;
             }
-            storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params)
-            break
+            storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params);
+            break;
     }
 }
 
 export function getLogichValue<T = StorageElementType>(
-    value: T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions | PixiVNJsonConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>,
+    value:
+        | T
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+        | PixiVNJsonConditions
+        | PixiVNJsonConditionalStatements<
+              T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+          >
 ): T | undefined {
-    let v = getValueFromConditionalStatements<T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions>(value)
-    if (
-        v && typeof v === "object" && "type" in v
-    ) {
+    let v = getValueFromConditionalStatements<
+        T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+    >(value);
+    if (v && typeof v === "object" && "type" in v) {
         switch (v.type) {
             case "value":
-                return getValue<T>(v)
+                return getValue<T>(v);
             case "arithmetic":
             case "arithmeticsingle":
-                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations)
+                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations);
             case "compare":
             case "valueCondition":
             case "union":
-                return getConditionResult(v) as T
+                return getConditionResult(v) as T;
         }
     }
-    return v as T
+    return v as T;
 }
-function getValueFromArithmeticOperations<T = StorageElementType>(operation: PixiVNJsonArithmeticOperations): T | undefined {
-    let leftValue = getLogichValue(operation.leftValue)
+function getValueFromArithmeticOperations<T = StorageElementType>(
+    operation: PixiVNJsonArithmeticOperations
+): T | undefined {
+    let leftValue = getLogichValue(operation.leftValue);
     switch (operation.type) {
         case "arithmetic":
-            let rightValue = getLogichValue(operation.rightValue)
+            let rightValue = getLogichValue(operation.rightValue);
             switch (operation.operator) {
                 case "*":
-                    return (leftValue as any) * (rightValue as any) as T
+                    return ((leftValue as any) * (rightValue as any)) as T;
                 case "/":
-                    return (leftValue as any) / (rightValue as any) as T
+                    return ((leftValue as any) / (rightValue as any)) as T;
                 case "+":
-                    return (leftValue as any) + (rightValue as any) as T
+                    return ((leftValue as any) + (rightValue as any)) as T;
                 case "-":
-                    return (leftValue as any) - (rightValue as any) as T
+                    return ((leftValue as any) - (rightValue as any)) as T;
                 case "%":
-                    return (leftValue as any) % (rightValue as any) as T
+                    return ((leftValue as any) % (rightValue as any)) as T;
                 case "POW":
-                    return Math.pow(leftValue as any, rightValue as any) as T
+                    return Math.pow(leftValue as any, rightValue as any) as T;
                 case "RANDOM":
-                    return narration.getRandomNumber(leftValue as any, rightValue as any) as T
+                    return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
             }
         case "arithmeticsingle":
             switch (operation.operator) {
                 case "INT":
-                    return parseInt(leftValue as any) as T
+                    return parseInt(leftValue as any) as T;
                 case "FLOOR":
-                    return Math.floor(leftValue as any) as T
+                    return Math.floor(leftValue as any) as T;
                 case "FLOAT":
-                    return parseFloat(leftValue as any) as T
+                    return parseFloat(leftValue as any) as T;
             }
-            break
+            break;
     }
 }
