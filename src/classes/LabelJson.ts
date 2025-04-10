@@ -79,7 +79,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private _steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[];
-     get steps(): StepLabelType<T>[] {
+    get steps(): StepLabelType<T>[] {
         return this._steps.map((step) => {
             return this.stepConverter(step);
         });
