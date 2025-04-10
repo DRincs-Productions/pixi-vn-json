@@ -1,12 +1,12 @@
 import {
-    CanvasImageMemory,
-    CanvasVideoMemory,
     ContainerMemory,
     ContainerOptions,
     ImageContainerMemory,
     ImageContainerOptions,
     ImageSprite,
+    ImageSpriteMemory,
     ImageSpriteOptions,
+    VideoSpriteMemory,
 } from "@drincs/pixi-vn";
 import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker";
@@ -36,13 +36,13 @@ type PixiVNJsonImageEdit = {
     type: "image";
     operationType: "edit";
     alias: string;
-    props?: Partial<CanvasImageMemory>;
+    props?: Partial<ImageSpriteMemory>;
 };
 type PixiVNJsonVideoEdit = {
     type: "video";
     operationType: "edit";
     alias: string;
-    props?: Partial<CanvasVideoMemory>;
+    props?: Partial<VideoSpriteMemory>;
 };
 type PixiVNJsonImageContainerEdit = {
     type: "imagecontainer";
@@ -78,7 +78,7 @@ export type PixiVNJsonCanvasEdit =
     | PixiVNJsonImageEdit
     | PixiVNJsonVideoEdit
     | PixiVNJsonImageContainerEdit
-    | PixiVNJsonUnknownEdit<CanvasImageMemory | CanvasVideoMemory | ContainerMemory>;
+    | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory>;
 
 type PixiVNJsonCanvas =
     | PixiVNJsonCanvasShow

@@ -27,11 +27,11 @@
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
     "ts-node": "^10.9.2",
-    "tsup": "^8.3.6",
-    "typescript": "^5.7.3"
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=0.10.22"
+    "@drincs/pixi-vn": ">=1.0.0"
   },
   "keywords": [
     "game",

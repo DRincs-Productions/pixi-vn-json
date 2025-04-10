@@ -79,13 +79,20 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private _steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[];
-    /**
-     * Get the steps of the label.
-     */
-    public get steps(): StepLabelType<T>[] {
+     get steps(): StepLabelType<T>[] {
         return this._steps.map((step) => {
             return this.stepConverter(step);
         });
+    }
+    get stepCount(): number {
+        return this._steps.length;
+    }
+    getStepById(stepId: number): StepLabelType<T> | undefined {
+        if (stepId < 0 || stepId >= this._steps.length) {
+            return undefined;
+        }
+        let step = this._steps[stepId];
+        return this.stepConverter(step);
     }
 
     private operationStringConvert?: (
@@ -95,7 +102,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     ) => Promise<PixiVNJsonOperation | undefined>;
     private skipEmptyDialogs: boolean = false;
 
-    public getStepSha1(index: number): string | undefined {
+    public getStepSha(index: number): string | undefined {
         if (index < 0 || index >= this.steps.length) {
             return undefined;
         }
