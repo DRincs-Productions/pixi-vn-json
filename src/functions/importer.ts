@@ -1,4 +1,4 @@
-import { saveLabel, storage, StorageElementType } from "@drincs/pixi-vn";
+import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
@@ -45,7 +45,7 @@ export function importPixiVNJson(data: PixiVNJson | string, options: LabelJsonOp
             try {
                 const steps: PixiVNJsonLabelStep[] = labels[labelId];
                 let label = new LabelJson(labelId, steps, undefined, options);
-                saveLabel(label);
+                RegisteredLabels.add(label);
             } catch (e) {
                 console.error(`[Pixi’VN Json] Error creating JSON label ${labelId}`, e);
             }
