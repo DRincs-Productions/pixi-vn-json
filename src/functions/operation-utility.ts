@@ -10,12 +10,12 @@ import {
     narration,
     pushIn,
     pushOut,
-    removeWithDissolveTransition,
-    removeWithFadeTransition,
+    removeWithDissolve,
+    removeWithFade,
     RotateTicker,
     shakeEffect,
-    showWithDissolveTransition,
-    showWithFadeTransition,
+    showWithDissolve,
+    showWithFade,
     sound,
     VideoSprite,
     zoomIn,
@@ -58,8 +58,8 @@ export async function runOperation(
         case "assets":
             switch (operation.operationType) {
                 case "load":
-                    let prmises = operation.assets.map((asset) => Assets.load(asset));
-                    await Promise.all(prmises);
+                    let promises = operation.assets.map((asset) => Assets.load(asset));
+                    await Promise.all(promises);
                     break;
             }
             break;
@@ -234,15 +234,10 @@ export async function showCanvasElemet(
     if (operation.transition) {
         switch (operation.transition.type) {
             case "fade":
-                await showWithFadeTransition(
-                    operation.alias,
-                    element,
-                    operation.transition.props,
-                    operation.transition.priority
-                );
+                await showWithFade(operation.alias, element, operation.transition.props, operation.transition.priority);
                 break;
             case "dissolve":
-                await showWithDissolveTransition(
+                await showWithDissolve(
                     operation.alias,
                     element,
                     operation.transition.props,
@@ -272,14 +267,10 @@ export function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
     if (operation.transition) {
         switch (operation.transition.type) {
             case "fade":
-                removeWithFadeTransition(operation.alias, operation.transition.props, operation.transition.priority);
+                removeWithFade(operation.alias, operation.transition.props, operation.transition.priority);
                 break;
             case "dissolve":
-                removeWithDissolveTransition(
-                    operation.alias,
-                    operation.transition.props,
-                    operation.transition.priority
-                );
+                removeWithDissolve(operation.alias, operation.transition.props, operation.transition.priority);
                 break;
             case "movein":
             case "moveout":
