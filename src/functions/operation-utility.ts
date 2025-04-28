@@ -55,11 +55,25 @@ export async function runOperation(
                     break;
             }
             break;
-        case "assets":
+        case "asset":
             switch (operation.operationType) {
                 case "load":
                     let promises = operation.assets.map((asset) => Assets.load(asset));
                     await Promise.all(promises);
+                    break;
+                case "lazyload":
+                    operation.assets.forEach((asset) => Assets.backgroundLoad(asset));
+                    break;
+            }
+            break;
+        case "bundle":
+            switch (operation.operationType) {
+                case "load":
+                    let bundlePromises = operation.assets.map((asset) => Assets.loadBundle(asset));
+                    await Promise.all(bundlePromises);
+                    break;
+                case "lazyload":
+                    operation.assets.forEach((asset) => Assets.backgroundLoadBundle(asset));
                     break;
             }
             break;

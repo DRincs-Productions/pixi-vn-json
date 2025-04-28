@@ -68,8 +68,8 @@ type PixiVNJsonVideoPauseResume = {
     alias: string;
 };
 type PixiVNJsonAssetsLoad = {
-    type: "assets";
-    operationType: "load";
+    type: "asset" | "bundle";
+    operationType: "load" | "lazyload";
     assets: string[];
 };
 
