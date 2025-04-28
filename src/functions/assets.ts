@@ -14,7 +14,20 @@ export async function loadAssets(
         case "assets":
             switch (operation.operationType) {
                 case "load":
-                    await Assets.load(operation.assets);
+                    await Assets.load(operation.aliases);
+                    break;
+                case "lazyload":
+                    Assets.backgroundLoad(operation.aliases);
+                    break;
+            }
+            break;
+        case "bundle":
+            switch (operation.operationType) {
+                case "load":
+                    await Assets.loadBundle(operation.aliases);
+                    break;
+                case "lazyload":
+                    Assets.backgroundLoadBundle(operation.aliases);
                     break;
             }
             break;

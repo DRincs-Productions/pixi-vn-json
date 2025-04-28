@@ -1,5 +1,4 @@
 import {
-    Assets,
     canvas,
     FadeAlphaTicker,
     ImageContainer,
@@ -25,6 +24,7 @@ import {
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import { loadAssets } from "./assets";
 import { getLogichValue, setStorageJson } from "./utility";
 
 export async function runOperation(
@@ -55,27 +55,9 @@ export async function runOperation(
                     break;
             }
             break;
-        case "asset":
-            switch (operation.operationType) {
-                case "load":
-                    let promises = operation.assets.map((asset) => Assets.load(asset));
-                    await Promise.all(promises);
-                    break;
-                case "lazyload":
-                    operation.assets.forEach((asset) => Assets.backgroundLoad(asset));
-                    break;
-            }
-            break;
+        case "assets":
         case "bundle":
-            switch (operation.operationType) {
-                case "load":
-                    let bundlePromises = operation.assets.map((asset) => Assets.loadBundle(asset));
-                    await Promise.all(bundlePromises);
-                    break;
-                case "lazyload":
-                    operation.assets.forEach((asset) => Assets.backgroundLoadBundle(asset));
-                    break;
-            }
+            await loadAssets(operation);
             break;
         case "image":
             switch (operation.operationType) {

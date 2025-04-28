@@ -68,9 +68,9 @@ type PixiVNJsonVideoPauseResume = {
     alias: string;
 };
 type PixiVNJsonAssetsLoad = {
-    type: "asset" | "bundle";
+    type: "assets" | "bundle";
     operationType: "load" | "lazyload";
-    assets: string[];
+    aliases: string[];
 };
 
 export type PixiVNJsonCanvasShow = PixiVNJsonCanvasImageContainerShow | PixiVNJsonCanvasImageVideoShow;
