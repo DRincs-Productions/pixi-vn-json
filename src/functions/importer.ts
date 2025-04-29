@@ -1,9 +1,20 @@
-import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
+import { AssetsManifest, RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
+import objectMerge from "object-merge";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
+
+async function mergeManifests(baseManifest: AssetsManifest | {} = {}, jsons: PixiVNJson[]): Promise<AssetsManifest> {
+    const manifests: object[] = [baseManifest];
+    jsons.forEach((json) => {
+        if (json.manifest) {
+            manifests.push(json.manifest);
+        }
+    });
+    return objectMerge(...manifests) as AssetsManifest;
+}
 
 /**
  * Import a Pixi'VN JSON to the system.
@@ -15,7 +26,7 @@ export async function importPixiVNJson(
     values: PixiVNJson | string | (PixiVNJson | string)[],
     options: LabelJsonOptions = {}
 ) {
-    const { operationStringConvert, baseManifest, createManifest: getManifest, skipEmptyDialogs } = options;
+    const { operationStringConvert, baseManifest, createManifest, skipEmptyDialogs } = options;
 
     if (!Array.isArray(values)) {
         if (typeof values === "object" || typeof values === "string") {
@@ -26,22 +37,29 @@ export async function importPixiVNJson(
         }
     }
 
-    const promise = values.map(async (data) => {
+    const jsonsPromises: Promise<PixiVNJson>[] = values.map(async (data) => {
         if (typeof data === "string") {
             try {
                 data = JSON.parse(data) as PixiVNJson;
             } catch (e) {
                 logger.error("Error parsing imported Pixi'VN JSON", e);
-                return;
+                data = {};
             }
         }
+        return data;
+    });
+    const jsons = await Promise.all(jsonsPromises);
+
+    const promises = jsons.map(async (data) => {
+        const promises: Promise<void>[] = [];
         if (data.initialOperations) {
-            for (let operation of data.initialOperations) {
-                runOperation(
+            data.initialOperations.forEach((operation) => {
+                let promise = runOperation(
                     operation,
                     operationStringConvert ? (value) => operationStringConvert(value, {}, {}) : undefined
                 );
-            }
+                promises.push(promise);
+            });
             let basicStorage: {
                 [key: string]: StorageElementType;
             } = {};
@@ -62,6 +80,14 @@ export async function importPixiVNJson(
                 }
             }
         }
+        return Promise.all(promises);
     });
-    await Promise.all(promise);
+    if (createManifest) {
+        const manifestPromise = mergeManifests(baseManifest, jsons);
+        let res = await Promise.all([manifestPromise, ...promises]);
+        const manifest = res[0];
+        createManifest(manifest);
+    } else {
+        await Promise.all(promises);
+    }
 }
