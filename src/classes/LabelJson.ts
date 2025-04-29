@@ -1,4 +1,5 @@
 import {
+    AssetsManifest,
     ChoiceMenuOption,
     LabelAbstract,
     LabelProps,
@@ -38,6 +39,15 @@ export type LabelJsonOptions = {
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
      */
     skipEmptyDialogs?: boolean;
+    /**
+     * Merge the assets manifest with the base manifest.
+     * @param manifest Merged manifest
+     */
+    createManifest?: (manifest: AssetsManifest) => void;
+    /**
+     * Base manifest to merge with the assets manifest.
+     */
+    baseManifest?: AssetsManifest;
 };
 
 export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJson<T>, T> {

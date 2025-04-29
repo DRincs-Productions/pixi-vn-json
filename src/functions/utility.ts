@@ -25,6 +25,7 @@ import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditi
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
 import { PixiVNJsonChoiceGet, PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
 import { translator } from "../managers";
+import { logger } from "../utils/log-utility";
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -54,7 +55,7 @@ function getValueFromConditionalStatements<T>(
             case "stepswitch":
                 let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || [];
                 if (elements.length === 0) {
-                    console.error("[Pixi’VN Json] getValueFromConditionalStatements elements.length === 0");
+                    logger.error("getValueFromConditionalStatements elements.length === 0");
                     return undefined;
                 }
                 switch (statement.choiceType) {
@@ -88,18 +89,14 @@ function getValueFromConditionalStatements<T>(
                         if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
                             let obj = NarrationManagerStatic.getCurrentStepTimesCounterData(statement.nestedId);
                             if (!obj || !obj?.usedRandomNumbers) {
-                                console.warn(
-                                    "[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined"
-                                );
+                                logger.warn("getValueFromConditionalStatements randomIndexWhitExclude == undefined");
                                 return undefined;
                             }
                             let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`];
                             return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any);
                         }
                         if (randomIndexWhitExclude == undefined) {
-                            console.warn(
-                                "[Pixi’VN Json] getValueFromConditionalStatements randomIndexWhitExclude == undefined"
-                            );
+                            logger.warn("getValueFromConditionalStatements randomIndexWhitExclude == undefined");
                             return undefined;
                         }
                         return getLogichValue<T>(elements[randomIndexWhitExclude] as any);
@@ -167,7 +164,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
     });
     let toCheck = first ? [first, ...second] : second;
     if (toCheck.length === 0) {
-        console.warn("[Pixi’VN Json] combinateResult toCheck.length === 0");
+        logger.warn("combinateResult toCheck.length === 0");
         return undefined;
     }
 
@@ -335,7 +332,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         if (params && params.length > (value.key as number)) {
                             return params[value.key as number] as unknown as T;
                         }
-                        console.warn("[Pixi’VN Json] getValue params not found");
+                        logger.warn("getValue params not found");
                         return undefined;
                 }
             }

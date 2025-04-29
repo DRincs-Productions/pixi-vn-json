@@ -1,3 +1,4 @@
+import { AssetsManifest } from "@drincs/pixi-vn";
 import PixiVNJsonLabels from "./PixiVNJsonLabels";
 import PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
 
@@ -15,4 +16,10 @@ export default interface PixiVNJson {
      * The labels to be used in the narrative. They will be added to the system
      */
     labels?: PixiVNJsonLabels;
+    /**
+     * PixiJS assets manifest. This is used to load the assets before the narrative starts.
+     *
+     * https://pixijs.com/8.x/guides/components/assets#loading-multiple-assets
+     */
+    manifest?: AssetsManifest;
 }

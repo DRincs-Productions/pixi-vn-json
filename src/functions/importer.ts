@@ -2,53 +2,66 @@ import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
+import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 
 /**
  * Import a Pixi'VN JSON to the system.
  * This feature was created to give other developers the ability to create tools that can generate Pixi'VN labels or that generate Pixi'VN after extracting information from a programming language designed for writing narratives.
- * @param data The Pixi'VN JSON to be imported
+ * @param values The Pixi'VN JSON to be imported
  * @returns
  */
-export function importPixiVNJson(data: PixiVNJson | string, options: LabelJsonOptions = {}) {
-    let operationStringConvert = options?.operationStringConvert;
-    try {
+export async function importPixiVNJson(
+    values: PixiVNJson | string | (PixiVNJson | string)[],
+    options: LabelJsonOptions = {}
+) {
+    const { operationStringConvert, baseManifest, createManifest: getManifest, skipEmptyDialogs } = options;
+
+    if (!Array.isArray(values)) {
+        if (typeof values === "object" || typeof values === "string") {
+            values = [values];
+        } else {
+            logger.error("Error parsing imported Pixi'VN JSON: data is not an object");
+            return;
+        }
+    }
+
+    const promise = values.map(async (data) => {
         if (typeof data === "string") {
-            data = JSON.parse(data) as PixiVNJson;
-        }
-    } catch (e) {
-        console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON", e);
-        return;
-    }
-    if (typeof data !== "object") {
-        console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON: data is not an object");
-        return;
-    }
-    if (data.initialOperations) {
-        for (let operation of data.initialOperations) {
-            runOperation(
-                operation,
-                operationStringConvert ? (value) => operationStringConvert(value, {}, {}) : undefined
-            );
-        }
-        let basicStorage: {
-            [key: string]: StorageElementType;
-        } = {};
-        [...storage.storage.keys()].forEach((value, key) => {
-            basicStorage[value] = storage.storage.get(value);
-        });
-        storage.startingStorage = basicStorage;
-    }
-    if (data.labels) {
-        let labels = data.labels;
-        for (const labelId in labels) {
             try {
-                const steps: PixiVNJsonLabelStep[] = labels[labelId];
-                let label = new LabelJson(labelId, steps, undefined, options);
-                RegisteredLabels.add(label);
+                data = JSON.parse(data) as PixiVNJson;
             } catch (e) {
-                console.error(`[Pixi’VN Json] Error creating JSON label ${labelId}`, e);
+                logger.error("Error parsing imported Pixi'VN JSON", e);
+                return;
             }
         }
-    }
+        if (data.initialOperations) {
+            for (let operation of data.initialOperations) {
+                runOperation(
+                    operation,
+                    operationStringConvert ? (value) => operationStringConvert(value, {}, {}) : undefined
+                );
+            }
+            let basicStorage: {
+                [key: string]: StorageElementType;
+            } = {};
+            [...storage.storage.keys()].forEach((value, key) => {
+                basicStorage[value] = storage.storage.get(value);
+            });
+            storage.startingStorage = basicStorage;
+        }
+        if (data.labels) {
+            let labels = data.labels;
+            for (const labelId in labels) {
+                try {
+                    const steps: PixiVNJsonLabelStep[] = labels[labelId];
+                    let label = new LabelJson(labelId, steps, undefined, options);
+                    RegisteredLabels.add(label);
+                } catch (e) {
+                    logger.error(`Error creating JSON label ${labelId}`, e);
+                }
+            }
+        }
+    });
+    await Promise.all(promise);
 }
