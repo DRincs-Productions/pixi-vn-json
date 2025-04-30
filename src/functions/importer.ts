@@ -2,6 +2,7 @@ import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
+import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 
 /**
@@ -14,33 +15,40 @@ export async function importPixiVNJson(
     values: PixiVNJson | string | (PixiVNJson | string)[],
     options: LabelJsonOptions = {}
 ) {
-    let operationStringConvert = options?.operationStringConvert;
+    const { operationStringConvert, skipEmptyDialogs } = options;
 
     if (!Array.isArray(values)) {
         if (typeof values === "object" || typeof values === "string") {
             values = [values];
         } else {
-            console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON: data is not an object");
+            logger.error("Error parsing imported Pixi'VN JSON: data is not an object");
             return;
         }
     }
 
-    const promise = values.map(async (data) => {
+    const jsonsPromises: Promise<PixiVNJson>[] = values.map(async (data) => {
         if (typeof data === "string") {
             try {
                 data = JSON.parse(data) as PixiVNJson;
             } catch (e) {
-                console.error("[Pixi’VN Json] Error parsing imported Pixi'VN JSON", e);
-                return;
+                logger.error("Error parsing imported Pixi'VN JSON", e);
+                data = {};
             }
         }
+        return data;
+    });
+    const jsons = await Promise.all(jsonsPromises);
+
+    const promises = jsons.map(async (data) => {
+        const promises: Promise<void>[] = [];
         if (data.initialOperations) {
-            for (let operation of data.initialOperations) {
-                runOperation(
+            data.initialOperations.forEach((operation) => {
+                let promise = runOperation(
                     operation,
                     operationStringConvert ? (value) => operationStringConvert(value, {}, {}) : undefined
                 );
-            }
+                promises.push(promise);
+            });
             let basicStorage: {
                 [key: string]: StorageElementType;
             } = {};
@@ -57,10 +65,12 @@ export async function importPixiVNJson(
                     let label = new LabelJson(labelId, steps, undefined, options);
                     RegisteredLabels.add(label);
                 } catch (e) {
-                    console.error(`[Pixi’VN Json] Error creating JSON label ${labelId}`, e);
+                    logger.error(`Error creating JSON label ${labelId}`, e);
                 }
             }
         }
+        return Promise.all(promises);
     });
-    await Promise.all(promise);
+
+    await Promise.all(promises);
 }

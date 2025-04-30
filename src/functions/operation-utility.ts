@@ -24,6 +24,7 @@ import {
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import { logger } from "../utils/log-utility";
 import { loadAssets } from "./assets";
 import { getLogichValue, setStorageJson } from "./utility";
 
@@ -75,7 +76,7 @@ export async function runOperation(
                             });
                         }
                     } else {
-                        console.error(`[Pixi’VN Json] Image with alias ${operation.alias} not found.`);
+                        logger.error(`Image with alias ${operation.alias} not found.`);
                     }
                     break;
                 case "remove":
@@ -99,7 +100,7 @@ export async function runOperation(
                             });
                         }
                     } else {
-                        console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`);
+                        logger.error(`Video with alias ${operation.alias} not found.`);
                     }
                     break;
                 case "remove":
@@ -110,7 +111,7 @@ export async function runOperation(
                     if (videoPause) {
                         videoPause.paused = true;
                     } else {
-                        console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`);
+                        logger.error(`Video with alias ${operation.alias} not found.`);
                     }
                     break;
                 case "resume":
@@ -118,7 +119,7 @@ export async function runOperation(
                     if (videoResume) {
                         videoResume.paused = false;
                     } else {
-                        console.error(`[Pixi’VN Json] Video with alias ${operation.alias} not found.`);
+                        logger.error(`Video with alias ${operation.alias} not found.`);
                     }
                     break;
             }
@@ -139,7 +140,7 @@ export async function runOperation(
                             });
                         }
                     } else {
-                        console.error(`[Pixi’VN Json] ImageContainer with alias ${operation.alias} not found.`);
+                        logger.error(`ImageContainer with alias ${operation.alias} not found.`);
                     }
                     break;
                 case "remove":
@@ -160,11 +161,11 @@ export async function runOperation(
                                 };
                             }
                         } else {
-                            console.error(`[Pixi’VN Json] Canvas Element with alias ${operation.alias} not found.`);
+                            logger.error(`Canvas Element with alias ${operation.alias} not found.`);
                         }
                     } catch (e) {
-                        console.error(
-                            `[Pixi’VN Json] There was an error while trying to edit the canvas element with alias ${operation.alias}.`,
+                        logger.error(
+                            `There was an error while trying to edit the canvas element with alias ${operation.alias}.`,
                             e
                         );
                     }

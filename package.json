@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
+    "jsdom": "^26.1.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
@@ -42,5 +44,8 @@
     "pixi-js",
     "visual",
     "visual-novel"
-  ]
+  ],
+  "dependencies": {
+    "vitest": "^3.1.2"
+  }
 }
