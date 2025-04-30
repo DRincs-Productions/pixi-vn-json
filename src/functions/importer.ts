@@ -1,23 +1,9 @@
-import { AssetsManifest, RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
-import objectMerge from "object-merge";
+import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
-
-export async function mergeManifests(
-    baseManifest: AssetsManifest | {} = {},
-    jsons: PixiVNJson[]
-): Promise<AssetsManifest> {
-    const manifests: object[] = [baseManifest];
-    jsons.forEach((json) => {
-        if (json.manifest) {
-            manifests.push(json.manifest);
-        }
-    });
-    return objectMerge(...manifests) as AssetsManifest;
-}
 
 /**
  * Import a Pixi'VN JSON to the system.
@@ -29,7 +15,7 @@ export async function importPixiVNJson(
     values: PixiVNJson | string | (PixiVNJson | string)[],
     options: LabelJsonOptions = {}
 ) {
-    const { operationStringConvert, baseManifest, createManifest, skipEmptyDialogs } = options;
+    const { operationStringConvert, skipEmptyDialogs } = options;
 
     if (!Array.isArray(values)) {
         if (typeof values === "object" || typeof values === "string") {
@@ -85,12 +71,6 @@ export async function importPixiVNJson(
         }
         return Promise.all(promises);
     });
-    if (createManifest) {
-        const manifestPromise = mergeManifests(baseManifest, jsons);
-        let res = await Promise.all([manifestPromise, ...promises]);
-        const manifest = res[0];
-        createManifest(manifest);
-    } else {
-        await Promise.all(promises);
-    }
+
+    await Promise.all(promises);
 }

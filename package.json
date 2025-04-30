@@ -26,9 +26,8 @@
   "funding": "https://github.com/DRincs-Productions/pixi-vn?sponsor=1",
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
-    "@types/object-merge": "^2.5.3",
     "crypto-js": "^4.2.0",
-    "object-merge": "^2.5.1",
+    "jsdom": "^26.1.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"
