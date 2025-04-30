@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -44,5 +45,8 @@
     "pixi-js",
     "visual",
     "visual-novel"
-  ]
+  ],
+  "dependencies": {
+    "vitest": "^3.1.2"
+  }
 }

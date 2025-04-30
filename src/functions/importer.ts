@@ -6,7 +6,10 @@ import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 
-async function mergeManifests(baseManifest: AssetsManifest | {} = {}, jsons: PixiVNJson[]): Promise<AssetsManifest> {
+export async function mergeManifests(
+    baseManifest: AssetsManifest | {} = {},
+    jsons: PixiVNJson[]
+): Promise<AssetsManifest> {
     const manifests: object[] = [baseManifest];
     jsons.forEach((json) => {
         if (json.manifest) {
