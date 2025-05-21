@@ -181,13 +181,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
     private stepConverter(stepProp: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
-            let step: PixiVNJsonLabelStep;
-            if (typeof stepProp === "function") {
-                step = stepProp();
-            } else {
-                step = stepProp;
-            }
-
+            let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
             step = getConditionalStep(step);
 
             if (step.operations) {
@@ -201,9 +195,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 }
             }
 
-            let choices = this.getChoices(step.choices);
-            let glueEnabled = getLogichValue<boolean>(step.glueEnabled);
-            let dialogue: PixiVNJsonDialog<string | string[]> | undefined = this.getDialogue(step.dialogue);
+            const choices = this.getChoices(step.choices);
+            const glueEnabled = getLogichValue<boolean>(step.glueEnabled);
+            const dialogue = this.getDialogue(step.dialogue);
             let labelToOpen: PixiVNJsonLabelToOpen[] = [];
             if (step.labelToOpen) {
                 if (!Array.isArray(step.labelToOpen)) {
