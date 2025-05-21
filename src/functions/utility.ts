@@ -169,7 +169,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
     }
 
     if (typeof toCheck[0] === "string") {
-        return translator.t(toCheck).join("") as T;
+        return translator.t(toCheck) as T;
     }
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[];
@@ -192,28 +192,24 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
         let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0]);
         let character =
             typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined;
-        let dialogues: string = dialogueArray
-            .map((dialogue) => {
-                let text: PixiVNJsonDialogText;
-                if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
-                    text = dialogue.text;
-                } else {
-                    text = dialogue;
-                }
-                let textEasy: string;
-                if (Array.isArray(text)) {
-                    textEasy = text
-                        .map((t) => {
-                            let value = getLogichValue<string>(t);
-                            return translator.t(`${value}`);
-                        })
-                        .join("");
-                } else {
-                    textEasy = getLogichValue<string>(text) || "";
-                }
-                return translator.t(textEasy);
-            })
-            .join("");
+        let dialogues: string | string[] = dialogueArray.flatMap((dialogue) => {
+            let text: PixiVNJsonDialogText;
+            if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
+                text = dialogue.text;
+            } else {
+                text = dialogue;
+            }
+            let textEasy: string | string[];
+            if (Array.isArray(text)) {
+                textEasy = text.map((t) => {
+                    let value = getLogichValue<string>(t);
+                    return translator.t(`${value}`);
+                });
+            } else {
+                textEasy = getLogichValue<string>(text) || "";
+            }
+            return translator.t(textEasy);
+        });
         let end = steps.find((step) => step.end);
         let choices = steps.find((step) => step.choices);
         let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;

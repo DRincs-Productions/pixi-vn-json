@@ -221,7 +221,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
             if (choices) {
                 let options = choices.map((option) => {
-                    let text: string = "";
+                    let text: string | string[] = "";
                     if (Array.isArray(option.text)) {
                         let texts: string[] = [];
                         option.text.forEach((t) => {
@@ -241,7 +241,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                                 }
                             }
                         });
-                        text = texts.join();
+                        text = texts;
                     } else if (typeof option.text === "string") {
                         text = TranslatorManager.t(option.text);
                     }
