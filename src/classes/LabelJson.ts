@@ -183,33 +183,31 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return async (props) => {
             let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
             step = getConditionalStep(step);
+            const operationStringConvert = this.operationStringConvert
+                ? (value: string) => this.operationStringConvert!(value, step, props)
+                : undefined;
+            const { operations = [] } = step;
+            let { labelToOpen: tempLabelToOpen = [] } = step;
 
-            if (step.operations) {
-                for (let operation of step.operations) {
-                    await runOperation(
-                        operation,
-                        this.operationStringConvert
-                            ? (value) => this.operationStringConvert!(value, step, props)
-                            : undefined
-                    );
-                }
+            for (let operation of operations) {
+                await runOperation(operation, operationStringConvert);
             }
 
             const choices = this.getChoices(step.choices);
             const glueEnabled = getLogichValue<boolean>(step.glueEnabled);
             const dialogue = this.getDialogue(step.dialogue);
+
             let labelToOpen: PixiVNJsonLabelToOpen[] = [];
-            if (step.labelToOpen) {
-                if (!Array.isArray(step.labelToOpen)) {
-                    step.labelToOpen = [step.labelToOpen];
-                }
-                step.labelToOpen.forEach((label) => {
-                    let i = getLogichValue<PixiVNJsonLabelToOpen<{}>>(label);
-                    if (i) {
-                        labelToOpen.push(i);
-                    }
-                });
+            if (!Array.isArray(tempLabelToOpen)) {
+                tempLabelToOpen = [tempLabelToOpen];
             }
+            tempLabelToOpen.forEach((label) => {
+                let i = getLogichValue<PixiVNJsonLabelToOpen<{}>>(label);
+                if (i) {
+                    labelToOpen.push(i);
+                }
+            });
+
             let goNextStep = getLogichValue<boolean>(step.goNextStep);
             let end = getLogichValue<"game_end" | "label_end">(step.end);
 
