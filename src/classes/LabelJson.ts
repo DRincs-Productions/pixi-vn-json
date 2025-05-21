@@ -1,11 +1,11 @@
 import {
-    ChoiceMenuOption,
     LabelAbstract,
     LabelProps,
     narration,
     StepLabelPropsType,
     StepLabelType,
     storage,
+    StoredChoiceInterface,
     SYSTEM_RESERVED_STORAGE_KEYS,
 } from "@drincs/pixi-vn";
 import sha1 from "crypto-js/sha1";
@@ -220,7 +220,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             let end = getLogichValue<"game_end" | "label_end">(step.end);
 
             if (choices) {
-                let options = choices.map((option) => {
+                let options: StoredChoiceInterface[] = choices.map((option) => {
                     let text: string | string[] = "";
                     if (Array.isArray(option.text)) {
                         let texts: string[] = [];
@@ -245,12 +245,16 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     } else if (typeof option.text === "string") {
                         text = TranslatorManager.t(option.text);
                     }
-                    return new ChoiceMenuOption(text, option.label, option.props, {
+                    const res: StoredChoiceInterface = {
+                        label: option.label,
+                        text: text,
+                        props: option.props,
                         type: option.type,
                         oneTime: option.oneTime,
                         onlyHaveNoChoice: option.onlyHaveNoChoice,
                         autoSelect: option.autoSelect,
-                    });
+                    };
+                    return res;
                 });
                 narration.choiceMenuOptions = options;
             } else {
