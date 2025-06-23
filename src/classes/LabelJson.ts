@@ -1,4 +1,5 @@
 import {
+    createExportableElement,
     LabelAbstract,
     LabelProps,
     narration,
@@ -182,17 +183,17 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     private stepConverter(stepProp: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
         return async (props) => {
             let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
+            step = createExportableElement(step);
             step = getConditionalStep(step);
             const operationStringConvert = this.operationStringConvert
                 ? (value: string) => this.operationStringConvert!(value, step, props)
                 : undefined;
             const { operations = [] } = step;
-            let { labelToOpen: tempLabelToOpen = [] } = step;
-
             for (let operation of operations) {
                 await runOperation(operation, operationStringConvert);
             }
 
+            let { labelToOpen: tempLabelToOpen = [] } = step;
             const choices = this.getChoices(step.choices);
             const glueEnabled = getLogichValue<boolean>(step.glueEnabled);
             const dialogue = this.getDialogue(step.dialogue);
@@ -288,7 +289,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     ...label.props,
                 };
                 if (label.type === "jump") {
-                    narration.closeCurrentLabel();
+                    if (narration.openedLabels.length > 0) narration.closeCurrentLabel();
                     storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams);
                     await narration.callLabel(labelString, props);
                 } else {
