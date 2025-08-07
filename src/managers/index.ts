@@ -1,6 +1,5 @@
-import TranslateManager from './TranslateManager';
+import TranslateManager from "./TranslateManager";
 
-const translator = TranslateManager
+const translator = TranslateManager;
 
 export { translator };
-

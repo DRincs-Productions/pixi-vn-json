@@ -1,110 +1,123 @@
-import { StorageElementType } from "@drincs/pixi-vn"
-import PixiVNJsonArithmeticOperations from "./PixiVNJsonArithmeticOperations"
-import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements"
-import PixiVNJsonConditions from "./PixiVNJsonConditions"
+import { StorageElementType } from "@drincs/pixi-vn";
+import PixiVNJsonArithmeticOperations from "./PixiVNJsonArithmeticOperations";
+import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
+import PixiVNJsonConditions from "./PixiVNJsonConditions";
 
 export type PixiVNJsonStorageGet = {
-    type: "value"
-    storageOperationType: "get",
+    type: "value";
+    storageOperationType: "get";
     /**
      * Key of the storage
      */
-    key: string,
+    key: string;
     /**
      * Type of the storage, if it is a flagStorage or a storage.
      * If it is a flagStorage, the value will be get with the function {@link getFlag}
      */
-    storageType: "storage" | "flagStorage" | "tempstorage",
-}
+    storageType: "storage" | "flagStorage" | "tempstorage";
+};
 
 export type PixiVNJsonParamGet = {
-    type: "value"
-    storageOperationType: "get",
+    type: "value";
+    storageOperationType: "get";
     /**
      * Key of the storage
      */
-    key: number,
-    storageType: "params",
-}
+    key: number;
+    storageType: "params";
+};
 
 export type PixiVNJsonLabelGet = {
-    type: "value"
-    storageOperationType: "get",
+    type: "value";
+    storageOperationType: "get";
     /**
      * Id of the label
      */
-    label: string,
+    label: string;
     /**
      * If it is a label, the value will be get with the function {@link narration.getTimesLabelOpened}
      */
-    storageType: "label",
-}
+    storageType: "label";
+};
 export type PixiVNJsonChoiceGet = {
-    type: "value"
-    storageOperationType: "get",
+    type: "value";
+    storageOperationType: "get";
     /**
      * index of the choice
      */
-    index: number,
+    index: number;
     /**
      * If it is a choice, the value will be get with the function {@link narration.getTimesChoiceOpened}
      */
-    storageType: "choice",
-}
+    storageType: "choice";
+};
 export type PixiVNJsonLogicGet = {
-    type: "value"
-    storageOperationType: "get",
-    operation: PixiVNJsonArithmeticOperations | PixiVNJsonConditions,
-    storageType: "logic",
-}
-export type PixiVNJsonValueGet = PixiVNJsonStorageGet | PixiVNJsonParamGet | PixiVNJsonLabelGet | PixiVNJsonChoiceGet | PixiVNJsonLogicGet
+    type: "value";
+    storageOperationType: "get";
+    operation: PixiVNJsonArithmeticOperations | PixiVNJsonConditions;
+    storageType: "logic";
+};
+export type PixiVNJsonValueGet =
+    | PixiVNJsonStorageGet
+    | PixiVNJsonParamGet
+    | PixiVNJsonLabelGet
+    | PixiVNJsonChoiceGet
+    | PixiVNJsonLogicGet;
 
 type PixiVNJsonOnlyStorageSet = {
-    type: "value"
-    storageOperationType: "set",
+    type: "value";
+    storageOperationType: "set";
     /**
      * Key of the storage
      */
-    key: string,
+    key: string;
     /**
      * Value to be set in the storage
      */
-    value: StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditionalStatements<StorageElementType>,
+    value:
+        | StorageElementType
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+        | PixiVNJsonConditionalStatements<StorageElementType>;
     /**
      * Type of the storage, if it is a flagStorage or a storage.
      */
-    storageType: "storage" | "tempstorage",
-}
+    storageType: "storage" | "tempstorage";
+};
 
 type PixiVNJsonOnlyParamSet = {
-    type: "value"
-    storageOperationType: "set",
+    type: "value";
+    storageOperationType: "set";
     /**
      * Key of the storage
      */
-    key: number,
+    key: number;
     /**
      * Value to be set in the storage
      */
-    value: StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditionalStatements<StorageElementType>,
-    storageType: "params",
-}
+    value:
+        | StorageElementType
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+        | PixiVNJsonConditionalStatements<StorageElementType>;
+    storageType: "params";
+};
 
 type PixiVNJsonFlagSet = {
-    type: "value"
-    storageOperationType: "set",
+    type: "value";
+    storageOperationType: "set";
     /**
      * Key of the storage
      */
-    key: string,
+    key: string;
     /**
      * Value to be set in the storage
      */
-    value: boolean,
+    value: boolean;
     /**
      * Type of the storage, if it is a flagStorage or a storage.
      */
-    storageType: "flagStorage",
-}
+    storageType: "flagStorage";
+};
 
-export type PixiVNJsonValueSet = PixiVNJsonOnlyStorageSet | PixiVNJsonFlagSet | PixiVNJsonOnlyParamSet
+export type PixiVNJsonValueSet = PixiVNJsonOnlyStorageSet | PixiVNJsonFlagSet | PixiVNJsonOnlyParamSet;

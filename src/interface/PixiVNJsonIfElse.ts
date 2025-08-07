@@ -4,19 +4,19 @@ import PixiVNJsonConditions from "./PixiVNJsonConditions";
  * If-Else condition for PixiVNJson
  */
 interface PixiVNJsonIfElse<Then> {
-    type: "ifelse",
+    type: "ifelse";
     /**
      * The list of conditions to be checked.
      */
-    condition: PixiVNJsonConditions,
+    condition: PixiVNJsonConditions;
     /**
      * The value to be returned if the condition is true.
      */
-    then: Then | PixiVNJsonIfElse<Then>,
+    then: Then | PixiVNJsonIfElse<Then>;
     /**
      * The value to be returned if the condition is false.
      */
-    else?: Then | PixiVNJsonIfElse<Then>,
+    else?: Then | PixiVNJsonIfElse<Then>;
 }
 
-export default PixiVNJsonIfElse
+export default PixiVNJsonIfElse;
