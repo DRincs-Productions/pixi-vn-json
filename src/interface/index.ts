@@ -10,6 +10,11 @@ export type {
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasShow,
 } from "./PixiVNJsonCanvas";
+export type {
+    PixiVNJsonAnimateBase,
+    PixiVNJsonAnimateSequence,
+    default as PixiVNJsonCanvasAnimate,
+} from "./PixiVNJsonCanvasAnimate";
 export type { default as PixiVNJsonCanvasEffect } from "./PixiVNJsonCanvasEffect";
 export type { default as PixiVNJsonCanvasTicker } from "./PixiVNJsonCanvasTicker";
 export type { default as PixiVNJsonConditionalResultToCombine } from "./PixiVNJsonConditionalResultToCombine";

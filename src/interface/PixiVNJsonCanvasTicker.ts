@@ -6,6 +6,9 @@ import {
     ZoomTickerProps,
 } from "@drincs/pixi-vn";
 
+/**
+ * @deprecated
+ */
 type PixiVNJsonTickerFade = {
     type: "fade";
     alias: string | string[];
@@ -13,6 +16,9 @@ type PixiVNJsonTickerFade = {
     props: FadeAlphaTickerProps;
     priority?: UPDATE_PRIORITY;
 };
+/**
+ * @deprecated
+ */
 type PixiVNJsonTickerMove = {
     type: "move";
     alias: string | string[];
@@ -20,6 +26,9 @@ type PixiVNJsonTickerMove = {
     props: MoveTickerProps;
     priority?: UPDATE_PRIORITY;
 };
+/**
+ * @deprecated
+ */
 type PixiVNJsonTickerRotate = {
     type: "rotate";
     alias: string | string[];
@@ -27,6 +36,9 @@ type PixiVNJsonTickerRotate = {
     props: RotateTickerProps;
     priority?: UPDATE_PRIORITY;
 };
+/**
+ * @deprecated
+ */
 type PixiVNJsonTickerZoom = {
     type: "zoom";
     alias: string | string[];
@@ -35,6 +47,9 @@ type PixiVNJsonTickerZoom = {
     priority?: UPDATE_PRIORITY;
 };
 
+/**
+ * @deprecated
+ */
 type PixiVNJsonCanvasTicker =
     | PixiVNJsonTickerFade
     | PixiVNJsonTickerMove

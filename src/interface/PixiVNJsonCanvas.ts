@@ -8,6 +8,7 @@ import {
     ImageSpriteOptions,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
+import PixiVNJsonAnimate from "./PixiVNJsonCanvasAnimate";
 import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker";
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
@@ -87,5 +88,6 @@ type PixiVNJsonCanvas =
     | PixiVNJsonVideoPauseResume
     | PixiVNJsonAssetsLoad
     | PixiVNJsonCanvasTicker
+    | PixiVNJsonAnimate
     | PixiVNJsonCanvasEffect;
 export default PixiVNJsonCanvas;
