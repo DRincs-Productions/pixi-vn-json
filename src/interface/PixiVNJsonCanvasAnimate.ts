@@ -24,8 +24,8 @@ export type PixiVNJsonAnimateSequence<T extends CanvasBaseInterface<any>> = {
     priority?: UPDATE_PRIORITY;
 };
 
-type PixiVNJsonAnimate<T extends CanvasBaseInterface<any> = ImageSprite> =
+type PixiVNJsonCanvasAnimate<T extends CanvasBaseInterface<any> = ImageSprite> =
     | PixiVNJsonAnimateBase<T>
     | PixiVNJsonAnimateSequence<T>;
 
-export default PixiVNJsonAnimate;
+export default PixiVNJsonCanvasAnimate;
