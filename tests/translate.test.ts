@@ -37,3 +37,26 @@ test("Translate test 1", async () => {
     });
     expect(res).toEqual(expected);
 });
+
+test("Translate test 2", async () => {
+    let input: PixiVNJson = {
+        labels: {
+            back_in_london: [
+                {
+                    dialogue: {
+                        text: "We arrived into London at 9.45pm exactly.",
+                        character: "John",
+                    },
+                },
+            ],
+        },
+    };
+    let expected = {
+        "We arrived into London at 9.45pm exactly.": "We arrived into London at 9.45pm exactly.",
+    };
+    let res = {};
+    Object.values(input.labels!).forEach((value) => {
+        TranslatorManager.generateJsonTranslation(value, res);
+    });
+    expect(res).toEqual(expected);
+});

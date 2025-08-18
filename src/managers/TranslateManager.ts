@@ -205,32 +205,34 @@ export default class TranslatorManager {
                     if (typeof dialogue === "string") {
                         TranslatorManager.addKey(json, dialogue, { defaultValue });
                     } else if ("text" in dialogue) {
-                        if (Array.isArray(dialogue.text)) {
-                            dialogue.text.forEach((text) => {
-                                if (typeof text === "string") {
-                                    TranslatorManager.addKey(json, text, { defaultValue });
-                                } else {
-                                    let t = TranslatorManager.getConditionalsThenElse(text);
-                                    t.forEach((tt) => {
-                                        if (typeof tt === "string") {
-                                            TranslatorManager.addKey(json, tt, { defaultValue });
-                                        } else if (Array.isArray(tt)) {
-                                            tt.forEach((ttt) => {
-                                                if (typeof ttt === "string") {
-                                                    TranslatorManager.addKey(json, ttt, { defaultValue });
-                                                } else {
-                                                    TranslatorManager.getConditionalsThenElse(ttt).forEach((t) => {
-                                                        if (typeof t === "string") {
-                                                            TranslatorManager.addKey(json, t, { defaultValue });
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
+                        let text = TranslatorManager.getConditionalsThenElse(dialogue.text);
+                        if (typeof text === "string") {
+                            text = [text];
                         }
+                        text.forEach((text) => {
+                            if (typeof text === "string") {
+                                TranslatorManager.addKey(json, text, { defaultValue });
+                            } else {
+                                let t = TranslatorManager.getConditionalsThenElse(text);
+                                t.forEach((tt) => {
+                                    if (typeof tt === "string") {
+                                        TranslatorManager.addKey(json, tt, { defaultValue });
+                                    } else if (Array.isArray(tt)) {
+                                        tt.forEach((ttt) => {
+                                            if (typeof ttt === "string") {
+                                                TranslatorManager.addKey(json, ttt, { defaultValue });
+                                            } else {
+                                                TranslatorManager.getConditionalsThenElse(ttt).forEach((t) => {
+                                                    if (typeof t === "string") {
+                                                        TranslatorManager.addKey(json, t, { defaultValue });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
