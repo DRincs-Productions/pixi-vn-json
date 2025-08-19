@@ -13,6 +13,9 @@ import {
     removeWithFade,
     RotateTicker,
     shakeEffect,
+    showImage,
+    showImageContainer,
+    showVideo,
     showWithDissolve,
     showWithFade,
     sound,
@@ -21,7 +24,7 @@ import {
     zoomOut,
     ZoomTicker,
 } from "@drincs/pixi-vn";
-import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
+import { PixiVNJsonIfElse, PixiVNJsonMediaTransiotions, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import { logger } from "../utils/log-utility";
@@ -63,8 +66,12 @@ export async function runOperation(
         case "image":
             switch (operation.operationType) {
                 case "show":
-                    let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias);
-                    await showCanvasElemet(imageToShow, operation);
+                    if (operation.transition) {
+                        let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias);
+                        await showCanvasElemet(imageToShow, operation, operation.transition);
+                    } else {
+                        await showImage(operation.alias, operation.url, operation.props);
+                    }
                     break;
                 case "edit":
                     let image = canvas.find<ImageSprite>(operation.alias);
@@ -87,8 +94,12 @@ export async function runOperation(
         case "video":
             switch (operation.operationType) {
                 case "show":
-                    let videoToShow = new VideoSprite(operation.props, operation.url || operation.alias);
-                    await showCanvasElemet(videoToShow, operation);
+                    if (operation.transition) {
+                        let videoToShow = new VideoSprite(operation.props, operation.url || operation.alias);
+                        await showCanvasElemet(videoToShow, operation, operation.transition);
+                    } else {
+                        await showVideo(operation.alias, operation.url, operation.props);
+                    }
                     break;
                 case "edit":
                     let video = canvas.find<VideoSprite>(operation.alias);
@@ -127,8 +138,12 @@ export async function runOperation(
         case "imagecontainer":
             switch (operation.operationType) {
                 case "show":
-                    let imageContainerToShow = new ImageContainer(operation.props, operation.urls);
-                    await showCanvasElemet(imageContainerToShow, operation);
+                    if (operation.transition) {
+                        let imageContainerToShow = new ImageContainer(operation.props, operation.urls);
+                        await showCanvasElemet(imageContainerToShow, operation, operation.transition);
+                    } else {
+                        await showImageContainer(operation.alias, operation.urls, operation.props);
+                    }
                     break;
                 case "edit":
                     let image = canvas.find<ImageContainer>(operation.alias);
@@ -226,37 +241,28 @@ export async function runOperation(
 
 export async function showCanvasElemet(
     element: ImageSprite | VideoSprite | ImageContainer,
-    operation: PixiVNJsonCanvasShow
+    operation: PixiVNJsonCanvasShow,
+    transition: PixiVNJsonMediaTransiotions
 ) {
-    if (operation.transition) {
-        switch (operation.transition.type) {
-            case "fade":
-                await showWithFade(operation.alias, element, operation.transition.props, operation.transition.priority);
-                break;
-            case "dissolve":
-                await showWithDissolve(
-                    operation.alias,
-                    element,
-                    operation.transition.props,
-                    operation.transition.priority
-                );
-                break;
-            case "movein":
-            case "moveout":
-                await moveIn(operation.alias, element, operation.transition.props, operation.transition.priority);
-                break;
-            case "zoomin":
-            case "zoomout":
-                await zoomIn(operation.alias, element, operation.transition.props, operation.transition.priority);
-                break;
-            case "pushin":
-            case "pushout":
-                await pushIn(operation.alias, element, operation.transition.props, operation.transition.priority);
-                break;
-        }
-    } else {
-        await element.load();
-        canvas.add(operation.alias, element);
+    switch (transition.type) {
+        case "fade":
+            await showWithFade(operation.alias, element, transition.props, transition.priority);
+            break;
+        case "dissolve":
+            await showWithDissolve(operation.alias, element, transition.props, transition.priority);
+            break;
+        case "movein":
+        case "moveout":
+            await moveIn(operation.alias, element, transition.props, transition.priority);
+            break;
+        case "zoomin":
+        case "zoomout":
+            await zoomIn(operation.alias, element, transition.props, transition.priority);
+            break;
+        case "pushin":
+        case "pushout":
+            await pushIn(operation.alias, element, transition.props, transition.priority);
+            break;
     }
 }
 
