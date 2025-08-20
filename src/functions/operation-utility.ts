@@ -52,11 +52,7 @@ export async function runOperation(
             }
             break;
         case "input":
-            switch (operation.operationType) {
-                case "request":
-                    narration.requestInput({ type: operation.valueType }, operation.defaultValue);
-                    break;
-            }
+            JsonUnifier.inputOperation(operation);
             break;
         case "fade":
             let tickerFade = new FadeAlphaTicker(operation.props, operation.duration, operation.priority);

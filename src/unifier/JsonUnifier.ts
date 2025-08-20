@@ -1,6 +1,7 @@
 import { ContainerChild, ContainerMemory, ImageSpriteMemory, VideoSpriteMemory } from "@drincs/pixi-vn";
 import {
     PixiVNJsonIfElse,
+    PixiVNJsonInput,
     PixiVNJsonOperation,
     PixiVNJsonOperationString,
     PixiVNJsonSound,
@@ -84,5 +85,12 @@ export default class JsonUnifier {
     };
     static get setStorageValue() {
         return this._setStorageValue;
+    }
+    private static _inputOperation: (operation: PixiVNJsonInput) => void = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get inputOperation() {
+        return this._inputOperation;
     }
 }
