@@ -21,32 +21,7 @@ export async function runOperation(
             await JsonUnifier.loadAssets(operation);
             break;
         case "image":
-            switch (operation.operationType) {
-                case "show":
-                    if (operation.transition) {
-                        let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias);
-                        await showCanvasElemet(imageToShow, operation, operation.transition);
-                    } else {
-                        await showImage(operation.alias, operation.url, operation.props);
-                    }
-                    break;
-                case "edit":
-                    let image = canvas.find<ImageSprite>(operation.alias);
-                    if (image) {
-                        if (operation.props) {
-                            await image.setMemory({
-                                ...image.memory,
-                                ...operation.props,
-                            });
-                        }
-                    } else {
-                        logger.error(`Image with alias ${operation.alias} not found.`);
-                    }
-                    break;
-                case "remove":
-                    removeCanvasElement(operation);
-                    break;
-            }
+            await JsonUnifier.imageOperation(operation);
             break;
         case "video":
             switch (operation.operationType) {

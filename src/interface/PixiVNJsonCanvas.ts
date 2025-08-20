@@ -13,7 +13,7 @@ import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker";
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
 
-type PixiVNJsonCanvasImageVideoShow = {
+export type PixiVNJsonCanvasImageVideoShow = {
     type: "image" | "video";
     operationType: "show";
     alias: string;
@@ -33,7 +33,7 @@ type PixiVNJsonCanvasImageContainerShow = {
     props?: ImageContainerOptions<ImageSprite>;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonImageEdit = {
+export type PixiVNJsonImageEdit = {
     type: "image";
     operationType: "edit";
     alias: string;

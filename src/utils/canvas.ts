@@ -8,6 +8,7 @@ import {
     pushOut,
     removeWithDissolve,
     removeWithFade,
+    showImage,
     showWithDissolve,
     showWithFade,
     VideoSprite,
@@ -15,6 +16,8 @@ import {
     zoomOut,
 } from "@drincs/pixi-vn";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow, PixiVNJsonMediaTransiotions } from "../interface";
+import { PixiVNJsonCanvasImageVideoShow, PixiVNJsonImageEdit } from "../interface/PixiVNJsonCanvas";
+import { logger } from "./log-utility";
 
 async function showCanvasElemet(
     element: ImageSprite | VideoSprite | ImageContainer,
@@ -67,5 +70,36 @@ function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
         }
     } else {
         canvas.remove(operation.alias);
+    }
+}
+
+export async function imageOperation(
+    operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
+) {
+    switch (operation.operationType) {
+        case "show":
+            if (operation.transition) {
+                let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias);
+                await showCanvasElemet(imageToShow, operation, operation.transition);
+            } else {
+                await showImage(operation.alias, operation.url, operation.props);
+            }
+            break;
+        case "edit":
+            let image = canvas.find<ImageSprite>(operation.alias);
+            if (image) {
+                if (operation.props) {
+                    await image.setMemory({
+                        ...image.memory,
+                        ...operation.props,
+                    });
+                }
+            } else {
+                logger.error(`Image with alias ${operation.alias} not found.`);
+            }
+            break;
+        case "remove":
+            removeCanvasElement(operation);
+            break;
     }
 }
