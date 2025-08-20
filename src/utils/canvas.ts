@@ -9,6 +9,7 @@ import {
     removeWithDissolve,
     removeWithFade,
     showImage,
+    showImageContainer,
     showVideo,
     showWithDissolve,
     showWithFade,
@@ -18,7 +19,9 @@ import {
 } from "@drincs/pixi-vn";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow, PixiVNJsonMediaTransiotions } from "../interface";
 import {
+    PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
+    PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
@@ -157,6 +160,37 @@ export async function videoOperation(
             } else {
                 logger.error(`Video with alias ${operation.alias} not found.`);
             }
+            break;
+    }
+}
+
+export async function imageContainerOperation(
+    operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+) {
+    switch (operation.operationType) {
+        case "show":
+            if (operation.transition) {
+                let imageContainerToShow = new ImageContainer(operation.props, operation.urls);
+                await showCanvasElemet(imageContainerToShow, operation, operation.transition);
+            } else {
+                await showImageContainer(operation.alias, operation.urls, operation.props);
+            }
+            break;
+        case "edit":
+            let image = canvas.find<ImageContainer>(operation.alias);
+            if (image) {
+                if (operation.props) {
+                    await image.setMemory({
+                        ...image.memory,
+                        ...operation.props,
+                    });
+                }
+            } else {
+                logger.error(`ImageContainer with alias ${operation.alias} not found.`);
+            }
+            break;
+        case "remove":
+            removeCanvasElement(operation);
             break;
     }
 }

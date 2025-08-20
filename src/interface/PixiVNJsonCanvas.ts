@@ -25,7 +25,7 @@ export type PixiVNJsonCanvasImageVideoShow = {
     props?: ImageSpriteOptions;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonCanvasImageContainerShow = {
+export type PixiVNJsonCanvasImageContainerShow = {
     type: "imagecontainer";
     operationType: "show";
     alias: string;
@@ -45,7 +45,7 @@ export type PixiVNJsonVideoEdit = {
     alias: string;
     props?: Partial<VideoSpriteMemory>;
 };
-type PixiVNJsonImageContainerEdit = {
+export type PixiVNJsonImageContainerEdit = {
     type: "imagecontainer";
     operationType: "edit";
     alias: string;

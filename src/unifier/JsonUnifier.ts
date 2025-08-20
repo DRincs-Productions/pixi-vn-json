@@ -1,7 +1,9 @@
 import { PixiVNJsonIfElse, PixiVNJsonOperation, PixiVNJsonOperationString, PixiVNJsonSound } from "../interface";
 import {
+    PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasRemove,
+    PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
@@ -47,5 +49,14 @@ export default class JsonUnifier {
     };
     static get videoOperation() {
         return this._videoOperation;
+    }
+    private static _imageContainerOperation: (
+        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+    ) => Promise<void> = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get imageContainerOperation() {
+        return this._imageContainerOperation;
     }
 }
