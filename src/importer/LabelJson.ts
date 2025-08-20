@@ -76,7 +76,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     step = stepProp;
                 }
 
-                step = getConditionalStep(step);
+                step = JsonUnifier.getConditionalStep(step);
 
                 if (step.operations) {
                     let promises = step.operations.map((operation) => JsonUnifier.loadAssets(operation));
@@ -195,7 +195,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return async (props) => {
             let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
             step = createExportableElement(step);
-            step = getConditionalStep(step);
+            step = JsonUnifier.getConditionalStep(step);
             const operationStringConvert = this.operationStringConvert
                 ? (value: string) => this.operationStringConvert!(value, step, props)
                 : undefined;

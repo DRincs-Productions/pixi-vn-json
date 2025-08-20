@@ -14,6 +14,7 @@ import {
     PixiVNJsonConditions,
     PixiVNJsonIfElse,
     PixiVNJsonInput,
+    PixiVNJsonLabelStep,
     PixiVNJsonOperation,
     PixiVNJsonOperationString,
     PixiVNJsonSound,
@@ -142,5 +143,12 @@ export default class JsonUnifier {
     };
     static get getLogichValue() {
         return this._getLogichValue;
+    }
+    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get getConditionalStep() {
+        return this._getConditionalStep;
     }
 }
