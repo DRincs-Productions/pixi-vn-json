@@ -1,4 +1,4 @@
-import { LabelRunModeType, narration, StepLabelPropsType, StorageObjectType } from "@drincs/pixi-vn";
+import type { LabelRunModeType, narration, StepLabelPropsType, StorageObjectType } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
 import PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";

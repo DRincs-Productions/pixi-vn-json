@@ -1,7 +1,7 @@
 import { Assets } from "@drincs/pixi-vn";
+import { getLogichValue } from "../functions/utility";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
-import { getLogichValue } from "./utility";
 
 export async function loadAssets(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString

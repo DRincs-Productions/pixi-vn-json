@@ -1,17 +1,14 @@
 import {
-    createExportableElement,
     LabelAbstract,
     LabelProps,
     narration,
     StepLabelPropsType,
     StepLabelType,
-    storage,
     StoredChoiceInterface,
-    SYSTEM_RESERVED_STORAGE_KEYS,
-} from "@drincs/pixi-vn";
+} from "@drincs/pixi-vn/narration";
+import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { loadAssets } from "../functions/assets";
 import { runOperation } from "../functions/operation-utility";
 import { getConditionalStep, getLogichValue } from "../functions/utility";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
@@ -24,6 +21,21 @@ import {
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
 import TranslatorManager from "../managers/TranslateManager";
+import JsonUnifier from "../unifier/JsonUnifier";
+import { logger } from "../utils/log-utility";
+
+function createExportableElement<T>(element: T): T {
+    try {
+        if (typeof element === "undefined") {
+            return element;
+        }
+        let elementString = JSON.stringify(element);
+        return JSON.parse(elementString);
+    } catch (e) {
+        logger.error("Error creating exportable element", element, e);
+        throw new Error("[Pixi’VN] Error creating exportable element");
+    }
+}
 
 export type LabelJsonOptions = {
     /**
@@ -68,7 +80,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 step = getConditionalStep(step);
 
                 if (step.operations) {
-                    let promises = step.operations.map((operation) => loadAssets(operation));
+                    let promises = step.operations.map((operation) => JsonUnifier.loadAssets(operation));
                     await Promise.all(promises);
                 }
             }

@@ -1,4 +1,4 @@
-import { SoundPlayOptions } from "@drincs/pixi-vn";
+import type { SoundPlayOptions } from "@drincs/pixi-vn";
 
 type PixiVNJsonSoundPlay = {
     type: "sound";

@@ -1,4 +1,3 @@
-import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
 import { LabelJson } from "../classes";
 import { LabelJsonOptions } from "../classes/LabelJson";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";

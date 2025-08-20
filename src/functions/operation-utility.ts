@@ -1,34 +1,8 @@
-import {
-    canvas,
-    FadeAlphaTicker,
-    ImageContainer,
-    ImageSprite,
-    moveIn,
-    moveOut,
-    MoveTicker,
-    narration,
-    pushIn,
-    pushOut,
-    removeWithDissolve,
-    removeWithFade,
-    RotateTicker,
-    shakeEffect,
-    showImage,
-    showImageContainer,
-    showVideo,
-    showWithDissolve,
-    showWithFade,
-    sound,
-    VideoSprite,
-    zoomIn,
-    zoomOut,
-    ZoomTicker,
-} from "@drincs/pixi-vn";
 import { PixiVNJsonIfElse, PixiVNJsonMediaTransiotions, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonCanvasRemove, PixiVNJsonCanvasShow } from "../interface/PixiVNJsonCanvas";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import JsonUnifier from "../unifier/JsonUnifier";
 import { logger } from "../utils/log-utility";
-import { loadAssets } from "./assets";
 import { getLogichValue, setStorageJson } from "./utility";
 
 export async function runOperation(
@@ -41,27 +15,11 @@ export async function runOperation(
     }
     switch (operation.type) {
         case "sound":
-            switch (operation.operationType) {
-                case "play":
-                    sound.play(operation.alias, operation.props);
-                    break;
-                case "stop":
-                    sound.stop(operation.alias);
-                    break;
-                case "pause":
-                    sound.pause(operation.alias);
-                    break;
-                case "resume":
-                    sound.resume(operation.alias);
-                    break;
-                case "volume":
-                    sound.volume(operation.alias, operation.value);
-                    break;
-            }
+            JsonUnifier.soundOperation(operation);
             break;
         case "assets":
         case "bundle":
-            await loadAssets(operation);
+            await JsonUnifier.loadAssets(operation);
             break;
         case "image":
             switch (operation.operationType) {
