@@ -25,6 +25,7 @@ import {
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
+import { translator } from "../internationalization";
 import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet) {

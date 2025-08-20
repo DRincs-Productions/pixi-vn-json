@@ -1,4 +1,4 @@
-import TranslateManager from "./TranslateManager";
+import TranslateManager from "./TranslatorManager";
 
 const translator = TranslateManager;
 

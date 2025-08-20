@@ -18,7 +18,7 @@ import {
     PixiVNJsonDialogText,
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
-import TranslatorManager from "../internationalization/TranslateManager";
+import TranslatorManager from "../internationalization/TranslatorManager";
 import JsonUnifier from "../unifier/JsonUnifier";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
