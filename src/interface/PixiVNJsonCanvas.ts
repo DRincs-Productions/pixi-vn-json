@@ -39,7 +39,7 @@ export type PixiVNJsonImageEdit = {
     alias: string;
     props?: Partial<ImageSpriteMemory>;
 };
-type PixiVNJsonVideoEdit = {
+export type PixiVNJsonVideoEdit = {
     type: "video";
     operationType: "edit";
     alias: string;
@@ -63,7 +63,7 @@ export type PixiVNJsonCanvasRemove = {
     alias: string;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonVideoPauseResume = {
+export type PixiVNJsonVideoPauseResume = {
     type: "video";
     operationType: "pause" | "resume";
     alias: string;

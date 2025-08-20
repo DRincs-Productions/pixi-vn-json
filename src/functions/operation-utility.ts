@@ -24,48 +24,7 @@ export async function runOperation(
             await JsonUnifier.imageOperation(operation);
             break;
         case "video":
-            switch (operation.operationType) {
-                case "show":
-                    if (operation.transition) {
-                        let videoToShow = new VideoSprite(operation.props, operation.url || operation.alias);
-                        await showCanvasElemet(videoToShow, operation, operation.transition);
-                    } else {
-                        await showVideo(operation.alias, operation.url, operation.props);
-                    }
-                    break;
-                case "edit":
-                    let video = canvas.find<VideoSprite>(operation.alias);
-                    if (video) {
-                        if (operation.props) {
-                            await video.setMemory({
-                                ...video.memory,
-                                ...operation.props,
-                            });
-                        }
-                    } else {
-                        logger.error(`Video with alias ${operation.alias} not found.`);
-                    }
-                    break;
-                case "remove":
-                    removeCanvasElement(operation);
-                    break;
-                case "pause":
-                    let videoPause = canvas.find<VideoSprite>(operation.alias);
-                    if (videoPause) {
-                        videoPause.paused = true;
-                    } else {
-                        logger.error(`Video with alias ${operation.alias} not found.`);
-                    }
-                    break;
-                case "resume":
-                    let videoResume = canvas.find<VideoSprite>(operation.alias);
-                    if (videoResume) {
-                        videoResume.paused = false;
-                    } else {
-                        logger.error(`Video with alias ${operation.alias} not found.`);
-                    }
-                    break;
-            }
+            await JsonUnifier.videoOperation(operation);
             break;
         case "imagecontainer":
             switch (operation.operationType) {
