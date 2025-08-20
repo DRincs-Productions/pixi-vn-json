@@ -1,5 +1,6 @@
 import { ContainerChild, ContainerMemory, ImageSpriteMemory, VideoSpriteMemory } from "@drincs/pixi-vn";
 import {
+    PixiVNJsonCanvasTicker,
     PixiVNJsonIfElse,
     PixiVNJsonInput,
     PixiVNJsonOperation,
@@ -92,5 +93,12 @@ export default class JsonUnifier {
     };
     static get inputOperation() {
         return this._inputOperation;
+    }
+    private static _tickerOperation: (operation: PixiVNJsonCanvasTicker) => void = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get tickerOperation() {
+        return this._tickerOperation;
     }
 }

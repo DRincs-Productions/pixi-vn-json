@@ -55,20 +55,10 @@ export async function runOperation(
             JsonUnifier.inputOperation(operation);
             break;
         case "fade":
-            let tickerFade = new FadeAlphaTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerFade);
-            break;
         case "move":
-            let tickerMove = new MoveTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerMove);
-            break;
         case "rotate":
-            let tickerRotate = new RotateTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerRotate);
-            break;
         case "zoom":
-            let tickerZoom = new ZoomTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerZoom);
+            JsonUnifier.tickerOperation(operation);
             break;
         case "shake":
             await shakeEffect(operation.alias, operation.props, operation.priority);
