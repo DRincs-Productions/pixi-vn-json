@@ -9,7 +9,6 @@ import {
 import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { runOperation } from "../functions/operation-utility";
 import { getConditionalStep, getLogichValue } from "../functions/utility";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -20,9 +19,10 @@ import {
     PixiVNJsonDialogText,
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
-import TranslatorManager from "../managers/TranslateManager";
+import TranslatorManager from "../internationalization/TranslateManager";
 import JsonUnifier from "../unifier/JsonUnifier";
 import { logger } from "../utils/log-utility";
+import { runOperation } from "./operation-utility";
 
 function createExportableElement<T>(element: T): T {
     try {

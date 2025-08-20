@@ -1,13 +1,12 @@
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import JsonUnifier from "../unifier/JsonUnifier";
-import { getLogichValue } from "./utility";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
     operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>
 ) {
-    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
     if (!operation) {
         return;
     }
@@ -41,7 +40,7 @@ export async function runOperation(
                     if (typeof value === "string") {
                         stringOperation += value;
                     } else {
-                        let res = getLogichValue<string>(value);
+                        let res = JsonUnifier.getLogichValue<string>(value);
                         stringOperation += `${res}`;
                     }
                 });

@@ -1,13 +1,23 @@
-import { ContainerChild, ContainerMemory, ImageSpriteMemory, VideoSpriteMemory } from "@drincs/pixi-vn";
 import {
+    ContainerChild,
+    ContainerMemory,
+    ImageSpriteMemory,
+    StorageElementType,
+    VideoSpriteMemory,
+} from "@drincs/pixi-vn";
+import {
+    PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasTicker,
+    PixiVNJsonConditionalStatements,
+    PixiVNJsonConditions,
     PixiVNJsonIfElse,
     PixiVNJsonInput,
     PixiVNJsonOperation,
     PixiVNJsonOperationString,
     PixiVNJsonSound,
+    PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
 import {
@@ -116,5 +126,21 @@ export default class JsonUnifier {
     };
     static get animateOperation() {
         return this._animateOperation;
+    }
+    private static _getLogichValue: <T = StorageElementType>(
+        value:
+            | T
+            | PixiVNJsonValueGet
+            | PixiVNJsonArithmeticOperations
+            | PixiVNJsonConditions
+            | PixiVNJsonConditionalStatements<
+                  T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+              >
+    ) => T | undefined = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get getLogichValue() {
+        return this._getLogichValue;
     }
 }
