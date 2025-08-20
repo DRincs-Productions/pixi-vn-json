@@ -14,6 +14,7 @@ import {
     removeWithDissolve,
     removeWithFade,
     RotateTicker,
+    shakeEffect,
     showImage,
     showImageContainer,
     showVideo,
@@ -26,6 +27,8 @@ import {
     ZoomTicker,
 } from "@drincs/pixi-vn";
 import {
+    PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasShow,
     PixiVNJsonCanvasTicker,
@@ -258,6 +261,25 @@ export function tickerOperation(operation: PixiVNJsonCanvasTicker) {
         case "zoom":
             let tickerZoom = new ZoomTicker(operation.props, operation.duration, operation.priority);
             canvas.addTicker(operation.alias, tickerZoom);
+            break;
+    }
+}
+
+export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
+    switch (operation.type) {
+        case "shake":
+            await shakeEffect(operation.alias, operation.props, operation.priority);
+            break;
+    }
+}
+
+export function animateOperation(operation: PixiVNJsonCanvasAnimate) {
+    switch (operation.type) {
+        case "animate":
+            canvas.animate(operation.alias, operation.keyframes, operation.options, operation.priority);
+            break;
+        case "animate-sequence":
+            canvas.animate(operation.alias, operation.sequence, operation.options, operation.priority);
             break;
     }
 }

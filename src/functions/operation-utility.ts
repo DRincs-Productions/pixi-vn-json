@@ -61,7 +61,11 @@ export async function runOperation(
             JsonUnifier.tickerOperation(operation);
             break;
         case "shake":
-            await shakeEffect(operation.alias, operation.props, operation.priority);
+            await JsonUnifier.effectOperation(operation);
+            break;
+        case "animate":
+        case "animate-sequence":
+            JsonUnifier.animateOperation(operation);
             break;
     }
 }

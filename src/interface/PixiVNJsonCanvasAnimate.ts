@@ -18,7 +18,7 @@ export type PixiVNJsonAnimateBase<T extends CanvasBaseInterface<any>> = {
 };
 export type PixiVNJsonAnimateSequence<T extends CanvasBaseInterface<any>> = {
     type: "animate-sequence";
-    alias: string | string[];
+    alias: string;
     sequence: (ObjectSegment<T> | ObjectSegmentWithTransition<T>)[];
     options?: SequenceOptions;
     priority?: UPDATE_PRIORITY;
