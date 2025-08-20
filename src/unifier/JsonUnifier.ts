@@ -1,3 +1,4 @@
+import { ContainerChild, ContainerMemory, ImageSpriteMemory, VideoSpriteMemory } from "@drincs/pixi-vn";
 import { PixiVNJsonIfElse, PixiVNJsonOperation, PixiVNJsonOperationString, PixiVNJsonSound } from "../interface";
 import {
     PixiVNJsonCanvasImageContainerShow,
@@ -5,6 +6,7 @@ import {
     PixiVNJsonCanvasRemove,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
+    PixiVNJsonUnknownEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
 } from "../interface/PixiVNJsonCanvas";
@@ -58,5 +60,16 @@ export default class JsonUnifier {
     };
     static get imageContainerOperation() {
         return this._imageContainerOperation;
+    }
+    private static _canvasElementOperation: (
+        operation:
+            | PixiVNJsonCanvasRemove
+            | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
+    ) => Promise<void> = () => {
+        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+    };
+    static get canvasElementOperation() {
+        return this._canvasElementOperation;
     }
 }

@@ -51,7 +51,7 @@ export type PixiVNJsonImageContainerEdit = {
     alias: string;
     props?: Partial<ImageContainerMemory>;
 };
-type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
+export type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     type: "canvaselement";
     operationType: "edit";
     alias: string;

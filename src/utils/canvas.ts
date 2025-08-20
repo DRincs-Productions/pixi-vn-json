@@ -1,7 +1,10 @@
 import {
     canvas,
+    ContainerChild,
+    ContainerMemory,
     ImageContainer,
     ImageSprite,
+    ImageSpriteMemory,
     moveIn,
     moveOut,
     pushIn,
@@ -14,6 +17,7 @@ import {
     showWithDissolve,
     showWithFade,
     VideoSprite,
+    VideoSpriteMemory,
     zoomIn,
     zoomOut,
 } from "@drincs/pixi-vn";
@@ -23,6 +27,7 @@ import {
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
+    PixiVNJsonUnknownEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
 } from "../interface/PixiVNJsonCanvas";
@@ -187,6 +192,38 @@ export async function imageContainerOperation(
                 }
             } else {
                 logger.error(`ImageContainer with alias ${operation.alias} not found.`);
+            }
+            break;
+        case "remove":
+            removeCanvasElement(operation);
+            break;
+    }
+}
+
+export async function canvasElementOperation(
+    operation:
+        | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
+        | PixiVNJsonCanvasRemove
+) {
+    switch (operation.operationType) {
+        case "edit":
+            try {
+                let unknown = canvas.find(operation.alias);
+                if (unknown) {
+                    if (operation.props) {
+                        unknown.memory = {
+                            ...unknown.memory,
+                            ...operation.props,
+                        };
+                    }
+                } else {
+                    logger.error(`Canvas Element with alias ${operation.alias} not found.`);
+                }
+            } catch (e) {
+                logger.error(
+                    `There was an error while trying to edit the canvas element with alias ${operation.alias}.`,
+                    e
+                );
             }
             break;
         case "remove":

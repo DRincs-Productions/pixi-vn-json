@@ -1,7 +1,6 @@
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import JsonUnifier from "../unifier/JsonUnifier";
-import { logger } from "../utils/log-utility";
 import { getLogichValue, setStorageJson } from "./utility";
 
 export async function runOperation(
@@ -30,31 +29,7 @@ export async function runOperation(
             await JsonUnifier.imageContainerOperation(operation);
             break;
         case "canvaselement":
-            switch (operation.operationType) {
-                case "edit":
-                    try {
-                        let unknown = canvas.find(operation.alias);
-                        if (unknown) {
-                            if (operation.props) {
-                                unknown.memory = {
-                                    ...unknown.memory,
-                                    ...operation.props,
-                                };
-                            }
-                        } else {
-                            logger.error(`Canvas Element with alias ${operation.alias} not found.`);
-                        }
-                    } catch (e) {
-                        logger.error(
-                            `There was an error while trying to edit the canvas element with alias ${operation.alias}.`,
-                            e
-                        );
-                    }
-                    break;
-                case "remove":
-                    removeCanvasElement(operation);
-                    break;
-            }
+            await JsonUnifier.canvasElementOperation(operation);
             break;
         case "value":
             setStorageJson(operation);
