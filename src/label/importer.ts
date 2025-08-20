@@ -1,8 +1,8 @@
-import { LabelJson } from "../classes";
-import { LabelJsonOptions } from "../classes/LabelJson";
+import { LabelJson } from ".";
+import { runOperation } from "../functions/operation-utility";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
-import { runOperation } from "./operation-utility";
+import { LabelJsonOptions } from "./LabelJson";
 
 /**
  * Import a Pixi'VN JSON to the system.
