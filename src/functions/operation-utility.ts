@@ -1,7 +1,7 @@
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import JsonUnifier from "../unifier/JsonUnifier";
-import { getLogichValue, setStorageJson } from "./utility";
+import { getLogichValue } from "./utility";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
@@ -32,7 +32,7 @@ export async function runOperation(
             await JsonUnifier.canvasElementOperation(operation);
             break;
         case "value":
-            setStorageJson(operation);
+            JsonUnifier.setStorageValue(operation);
             break;
         case "operationtoconvert":
             if (operationStringConvert) {
