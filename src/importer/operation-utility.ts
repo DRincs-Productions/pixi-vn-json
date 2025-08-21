@@ -1,6 +1,6 @@
+import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
-import JsonUnifier from "../unifier/JsonUnifier";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,

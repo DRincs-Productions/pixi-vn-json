@@ -34,7 +34,47 @@ import {
 import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {
-    static init(options: {}) {}
+    static init(options: {
+        loadAssets: (
+            origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
+        ) => Promise<void>;
+        soundOperation: (operation: PixiVNJsonSound) => void;
+        imageOperation: (
+            operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
+        ) => Promise<void>;
+        videoOperation: (
+            operation:
+                | PixiVNJsonCanvasImageVideoShow
+                | PixiVNJsonCanvasRemove
+                | PixiVNJsonVideoEdit
+                | PixiVNJsonVideoPauseResume
+        ) => Promise<void>;
+        imageContainerOperation: (
+            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+        ) => Promise<void>;
+        canvasElementOperation: (
+            operation:
+                | PixiVNJsonCanvasRemove
+                | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
+        ) => Promise<void>;
+        setStorageValue: (value: PixiVNJsonValueSet) => void;
+        inputOperation: (operation: PixiVNJsonInput) => void;
+        tickerOperation: (operation: PixiVNJsonCanvasTicker) => void;
+        effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
+        animateOperation: (operation: PixiVNJsonCanvasAnimate) => Promise<void>;
+    }) {
+        this._loadAssets = options.loadAssets;
+        this._soundOperation = options.soundOperation;
+        this._imageOperation = options.imageOperation;
+        this._videoOperation = options.videoOperation;
+        this._imageContainerOperation = options.imageContainerOperation;
+        this._canvasElementOperation = options.canvasElementOperation;
+        this._setStorageValue = options.setStorageValue;
+        this._inputOperation = options.inputOperation;
+        this._tickerOperation = options.tickerOperation;
+        this._effectOperation = options.effectOperation;
+        this._animateOperation = options.animateOperation;
+    }
     private static _loadAssets: (
         origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
     ) => Promise<void> = () => {

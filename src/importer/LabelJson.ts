@@ -1,3 +1,4 @@
+import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import {
     LabelAbstract,
     LabelProps,
@@ -19,7 +20,6 @@ import {
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
 import TranslatorManager from "../internationalization/TranslatorManager";
-import JsonUnifier from "../unifier/JsonUnifier";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 

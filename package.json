@@ -10,8 +10,31 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build:unifier": "tsup --config tsup.unifier.config.ts",
+    "build:importer": "tsup --config tsup.importer.config.ts",
+    "build:index": "tsup --config tsup.config.ts",
+    "build": "npm run build:unifier && npm run build:importer && npm run build:index",
     "test": "vitest"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./unifier": {
+      "types": "./dist/unifier.d.ts",
+      "import": "./dist/unifier.mjs",
+      "require": "./dist/unifier.cjs",
+      "default": "./dist/unifier.mjs"
+    },
+    "./importer": {
+      "types": "./dist/importer.d.ts",
+      "import": "./dist/importer.mjs",
+      "require": "./dist/importer.cjs",
+      "default": "./dist/importer.mjs"
+    }
   },
   "repository": {
     "type": "git",

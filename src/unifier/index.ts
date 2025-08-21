@@ -1,1 +1,1 @@
-export { default as LabelJson } from "./JsonUnifier";
+export { default as JsonUnifier } from "./JsonUnifier";
