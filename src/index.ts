@@ -1,8 +1,8 @@
 export * from "@drincs/pixi-vn-json/importer";
+export * from "@drincs/pixi-vn-json/translator";
 export * from "@drincs/pixi-vn-json/unifier";
 export { PIXIVNJSON_PARAM_ID } from "./constants";
 export * from "./interface";
-export * from "./internationalization";
 import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import { loadAssets } from "./utils/assets";
 import {

@@ -11,9 +11,9 @@
   ],
   "scripts": {
     "build:unifier": "tsup --config tsup.unifier.config.ts",
-    "build:importer": "tsup --config tsup.importer.config.ts",
+    "build:submodules": "tsup --config tsup.submodules.config.ts",
     "build:index": "tsup --config tsup.config.ts",
-    "build": "npm run build:unifier && npm run build:importer && npm run build:index",
+    "build": "npm run build:unifier && npm run build:submodules && npm run build:index",
     "test": "vitest"
   },
   "exports": {
@@ -34,12 +34,19 @@
       "import": "./dist/importer.mjs",
       "require": "./dist/importer.cjs",
       "default": "./dist/importer.mjs"
+    },
+    "./translator": {
+      "types": "./dist/translator.d.ts",
+      "import": "./dist/translator.mjs",
+      "require": "./dist/translator.cjs",
+      "default": "./dist/translator.mjs"
     }
   },
   "typesVersions": {
     "*": {
       "unifier": ["./dist/unifier.d.ts"],
-      "importer": ["./dist/importer.d.ts"]
+      "importer": ["./dist/importer.d.ts"],
+      "translator": ["./dist/translator.d.ts"]
     }
   },
   "repository": {

@@ -1,3 +1,4 @@
+import { translator } from "@drincs/pixi-vn-json/translator";
 import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import {
     LabelAbstract,
@@ -19,7 +20,6 @@ import {
     PixiVNJsonDialogText,
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
-import TranslatorManager from "../internationalization/TranslatorManager";
 import { createExportableElement } from "../utils/createExportableElement";
 import { runOperation } from "./operation-utility";
 
@@ -159,10 +159,10 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         if (typeof dialogue === "object" && "character" in dialogue && "text" in dialogue) {
             return {
                 character: dialogue.character,
-                text: TranslatorManager.t(this.getDialogueText(dialogue.text)),
+                text: translator.t(this.getDialogueText(dialogue.text)),
             };
         } else {
-            return TranslatorManager.t(this.getDialogueText(dialogue));
+            return translator.t(this.getDialogueText(dialogue));
         }
     }
 
@@ -217,7 +217,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                         let texts: string[] = [];
                         option.text.forEach((t) => {
                             if (typeof t === "string") {
-                                texts.push(TranslatorManager.t(t));
+                                texts.push(translator.t(t));
                             } else if (t && typeof t === "object") {
                                 let res = JsonUnifier.getLogichValue<string | any[]>(t);
                                 if (res && !Array.isArray(res) && typeof res === "object") {
@@ -225,16 +225,16 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                                 }
                                 if (res) {
                                     if (Array.isArray(res)) {
-                                        texts = texts.concat(TranslatorManager.t(res));
+                                        texts = texts.concat(translator.t(res));
                                     } else {
-                                        texts.push(TranslatorManager.t(res));
+                                        texts.push(translator.t(res));
                                     }
                                 }
                             }
                         });
                         text = texts;
                     } else if (typeof option.text === "string") {
-                        text = TranslatorManager.t(option.text);
+                        text = translator.t(option.text);
                     }
                     const res: StoredChoiceInterface = {
                         label: option.label,

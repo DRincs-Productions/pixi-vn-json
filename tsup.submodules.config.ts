@@ -4,6 +4,7 @@ export default defineConfig({
     target: "es2020",
     entry: {
         importer: "src/importer/index.ts",
+        translator: "src/translator/index.ts",
     },
     format: ["cjs", "esm"],
     dts: true,

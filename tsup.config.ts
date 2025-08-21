@@ -15,7 +15,7 @@ export default defineConfig({
     minify: true,
     bundle: true,
     skipNodeModulesBundle: false, // Skip bundling of node_modules
-    external: ["@drincs/pixi-vn-json/unifier", "@drincs/pixi-vn-json/importer"],
+    external: ["@drincs/pixi-vn-json/unifier", "@drincs/pixi-vn-json/importer", "@drincs/pixi-vn-json/translator"],
     outExtension({ format }) {
         return {
             js: format === "esm" ? ".mjs" : ".cjs",

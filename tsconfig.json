@@ -32,6 +32,7 @@
     "paths": {                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
       "@drincs/pixi-vn-json/importer": ["src/importer/index.ts"],
       "@drincs/pixi-vn-json/unifier": ["src/unifier/index.ts"],
+      "@drincs/pixi-vn-json/translator": ["src/translator/index.ts"],
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
