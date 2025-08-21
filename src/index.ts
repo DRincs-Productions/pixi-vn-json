@@ -18,18 +18,20 @@ import { inputOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
 import { getConditionalStep, getLogichValue, setStorageValue } from "./utils/storage";
 
-JsonUnifier.init({
-    animateOperation: animateOperation,
-    canvasElementOperation: canvasElementOperation,
-    effectOperation: effectOperation,
-    imageContainerOperation: imageContainerOperation,
-    imageOperation: imageOperation,
-    inputOperation: inputOperation,
-    loadAssets: loadAssets,
-    soundOperation: soundOperation,
-    tickerOperation: tickerOperation,
-    videoOperation: videoOperation,
-    setStorageValue: setStorageValue,
-    getLogichValue: getLogichValue,
-    getConditionalStep: getConditionalStep,
-});
+export function init() {
+    JsonUnifier.init({
+        animateOperation: animateOperation,
+        canvasElementOperation: canvasElementOperation,
+        effectOperation: effectOperation,
+        imageContainerOperation: imageContainerOperation,
+        imageOperation: imageOperation,
+        inputOperation: inputOperation,
+        loadAssets: loadAssets,
+        soundOperation: soundOperation,
+        tickerOperation: tickerOperation,
+        videoOperation: videoOperation,
+        setStorageValue: setStorageValue,
+        getLogichValue: getLogichValue,
+        getConditionalStep: getConditionalStep,
+    });
+}

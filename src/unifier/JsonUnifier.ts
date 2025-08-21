@@ -91,15 +91,23 @@ export default class JsonUnifier {
     private static _loadAssets: (
         origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
     ) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get loadAssets() {
         return this._loadAssets;
     }
     private static _soundOperation: (operation: PixiVNJsonSound) => void = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get soundOperation() {
         return this._soundOperation;
@@ -107,8 +115,12 @@ export default class JsonUnifier {
     private static _imageOperation: (
         operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
     ) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get imageOperation() {
         return this._imageOperation;
@@ -120,8 +132,12 @@ export default class JsonUnifier {
             | PixiVNJsonVideoEdit
             | PixiVNJsonVideoPauseResume
     ) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get videoOperation() {
         return this._videoOperation;
@@ -129,8 +145,12 @@ export default class JsonUnifier {
     private static _imageContainerOperation: (
         operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
     ) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get imageContainerOperation() {
         return this._imageContainerOperation;
@@ -140,43 +160,67 @@ export default class JsonUnifier {
             | PixiVNJsonCanvasRemove
             | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
     ) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get canvasElementOperation() {
         return this._canvasElementOperation;
     }
     private static _setStorageValue: (value: PixiVNJsonValueSet) => void = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get setStorageValue() {
         return this._setStorageValue;
     }
     private static _inputOperation: (operation: PixiVNJsonInput) => void = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get inputOperation() {
         return this._inputOperation;
     }
     private static _tickerOperation: (operation: PixiVNJsonCanvasTicker) => void = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get tickerOperation() {
         return this._tickerOperation;
     }
     private static _effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void> = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get effectOperation() {
         return this._effectOperation;
     }
     private static _animateOperation: (operation: PixiVNJsonCanvasAnimate) => void = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get animateOperation() {
         return this._animateOperation;
@@ -191,15 +235,23 @@ export default class JsonUnifier {
                   T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
               >
     ) => T | undefined = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get getLogichValue() {
         return this._getLogichValue;
     }
     private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = () => {
-        logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
-        throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
     };
     static get getConditionalStep() {
         return this._getConditionalStep;
