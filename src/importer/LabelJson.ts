@@ -20,21 +20,8 @@ import {
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
 import TranslatorManager from "../internationalization/TranslatorManager";
-import { logger } from "../utils/log-utility";
+import { createExportableElement } from "../utils/createExportableElement";
 import { runOperation } from "./operation-utility";
-
-function createExportableElement<T>(element: T): T {
-    try {
-        if (typeof element === "undefined") {
-            return element;
-        }
-        let elementString = JSON.stringify(element);
-        return JSON.parse(elementString);
-    } catch (e) {
-        logger.error("Error creating exportable element", element, e);
-        throw new Error("[Pixi’VN] Error creating exportable element");
-    }
-}
 
 export type LabelJsonOptions = {
     /**
