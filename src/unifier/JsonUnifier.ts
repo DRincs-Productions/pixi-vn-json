@@ -61,7 +61,18 @@ export default class JsonUnifier {
         inputOperation: (operation: PixiVNJsonInput) => void;
         tickerOperation: (operation: PixiVNJsonCanvasTicker) => void;
         effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
-        animateOperation: (operation: PixiVNJsonCanvasAnimate) => Promise<void>;
+        animateOperation: (operation: PixiVNJsonCanvasAnimate) => void;
+        getLogichValue: <T = StorageElementType>(
+            value:
+                | T
+                | PixiVNJsonValueGet
+                | PixiVNJsonArithmeticOperations
+                | PixiVNJsonConditions
+                | PixiVNJsonConditionalStatements<
+                      T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+                  >
+        ) => T | undefined;
+        getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
         this._loadAssets = options.loadAssets;
         this._soundOperation = options.soundOperation;
@@ -74,6 +85,8 @@ export default class JsonUnifier {
         this._tickerOperation = options.tickerOperation;
         this._effectOperation = options.effectOperation;
         this._animateOperation = options.animateOperation;
+        this._getLogichValue = options.getLogichValue;
+        this._getConditionalStep = options.getConditionalStep;
     }
     private static _loadAssets: (
         origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
@@ -161,7 +174,7 @@ export default class JsonUnifier {
     static get effectOperation() {
         return this._effectOperation;
     }
-    private static _animateOperation: (operation: PixiVNJsonCanvasAnimate) => Promise<void> = () => {
+    private static _animateOperation: (operation: PixiVNJsonCanvasAnimate) => void = () => {
         logger.error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
         throw new Error("Method not implemented, you should initialize the JsonUnifier: JsonUnifier.init()");
     };
