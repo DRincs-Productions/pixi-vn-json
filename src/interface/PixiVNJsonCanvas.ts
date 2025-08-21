@@ -1,4 +1,4 @@
-import {
+import type {
     ContainerMemory,
     ContainerOptions,
     ImageContainerMemory,
@@ -13,7 +13,7 @@ import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
 import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker";
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
 
-type PixiVNJsonCanvasImageVideoShow = {
+export type PixiVNJsonCanvasImageVideoShow = {
     type: "image" | "video";
     operationType: "show";
     alias: string;
@@ -25,7 +25,7 @@ type PixiVNJsonCanvasImageVideoShow = {
     props?: ImageSpriteOptions;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonCanvasImageContainerShow = {
+export type PixiVNJsonCanvasImageContainerShow = {
     type: "imagecontainer";
     operationType: "show";
     alias: string;
@@ -33,25 +33,25 @@ type PixiVNJsonCanvasImageContainerShow = {
     props?: ImageContainerOptions<ImageSprite>;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonImageEdit = {
+export type PixiVNJsonImageEdit = {
     type: "image";
     operationType: "edit";
     alias: string;
     props?: Partial<ImageSpriteMemory>;
 };
-type PixiVNJsonVideoEdit = {
+export type PixiVNJsonVideoEdit = {
     type: "video";
     operationType: "edit";
     alias: string;
     props?: Partial<VideoSpriteMemory>;
 };
-type PixiVNJsonImageContainerEdit = {
+export type PixiVNJsonImageContainerEdit = {
     type: "imagecontainer";
     operationType: "edit";
     alias: string;
     props?: Partial<ImageContainerMemory>;
 };
-type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
+export type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     type: "canvaselement";
     operationType: "edit";
     alias: string;
@@ -63,7 +63,7 @@ export type PixiVNJsonCanvasRemove = {
     alias: string;
     transition?: PixiVNJsonMediaTransiotions;
 };
-type PixiVNJsonVideoPauseResume = {
+export type PixiVNJsonVideoPauseResume = {
     type: "video";
     operationType: "pause" | "resume";
     alias: string;

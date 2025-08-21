@@ -8,11 +8,16 @@ import {
 } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import {
+    PixiVNJsonArithmeticOperations,
+    PixiVNJsonChoiceGet,
+    PixiVNJsonConditionalResultToCombine,
+    PixiVNJsonConditionalStatements,
     PixiVNJsonConditions,
     PixiVNJsonDialog,
     PixiVNJsonDialogText,
     PixiVNJsonLabelGet,
     PixiVNJsonLabelStep,
+    PixiVNJsonLogicGet,
     PixiVNJsonOperation,
     PixiVNJsonStepSwitchElementType,
     PixiVNJsonStorageGet,
@@ -20,12 +25,209 @@ import {
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
-import PixiVNJsonArithmeticOperations from "../interface/PixiVNJsonArithmeticOperations";
-import PixiVNJsonConditionalResultToCombine from "../interface/PixiVNJsonConditionalResultToCombine";
-import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
-import { PixiVNJsonChoiceGet, PixiVNJsonLogicGet } from "../interface/PixiVNJsonValue";
-import { translator } from "../managers";
-import { logger } from "../utils/log-utility";
+import { translator } from "../internationalization";
+import { logger } from "./log-utility";
+
+export function setStorageValue(value: PixiVNJsonValueSet) {
+    let v = getLogichValue<StorageElementType>(value.value);
+    let valueToSet: StorageElementType;
+    if (v && typeof v === "object" && "type" in v) {
+        valueToSet = getLogichValue<StorageElementType>(v);
+    } else {
+        valueToSet = v;
+    }
+    switch (value.storageType) {
+        case "flagStorage":
+            storage.setFlag(value.key, value.value);
+            break;
+        case "storage":
+            storage.setVariable(value.key, valueToSet);
+            break;
+        case "tempstorage":
+            storage.setTempVariable(value.key, valueToSet);
+            break;
+        case "params":
+            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
+            if (params && params.length - 1 >= (value.key as number)) {
+                params[value.key as number] = valueToSet;
+            }
+            storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params);
+            break;
+    }
+}
+
+export function getLogichValue<T = StorageElementType>(
+    value:
+        | T
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+        | PixiVNJsonConditions
+        | PixiVNJsonConditionalStatements<
+              T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+          >
+): T | undefined {
+    let v = getValueFromConditionalStatements<
+        T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+    >(value);
+    if (v && typeof v === "object" && "type" in v) {
+        switch (v.type) {
+            case "value":
+                return getValue<T>(v);
+            case "arithmetic":
+            case "arithmeticsingle":
+                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations);
+            case "compare":
+            case "valueCondition":
+            case "union":
+                return getConditionResult(v) as T;
+        }
+    }
+    return v as T;
+}
+
+function getValueFromArithmeticOperations<T = StorageElementType>(
+    operation: PixiVNJsonArithmeticOperations
+): T | undefined {
+    let leftValue = getLogichValue(operation.leftValue);
+    switch (operation.type) {
+        case "arithmetic":
+            let rightValue = getLogichValue(operation.rightValue);
+            switch (operation.operator) {
+                case "*":
+                    return ((leftValue as any) * (rightValue as any)) as T;
+                case "/":
+                    return ((leftValue as any) / (rightValue as any)) as T;
+                case "+":
+                    return ((leftValue as any) + (rightValue as any)) as T;
+                case "-":
+                    return ((leftValue as any) - (rightValue as any)) as T;
+                case "%":
+                    return ((leftValue as any) % (rightValue as any)) as T;
+                case "POW":
+                    return Math.pow(leftValue as any, rightValue as any) as T;
+                case "RANDOM":
+                    return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
+            }
+        case "arithmeticsingle":
+            switch (operation.operator) {
+                case "INT":
+                    return parseInt(leftValue as any) as T;
+                case "FLOOR":
+                    return Math.floor(leftValue as any) as T;
+                case "FLOAT":
+                    return parseFloat(leftValue as any) as T;
+            }
+            break;
+    }
+}
+
+/**
+ * Get the value from the storage or the value.
+ * @param value is the value to get
+ * @returns the value from the storage or the value
+ */
+function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | undefined {
+    if (value && typeof value === "object") {
+        if ("type" in value) {
+            if (value.type === "value" && value.storageOperationType === "get") {
+                switch (value.storageType) {
+                    case "storage":
+                    case "tempstorage":
+                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T;
+                    case "flagStorage":
+                        return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
+                    case "label":
+                        return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T;
+                    case "choice":
+                        return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T;
+                    case "logic":
+                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
+                    case "params":
+                        let params: any[] =
+                            storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
+                        if (params && params.length > (value.key as number)) {
+                            return params[value.key as number] as unknown as T;
+                        }
+                        logger.warn("getValue params not found");
+                        return undefined;
+                }
+            }
+        }
+    }
+    return value as T;
+}
+
+/**
+ * Get the result of the condition.
+ * @param condition is the condition object
+ * @returns the result of the condition
+ */
+function getConditionResult(condition: PixiVNJsonConditions): boolean {
+    if (!condition) {
+        return false;
+    }
+    if (typeof condition !== "object" || !("type" in condition)) {
+        if (condition) {
+            return true;
+        }
+        return false;
+    }
+    switch (condition.type) {
+        case "compare":
+            let leftValue = getLogichValue<any>(condition.leftValue);
+            let rightValue = getLogichValue<any>(condition.rightValue);
+            switch (condition.operator) {
+                case "==":
+                    return leftValue === rightValue;
+                case "!=":
+                    return leftValue !== rightValue;
+                case "<":
+                    return leftValue < rightValue;
+                case "<=":
+                    return leftValue <= rightValue;
+                case ">":
+                    return leftValue > rightValue;
+                case ">=":
+                    return leftValue >= rightValue;
+                case "CONTAINS":
+                    return leftValue.toString().includes(rightValue.toString());
+            }
+            break;
+        case "valueCondition":
+            return getLogichValue(condition.value) ? true : false;
+        case "union":
+            return getUnionConditionResult(condition as PixiVNJsonUnionCondition);
+    }
+    if (condition) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Get the result of the union condition.
+ * @param condition is the union condition object
+ * @returns the result of the union condition
+ */
+function getUnionConditionResult(condition: PixiVNJsonUnionCondition): boolean {
+    if (condition.unionType === "not") {
+        return !getLogichValue<boolean>(condition.condition);
+    }
+    let result: boolean = condition.unionType === "and" ? true : false;
+    for (let i = 0; i < condition.conditions.length; i++) {
+        result = getLogichValue<boolean>(condition.conditions[i]) || false;
+        if (condition.unionType === "and") {
+            if (!result) {
+                return false;
+            }
+        } else {
+            if (result) {
+                return true;
+            }
+        }
+    }
+    return result;
+}
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -251,205 +453,5 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             operations: operations,
         };
         return res as T;
-    }
-}
-
-/**
- * Get the result of the condition.
- * @param condition is the condition object
- * @returns the result of the condition
- */
-function getConditionResult(condition: PixiVNJsonConditions): boolean {
-    if (!condition) {
-        return false;
-    }
-    if (typeof condition !== "object" || !("type" in condition)) {
-        if (condition) {
-            return true;
-        }
-        return false;
-    }
-    switch (condition.type) {
-        case "compare":
-            let leftValue = getLogichValue<any>(condition.leftValue);
-            let rightValue = getLogichValue<any>(condition.rightValue);
-            switch (condition.operator) {
-                case "==":
-                    return leftValue === rightValue;
-                case "!=":
-                    return leftValue !== rightValue;
-                case "<":
-                    return leftValue < rightValue;
-                case "<=":
-                    return leftValue <= rightValue;
-                case ">":
-                    return leftValue > rightValue;
-                case ">=":
-                    return leftValue >= rightValue;
-                case "CONTAINS":
-                    return leftValue.toString().includes(rightValue.toString());
-            }
-            break;
-        case "valueCondition":
-            return getLogichValue(condition.value) ? true : false;
-        case "union":
-            return getUnionConditionResult(condition as PixiVNJsonUnionCondition);
-    }
-    if (condition) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Get the value from the storage or the value.
- * @param value is the value to get
- * @returns the value from the storage or the value
- */
-function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | undefined {
-    if (value && typeof value === "object") {
-        if ("type" in value) {
-            if (value.type === "value" && value.storageOperationType === "get") {
-                switch (value.storageType) {
-                    case "storage":
-                    case "tempstorage":
-                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T;
-                    case "flagStorage":
-                        return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
-                    case "label":
-                        return narration.getTimesLabelOpened((value as PixiVNJsonLabelGet).label) as unknown as T;
-                    case "choice":
-                        return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T;
-                    case "logic":
-                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
-                    case "params":
-                        let params: any[] =
-                            storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
-                        if (params && params.length > (value.key as number)) {
-                            return params[value.key as number] as unknown as T;
-                        }
-                        logger.warn("getValue params not found");
-                        return undefined;
-                }
-            }
-        }
-    }
-    return value as T;
-}
-
-/**
- * Get the result of the union condition.
- * @param condition is the union condition object
- * @returns the result of the union condition
- */
-function getUnionConditionResult(condition: PixiVNJsonUnionCondition): boolean {
-    if (condition.unionType === "not") {
-        return !getLogichValue<boolean>(condition.condition);
-    }
-    let result: boolean = condition.unionType === "and" ? true : false;
-    for (let i = 0; i < condition.conditions.length; i++) {
-        result = getLogichValue<boolean>(condition.conditions[i]) || false;
-        if (condition.unionType === "and") {
-            if (!result) {
-                return false;
-            }
-        } else {
-            if (result) {
-                return true;
-            }
-        }
-    }
-    return result;
-}
-
-export function setStorageJson(value: PixiVNJsonValueSet) {
-    let v = getLogichValue<StorageElementType>(value.value);
-    let valueToSet: StorageElementType;
-    if (v && typeof v === "object" && "type" in v) {
-        valueToSet = getLogichValue<StorageElementType>(v);
-    } else {
-        valueToSet = v;
-    }
-    switch (value.storageType) {
-        case "flagStorage":
-            storage.setFlag(value.key, value.value);
-            break;
-        case "storage":
-            storage.setVariable(value.key, valueToSet);
-            break;
-        case "tempstorage":
-            storage.setTempVariable(value.key, valueToSet);
-            break;
-        case "params":
-            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
-            if (params && params.length - 1 >= (value.key as number)) {
-                params[value.key as number] = valueToSet;
-            }
-            storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params);
-            break;
-    }
-}
-
-export function getLogichValue<T = StorageElementType>(
-    value:
-        | T
-        | PixiVNJsonValueGet
-        | PixiVNJsonArithmeticOperations
-        | PixiVNJsonConditions
-        | PixiVNJsonConditionalStatements<
-              T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-          >
-): T | undefined {
-    let v = getValueFromConditionalStatements<
-        T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-    >(value);
-    if (v && typeof v === "object" && "type" in v) {
-        switch (v.type) {
-            case "value":
-                return getValue<T>(v);
-            case "arithmetic":
-            case "arithmeticsingle":
-                return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations);
-            case "compare":
-            case "valueCondition":
-            case "union":
-                return getConditionResult(v) as T;
-        }
-    }
-    return v as T;
-}
-function getValueFromArithmeticOperations<T = StorageElementType>(
-    operation: PixiVNJsonArithmeticOperations
-): T | undefined {
-    let leftValue = getLogichValue(operation.leftValue);
-    switch (operation.type) {
-        case "arithmetic":
-            let rightValue = getLogichValue(operation.rightValue);
-            switch (operation.operator) {
-                case "*":
-                    return ((leftValue as any) * (rightValue as any)) as T;
-                case "/":
-                    return ((leftValue as any) / (rightValue as any)) as T;
-                case "+":
-                    return ((leftValue as any) + (rightValue as any)) as T;
-                case "-":
-                    return ((leftValue as any) - (rightValue as any)) as T;
-                case "%":
-                    return ((leftValue as any) % (rightValue as any)) as T;
-                case "POW":
-                    return Math.pow(leftValue as any, rightValue as any) as T;
-                case "RANDOM":
-                    return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
-            }
-        case "arithmeticsingle":
-            switch (operation.operator) {
-                case "INT":
-                    return parseInt(leftValue as any) as T;
-                case "FLOOR":
-                    return Math.floor(leftValue as any) as T;
-                case "FLOAT":
-                    return parseFloat(leftValue as any) as T;
-            }
-            break;
     }
 }

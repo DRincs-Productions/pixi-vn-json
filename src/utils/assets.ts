@@ -1,12 +1,12 @@
 import { Assets } from "@drincs/pixi-vn";
+import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
-import { getLogichValue } from "./utility";
 
 export async function loadAssets(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
 ) {
-    let operation = getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
     if (!operation) {
         return;
     }

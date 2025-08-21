@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { PixiVNJson } from "../src";
-import TranslatorManager from "../src/managers/TranslateManager";
+import TranslatorManager from "../src/internationalization/TranslatorManager";
 
 test("Translate test 1", async () => {
     let input: PixiVNJson = {

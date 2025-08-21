@@ -1,8 +1,9 @@
-import { RegisteredLabels, storage, StorageElementType } from "@drincs/pixi-vn";
-import { LabelJson } from "../classes";
-import { LabelJsonOptions } from "../classes/LabelJson";
+import { RegisteredLabels } from "@drincs/pixi-vn/narration";
+import { storage, StorageElementType } from "@drincs/pixi-vn/storage";
+import { LabelJson } from ".";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
+import { LabelJsonOptions } from "./LabelJson";
 import { runOperation } from "./operation-utility";
 
 /**
