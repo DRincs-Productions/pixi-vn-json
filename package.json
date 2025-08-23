@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.7.4",
+  "version": "1.7.5",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
@@ -11,9 +11,10 @@
   ],
   "scripts": {
     "build:unifier": "tsup --config tsup.unifier.config.ts",
+    "build:translator": "tsup --config tsup.translator.config.ts",
     "build:submodules": "tsup --config tsup.submodules.config.ts",
     "build:index": "tsup --config tsup.config.ts",
-    "build": "npm run build:unifier && npm run build:submodules && npm run build:index",
+    "build": "npm run build:unifier && npm run build:translator && npm run build:submodules && npm run build:index",
     "test": "vitest"
   },
   "exports": {
