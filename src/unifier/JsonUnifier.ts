@@ -5,7 +5,6 @@ import {
     StorageElementType,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
-import { getConditionalStep, getLogichValue, setStorageValue } from "src/utils/storage";
 import {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
@@ -171,7 +170,14 @@ export default class JsonUnifier {
     static get canvasElementOperation() {
         return JsonUnifier._canvasElementOperation;
     }
-    private static _setStorageValue: (value: PixiVNJsonValueSet) => void = setStorageValue;
+    private static _setStorageValue: (value: PixiVNJsonValueSet) => void = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+    };
     static get setStorageValue() {
         return JsonUnifier._setStorageValue;
     }
@@ -228,11 +234,25 @@ export default class JsonUnifier {
             | PixiVNJsonConditionalStatements<
                   T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
               >
-    ) => T | undefined = getLogichValue;
+    ) => T | undefined = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+    };
     static get getLogichValue() {
         return JsonUnifier._getLogichValue;
     }
-    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = getConditionalStep;
+    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+    };
     static get getConditionalStep() {
         return JsonUnifier._getConditionalStep;
     }
