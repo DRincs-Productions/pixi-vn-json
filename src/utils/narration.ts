@@ -1,10 +1,13 @@
 import { narration } from "@drincs/pixi-vn";
-import { PixiVNJsonInput } from "../interface";
+import { PixiVNJsonNarration } from "../interface";
 
-export function inputOperation(operation: PixiVNJsonInput) {
-    switch (operation.operationType) {
-        case "request":
+export function narrationOperation(operation: PixiVNJsonNarration) {
+    switch (operation.type) {
+        case "input":
             narration.requestInput({ type: operation.valueType }, operation.defaultValue);
+            break;
+        case "dialogue":
+            narration.dialogue = undefined;
             break;
     }
 }

@@ -14,7 +14,7 @@ import {
     tickerOperation,
     videoOperation,
 } from "./utils/canvas";
-import { inputOperation } from "./utils/narration";
+import { narrationOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
 import { getConditionalStep, getLogichValue, setStorageValue } from "./utils/storage";
 
@@ -25,7 +25,7 @@ export function init() {
         effectOperation: effectOperation,
         imageContainerOperation: imageContainerOperation,
         imageOperation: imageOperation,
-        inputOperation: inputOperation,
+        narrationOperation: narrationOperation,
         loadAssets: loadAssets,
         soundOperation: soundOperation,
         tickerOperation: tickerOperation,

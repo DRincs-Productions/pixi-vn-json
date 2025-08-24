@@ -13,8 +13,8 @@ import {
     PixiVNJsonConditionalStatements,
     PixiVNJsonConditions,
     PixiVNJsonIfElse,
-    PixiVNJsonInput,
     PixiVNJsonLabelStep,
+    PixiVNJsonNarration,
     PixiVNJsonOperation,
     PixiVNJsonOperationString,
     PixiVNJsonSound,
@@ -58,7 +58,7 @@ export default class JsonUnifier {
                 | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
         ) => Promise<void>;
         setStorageValue: (value: PixiVNJsonValueSet) => void;
-        inputOperation: (operation: PixiVNJsonInput) => void;
+        narrationOperation: (operation: PixiVNJsonNarration) => void;
         tickerOperation: (operation: PixiVNJsonCanvasTicker) => void;
         effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
         animateOperation: (operation: PixiVNJsonCanvasAnimate) => void;
@@ -81,7 +81,7 @@ export default class JsonUnifier {
         JsonUnifier._imageContainerOperation = options.imageContainerOperation;
         JsonUnifier._canvasElementOperation = options.canvasElementOperation;
         JsonUnifier._setStorageValue = options.setStorageValue;
-        JsonUnifier._inputOperation = options.inputOperation;
+        JsonUnifier._narrationOperation = options.narrationOperation;
         JsonUnifier._tickerOperation = options.tickerOperation;
         JsonUnifier._effectOperation = options.effectOperation;
         JsonUnifier._animateOperation = options.animateOperation;
@@ -181,7 +181,7 @@ export default class JsonUnifier {
     static get setStorageValue() {
         return JsonUnifier._setStorageValue;
     }
-    private static _inputOperation: (operation: PixiVNJsonInput) => void = () => {
+    private static _narrationOperation: (operation: PixiVNJsonNarration) => void = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
         );
@@ -189,8 +189,8 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
         );
     };
-    static get inputOperation() {
-        return JsonUnifier._inputOperation;
+    static get narrationOperation() {
+        return JsonUnifier._narrationOperation;
     }
     private static _tickerOperation: (operation: PixiVNJsonCanvasTicker) => void = () => {
         logger.error(

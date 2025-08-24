@@ -21,7 +21,6 @@ export type { default as PixiVNJsonConditionalResultToCombine } from "./PixiVNJs
 export type { default as PixiVNJsonConditionalStatements } from "./PixiVNJsonConditionalStatements";
 export type { PixiVNJsonComparation, default as PixiVNJsonConditions } from "./PixiVNJsonConditions";
 export type { default as PixiVNJsonIfElse } from "./PixiVNJsonIfElse";
-export type { default as PixiVNJsonInput } from "./PixiVNJsonInput";
 export type { default as PixiVNJsonLabels } from "./PixiVNJsonLabels";
 export type {
     PixiVNJsonChoice,
@@ -32,6 +31,7 @@ export type {
     PixiVNJsonLabelToOpen,
 } from "./PixiVNJsonLabelStep";
 export type { default as PixiVNJsonMediaTransiotions } from "./PixiVNJsonMediaTransiotions";
+export type { default as PixiVNJsonNarration } from "./PixiVNJsonNarration";
 export type {
     default as PixiVNJsonConditionalOperation,
     PixiVNJsonOperation,

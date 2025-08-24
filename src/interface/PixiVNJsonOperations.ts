@@ -1,7 +1,7 @@
 import PixiVNJsonCanvas from "./PixiVNJsonCanvas";
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
 import PixiVNJsonIfElse from "./PixiVNJsonIfElse";
-import PixiVNJsonInput from "./PixiVNJsonInput";
+import PixiVNJsonNarration from "./PixiVNJsonNarration";
 import PixiVNJsonSound from "./PixiVNJsonSound";
 import { PixiVNJsonValueGet, PixiVNJsonValueSet } from "./PixiVNJsonValue";
 
@@ -10,7 +10,7 @@ export type PixiVNJsonOperationString = {
     values: (string | PixiVNJsonValueGet | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet>)[];
 };
 
-export type PixiVNJsonOperation = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonInput;
+export type PixiVNJsonOperation = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonNarration;
 
 type PixiVNJsonConditionalOperation =
     | PixiVNJsonOperation

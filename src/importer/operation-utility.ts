@@ -51,7 +51,8 @@ export async function runOperation(
             }
             break;
         case "input":
-            JsonUnifier.inputOperation(operation);
+        case "dialogue":
+            JsonUnifier.narrationOperation(operation);
             break;
         case "fade":
         case "move":
