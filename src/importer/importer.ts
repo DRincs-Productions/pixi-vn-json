@@ -4,7 +4,6 @@ import { LabelJson } from ".";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
 import { LabelJsonOptions } from "./LabelJson";
-import { runOperation } from "./operation-utility";
 
 /**
  * Import a Pixi'VN JSON to the system.
@@ -43,13 +42,6 @@ export async function importPixiVNJson(
     const promises = jsons.map(async (data) => {
         const promises: Promise<void>[] = [];
         if (data.initialOperations) {
-            data.initialOperations.forEach((operation) => {
-                let promise = runOperation(
-                    operation,
-                    operationStringConvert ? (value) => operationStringConvert(value, {}, {}) : undefined
-                );
-                promises.push(promise);
-            });
             let basicStorage: {
                 [key: string]: StorageElementType;
             } = {};
