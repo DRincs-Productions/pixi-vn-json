@@ -1,3 +1,4 @@
+import PixiVNJsonIfElse from "./PixiVNJsonIfElse";
 import PixiVNJsonLabels from "./PixiVNJsonLabels";
 import { PixiVNJsonValueSet } from "./PixiVNJsonValue";
 
@@ -10,7 +11,7 @@ export default interface PixiVNJson {
      * For the set storage: They will be set only if there are no variables with the same key already.
      * For the det tempstorage: if there are variables with the same key already, they will be overwritten.
      */
-    initialOperations?: PixiVNJsonValueSet[];
+    initialOperations?: (PixiVNJsonValueSet | PixiVNJsonIfElse<PixiVNJsonValueSet>)[];
     /**
      * The labels to be used in the narrative. They will be added to the system
      */
