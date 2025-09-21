@@ -124,13 +124,15 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                             res = JsonUnifier.getLogichValue<string | string[]>(res) || "";
                         }
                         if (Array.isArray(res)) {
-                            texts = texts.concat(res);
+                            texts = texts.map((v) => `${v}`).concat(res);
                         } else {
                             texts.push(`${res}`);
                         }
                     } else {
                         texts.push(`${t}`);
                     }
+                } else {
+                    texts.push(`${t}`);
                 }
             });
             text = texts;
