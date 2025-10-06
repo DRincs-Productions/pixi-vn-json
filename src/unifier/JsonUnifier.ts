@@ -25,8 +25,10 @@ import {
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasRemove,
+    PixiVNJsonCanvasTextShow,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
+    PixiVNJsonTextEdit,
     PixiVNJsonUnknownEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
@@ -51,6 +53,9 @@ export default class JsonUnifier {
         ) => Promise<void>;
         imageContainerOperation: (
             operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+        ) => Promise<void>;
+        textOperation: (
+            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit
         ) => Promise<void>;
         canvasElementOperation: (
             operation:
@@ -79,6 +84,7 @@ export default class JsonUnifier {
         JsonUnifier._imageOperation = options.imageOperation;
         JsonUnifier._videoOperation = options.videoOperation;
         JsonUnifier._imageContainerOperation = options.imageContainerOperation;
+        JsonUnifier._textOperation = options.textOperation;
         JsonUnifier._canvasElementOperation = options.canvasElementOperation;
         JsonUnifier._setStorageValue = options.setStorageValue;
         JsonUnifier._narrationOperation = options.narrationOperation;
@@ -144,6 +150,19 @@ export default class JsonUnifier {
     }
     private static _imageContainerOperation: (
         operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+    ) => Promise<void> = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+    };
+    static get textOperation() {
+        return JsonUnifier._textOperation;
+    }
+    private static _textOperation: (
+        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit
     ) => Promise<void> = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."

@@ -17,9 +17,11 @@ import {
     shakeEffect,
     showImage,
     showImageContainer,
+    showText,
     showVideo,
     showWithDissolve,
     showWithFade,
+    Text,
     VideoSprite,
     VideoSpriteMemory,
     zoomIn,
@@ -37,8 +39,10 @@ import {
 import {
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
+    PixiVNJsonCanvasTextShow,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
+    PixiVNJsonTextEdit,
     PixiVNJsonUnknownEdit,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
@@ -46,7 +50,7 @@ import {
 import { logger } from "./log-utility";
 
 async function showCanvasElemet(
-    element: ImageSprite | VideoSprite | ImageContainer,
+    element: ImageSprite | VideoSprite | ImageContainer | Text,
     operation: PixiVNJsonCanvasShow,
     transition: PixiVNJsonMediaTransiotions
 ) {
@@ -204,6 +208,37 @@ export async function imageContainerOperation(
                 }
             } else {
                 logger.error(`ImageContainer with alias ${operation.alias} not found.`);
+            }
+            break;
+        case "remove":
+            removeCanvasElement(operation);
+            break;
+    }
+}
+
+export async function textOperation(operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit) {
+    switch (operation.operationType) {
+        case "show":
+            operation.props = operation.props || {};
+            operation.props.text = operation.text;
+            if (operation.transition) {
+                let imageContainerToShow = new Text(operation.props);
+                await showCanvasElemet(imageContainerToShow, operation, operation.transition);
+            } else {
+                showText(operation.alias, operation.text, operation.props);
+            }
+            break;
+        case "edit":
+            let image = canvas.find<Text>(operation.alias);
+            if (image) {
+                if (operation.props) {
+                    await image.setMemory({
+                        ...image.memory,
+                        ...operation.props,
+                    });
+                }
+            } else {
+                logger.error(`Text with alias ${operation.alias} not found.`);
             }
             break;
         case "remove":

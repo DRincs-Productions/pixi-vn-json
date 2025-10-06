@@ -27,6 +27,9 @@ export async function runOperation(
         case "imagecontainer":
             await JsonUnifier.imageContainerOperation(operation);
             break;
+        case "text":
+            await JsonUnifier.textOperation(operation);
+            break;
         case "canvaselement":
             await JsonUnifier.canvasElementOperation(operation);
             break;

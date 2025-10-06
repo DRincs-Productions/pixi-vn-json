@@ -11,6 +11,7 @@ import {
     effectOperation,
     imageContainerOperation,
     imageOperation,
+    textOperation,
     tickerOperation,
     videoOperation,
 } from "./utils/canvas";
@@ -25,6 +26,7 @@ export function init() {
         effectOperation: effectOperation,
         imageContainerOperation: imageContainerOperation,
         imageOperation: imageOperation,
+        textOperation: textOperation,
         narrationOperation: narrationOperation,
         loadAssets: loadAssets,
         soundOperation: soundOperation,

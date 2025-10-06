@@ -1,4 +1,4 @@
-import type {
+import {
     ContainerMemory,
     ContainerOptions,
     ImageContainerMemory,
@@ -6,6 +6,8 @@ import type {
     ImageSprite,
     ImageSpriteMemory,
     ImageSpriteOptions,
+    TextMemory,
+    TextOptions,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
 import PixiVNJsonCanvasAnimate from "./PixiVNJsonCanvasAnimate";
@@ -33,6 +35,14 @@ export type PixiVNJsonCanvasImageContainerShow = {
     props?: ImageContainerOptions<ImageSprite>;
     transition?: PixiVNJsonMediaTransiotions;
 };
+export type PixiVNJsonCanvasTextShow = {
+    type: "text";
+    operationType: "show";
+    alias: string;
+    text: string;
+    props?: TextOptions;
+    transition?: PixiVNJsonMediaTransiotions;
+};
 export type PixiVNJsonImageEdit = {
     type: "image";
     operationType: "edit";
@@ -51,6 +61,12 @@ export type PixiVNJsonImageContainerEdit = {
     alias: string;
     props?: Partial<ImageContainerMemory>;
 };
+export type PixiVNJsonTextEdit = {
+    type: "text";
+    operationType: "edit";
+    alias: string;
+    props?: Partial<TextMemory>;
+};
 export type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     type: "canvaselement";
     operationType: "edit";
@@ -58,7 +74,7 @@ export type PixiVNJsonUnknownEdit<T extends ContainerOptions> = {
     props?: Partial<T>;
 };
 export type PixiVNJsonCanvasRemove = {
-    type: "image" | "video" | "imagecontainer" | "canvaselement";
+    type: "image" | "video" | "imagecontainer" | "canvaselement" | "text";
     operationType: "remove";
     alias: string;
     transition?: PixiVNJsonMediaTransiotions;
@@ -74,12 +90,16 @@ type PixiVNJsonAssetsLoad = {
     aliases: string[];
 };
 
-export type PixiVNJsonCanvasShow = PixiVNJsonCanvasImageContainerShow | PixiVNJsonCanvasImageVideoShow;
+export type PixiVNJsonCanvasShow =
+    | PixiVNJsonCanvasImageContainerShow
+    | PixiVNJsonCanvasImageVideoShow
+    | PixiVNJsonCanvasTextShow;
 export type PixiVNJsonCanvasEdit =
     | PixiVNJsonImageEdit
     | PixiVNJsonVideoEdit
     | PixiVNJsonImageContainerEdit
-    | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory>;
+    | PixiVNJsonTextEdit
+    | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory | TextMemory>;
 
 type PixiVNJsonCanvas =
     | PixiVNJsonCanvasShow
