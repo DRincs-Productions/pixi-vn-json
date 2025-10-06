@@ -28,6 +28,7 @@ import {
     zoomOut,
     ZoomTicker,
 } from "@drincs/pixi-vn";
+import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
@@ -220,7 +221,7 @@ export async function textOperation(operation: PixiVNJsonCanvasRemove | PixiVNJs
     switch (operation.operationType) {
         case "show":
             operation.props = operation.props || {};
-            operation.props.text = operation.text;
+            operation.props.text = translator.t(operation.text);
             if (operation.transition) {
                 let imageContainerToShow = new Text(operation.props);
                 await showCanvasElemet(imageContainerToShow, operation, operation.transition);

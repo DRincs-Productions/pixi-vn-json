@@ -236,6 +236,19 @@ export default class TranslatorManager {
                     }
                 });
             }
+            if (label.operations) {
+                label.operations.forEach((operation) => {
+                    switch (operation.type) {
+                        case "text":
+                            switch (operation.operationType) {
+                                case "show":
+                                    TranslatorManager.addKey(json, operation.text, { defaultValue });
+                                    break;
+                            }
+                            break;
+                    }
+                });
+            }
             if (label.conditionalStep) {
                 let l = TranslatorManager.getConditionalsThenElse(label.conditionalStep);
                 l.forEach((item) => {
