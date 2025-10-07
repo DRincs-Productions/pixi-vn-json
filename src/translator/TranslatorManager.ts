@@ -1,3 +1,4 @@
+import { StepLabelPropsType } from "@drincs/pixi-vn";
 import {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
@@ -142,7 +143,11 @@ export default class TranslatorManager {
              * @default "copy_key"
              */
             defaultValue?: "empty_string" | "copy_key";
-            operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>;
+            operationStringConvert?: (
+                value: string,
+                step: PixiVNJsonLabelStep,
+                props: StepLabelPropsType | {}
+            ) => Promise<PixiVNJsonOperation | undefined>;
         } = {}
     ) {
         const { defaultValue = "copy_key", operationStringConvert } = options;
@@ -243,7 +248,7 @@ export default class TranslatorManager {
                 for (let operation of label.operations) {
                     if (operation.type === "operationtoconvert" && operationStringConvert) {
                         let stringOperation = operationStringToString(operation);
-                        let res = await operationStringConvert(stringOperation);
+                        let res = await operationStringConvert(stringOperation, label, {});
                         if (!res) {
                             return;
                         }
