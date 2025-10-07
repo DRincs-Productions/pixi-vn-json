@@ -1,4 +1,5 @@
 import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
+import { operationStringToString } from "src/utils/operationtoconvert";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 
@@ -38,15 +39,7 @@ export async function runOperation(
             break;
         case "operationtoconvert":
             if (operationStringConvert) {
-                let stringOperation = "";
-                operation.values.forEach((value) => {
-                    if (typeof value === "string") {
-                        stringOperation += value;
-                    } else {
-                        let res = JsonUnifier.getLogichValue<string>(value);
-                        stringOperation += `${res}`;
-                    }
-                });
+                let stringOperation = operationStringToString(operation);
                 let op = await operationStringConvert(stringOperation);
                 if (op) {
                     await runOperation(op, operationStringConvert);

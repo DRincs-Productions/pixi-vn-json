@@ -1,3 +1,4 @@
+import { operationStringToString } from "src/utils/operationtoconvert";
 import {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
@@ -6,6 +7,7 @@ import {
     PixiVNJsonDialog,
     PixiVNJsonDialogText,
     PixiVNJsonLabelStep,
+    PixiVNJsonOperation,
 } from "../interface";
 
 export default class TranslatorManager {
@@ -129,7 +131,7 @@ export default class TranslatorManager {
      * @param options Options for translation, including default value handling.
      * @returns The populated JSON object with translations.
      */
-    static generateJsonTranslation(
+    static async generateJsonTranslation(
         labels: PixiVNJsonLabelStep[],
         json: object = {},
         options: {
@@ -140,10 +142,11 @@ export default class TranslatorManager {
              * @default "copy_key"
              */
             defaultValue?: "empty_string" | "copy_key";
+            operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>;
         } = {}
     ) {
-        const { defaultValue = "copy_key" } = options;
-        labels.forEach((label) => {
+        const { defaultValue = "copy_key", operationStringConvert } = options;
+        let promises = labels.map(async (label) => {
             if (label.choices) {
                 let multichoices: PixiVNJsonChoices[] = [];
                 if (!Array.isArray(label.choices)) {
@@ -237,7 +240,15 @@ export default class TranslatorManager {
                 });
             }
             if (label.operations) {
-                label.operations.forEach((operation) => {
+                for (let operation of label.operations) {
+                    if (operation.type === "operationtoconvert" && operationStringConvert) {
+                        let stringOperation = operationStringToString(operation);
+                        let res = await operationStringConvert(stringOperation);
+                        if (!res) {
+                            return;
+                        }
+                        operation = res;
+                    }
                     switch (operation.type) {
                         case "text":
                             switch (operation.operationType) {
@@ -247,7 +258,7 @@ export default class TranslatorManager {
                             }
                             break;
                     }
-                });
+                }
             }
             if (label.conditionalStep) {
                 let l = TranslatorManager.getConditionalsThenElse(label.conditionalStep);
@@ -260,6 +271,7 @@ export default class TranslatorManager {
                 });
             }
         });
+        await Promise.all(promises);
         return json;
     }
 }
