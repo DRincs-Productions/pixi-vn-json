@@ -1,4 +1,3 @@
-import { operationStringToString } from "src/utils/operationtoconvert";
 import {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
@@ -9,6 +8,7 @@ import {
     PixiVNJsonLabelStep,
     PixiVNJsonOperation,
 } from "../interface";
+import { operationStringToString } from "../utils/operationtoconvert";
 
 export default class TranslatorManager {
     private static _beforeToTranslate: ((key: string) => string) | undefined = undefined;
