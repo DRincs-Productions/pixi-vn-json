@@ -60,22 +60,10 @@ test("Params", async () => {
         },
     };
     await importPixiVNJson(json);
-    narration.call("start", {});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
+    await narration.call("start", {});
+    expect(narration.dialogue).toEqual({ text: ["Value received: ", "1", "."] });
+    await narration.continue({});
+    expect(narration.dialogue).toEqual({ text: "True" });
+    await narration.continue({});
+    expect(narration.dialogue).toEqual({ text: "True" });
 });
