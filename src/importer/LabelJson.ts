@@ -112,6 +112,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
     private getDialogueText(origin: PixiVNJsonDialogText): string | string[] {
         let text: string | string[] = "";
+        console.log(JSON.stringify(origin));
         if (Array.isArray(origin)) {
             let texts: string[] = [];
             origin.forEach((t) => {
@@ -151,12 +152,13 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>>
             | undefined
     ): PixiVNJsonDialog<string | string[]> | undefined {
+        console.log(JSON.stringify(origin));
         if (origin === undefined || origin === null) {
             return undefined;
         }
         let dialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin);
         if (dialogue === undefined || dialogue === null) {
-            return "";
+            return `${dialogue}`;
         }
         if (typeof dialogue === "object" && "character" in dialogue && "text" in dialogue) {
             return {
@@ -193,6 +195,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 await runOperation(operation, operationStringConvert);
             }
 
+            console.log(JSON.stringify(step));
             let { labelToOpen: tempLabelToOpen = [] } = step;
             const choices = this.getChoices(step.choices);
             const glueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled);

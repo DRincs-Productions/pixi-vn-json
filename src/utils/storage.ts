@@ -2,7 +2,7 @@ import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
 import { storage, StorageElementType, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import {
+import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonChoiceGet,
     PixiVNJsonConditionalResultToCombine,

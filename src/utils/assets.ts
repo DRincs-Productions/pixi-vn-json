@@ -1,5 +1,5 @@
-import { Assets } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
+import { Assets } from "@drincs/pixi-vn/canvas";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 

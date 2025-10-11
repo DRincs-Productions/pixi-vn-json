@@ -37,37 +37,37 @@ import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {
     static init(options: {
-        loadAssets: (
+        loadAssets?: (
             origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
         ) => Promise<void>;
-        soundOperation: (operation: PixiVNJsonSound) => void;
-        imageOperation: (
+        soundOperation?: (operation: PixiVNJsonSound) => void;
+        imageOperation?: (
             operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
         ) => Promise<void>;
-        videoOperation: (
+        videoOperation?: (
             operation:
                 | PixiVNJsonCanvasImageVideoShow
                 | PixiVNJsonCanvasRemove
                 | PixiVNJsonVideoEdit
                 | PixiVNJsonVideoPauseResume
         ) => Promise<void>;
-        imageContainerOperation: (
+        imageContainerOperation?: (
             operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
         ) => Promise<void>;
-        textOperation: (
+        textOperation?: (
             operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit
         ) => Promise<void>;
-        canvasElementOperation: (
+        canvasElementOperation?: (
             operation:
                 | PixiVNJsonCanvasRemove
                 | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
         ) => Promise<void>;
-        setStorageValue: (value: PixiVNJsonValueSet) => void;
-        narrationOperation: (operation: PixiVNJsonNarration) => void;
-        tickerOperation: (operation: PixiVNJsonCanvasTicker) => void;
-        effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
-        animateOperation: (operation: PixiVNJsonCanvasAnimate) => void;
-        getLogichValue: <T = StorageElementType>(
+        setStorageValue?: (value: PixiVNJsonValueSet) => void;
+        narrationOperation?: (operation: PixiVNJsonNarration) => void;
+        tickerOperation?: (operation: PixiVNJsonCanvasTicker) => void;
+        effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
+        animateOperation?: (operation: PixiVNJsonCanvasAnimate) => void;
+        getLogichValue?: <T = StorageElementType>(
             value:
                 | T
                 | PixiVNJsonValueGet
@@ -77,22 +77,22 @@ export default class JsonUnifier {
                       T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
                   >
         ) => T | undefined;
-        getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
+        getConditionalStep?: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
-        JsonUnifier._loadAssets = options.loadAssets;
-        JsonUnifier._soundOperation = options.soundOperation;
-        JsonUnifier._imageOperation = options.imageOperation;
-        JsonUnifier._videoOperation = options.videoOperation;
-        JsonUnifier._imageContainerOperation = options.imageContainerOperation;
-        JsonUnifier._textOperation = options.textOperation;
-        JsonUnifier._canvasElementOperation = options.canvasElementOperation;
-        JsonUnifier._setStorageValue = options.setStorageValue;
-        JsonUnifier._narrationOperation = options.narrationOperation;
-        JsonUnifier._tickerOperation = options.tickerOperation;
-        JsonUnifier._effectOperation = options.effectOperation;
-        JsonUnifier._animateOperation = options.animateOperation;
-        JsonUnifier._getLogichValue = options.getLogichValue;
-        JsonUnifier._getConditionalStep = options.getConditionalStep;
+        if (options.loadAssets) JsonUnifier._loadAssets = options.loadAssets;
+        if (options.soundOperation) JsonUnifier._soundOperation = options.soundOperation;
+        if (options.imageOperation) JsonUnifier._imageOperation = options.imageOperation;
+        if (options.videoOperation) JsonUnifier._videoOperation = options.videoOperation;
+        if (options.imageContainerOperation) JsonUnifier._imageContainerOperation = options.imageContainerOperation;
+        if (options.textOperation) JsonUnifier._textOperation = options.textOperation;
+        if (options.canvasElementOperation) JsonUnifier._canvasElementOperation = options.canvasElementOperation;
+        if (options.setStorageValue) JsonUnifier._setStorageValue = options.setStorageValue;
+        if (options.narrationOperation) JsonUnifier._narrationOperation = options.narrationOperation;
+        if (options.tickerOperation) JsonUnifier._tickerOperation = options.tickerOperation;
+        if (options.effectOperation) JsonUnifier._effectOperation = options.effectOperation;
+        if (options.animateOperation) JsonUnifier._animateOperation = options.animateOperation;
+        if (options.getLogichValue) JsonUnifier._getLogichValue = options.getLogichValue;
+        if (options.getConditionalStep) JsonUnifier._getConditionalStep = options.getConditionalStep;
     }
     private static _loadAssets: (
         origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString

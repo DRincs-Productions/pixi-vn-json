@@ -1,3 +1,4 @@
+import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     canvas,
     ContainerChild,
@@ -27,8 +28,7 @@ import {
     zoomIn,
     zoomOut,
     ZoomTicker,
-} from "@drincs/pixi-vn";
-import { translator } from "@drincs/pixi-vn-json/translator";
+} from "@drincs/pixi-vn/canvas";
 import {
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
