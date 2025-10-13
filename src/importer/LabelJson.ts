@@ -164,7 +164,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 text: translator.t(this.getDialogueText(dialogue.text)),
             };
         } else {
-            return translator.t(this.getDialogueText(dialogue));
+            return translator.t(this.getDialogueText(`${dialogue}`));
         }
     }
 
