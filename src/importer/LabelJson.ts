@@ -148,7 +148,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 text = `${res}`;
             }
         }
-        return `${text}`;
+        return text;
     }
     private getDialogue(
         origin:

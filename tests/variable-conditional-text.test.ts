@@ -68,5 +68,12 @@ test("Conditional Text 2", async () => {
     };
     await importPixiVNJson(json);
     await narration.call("start", {});
-    expect(narration.dialogue).toEqual({ text: ["Value received: ", "1", "."] });
+    expect(narration.dialogue).toEqual({
+        text: [
+            "",
+            `
+
+text 2`,
+        ],
+    });
 });
