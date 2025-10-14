@@ -1,7 +1,8 @@
 import { stepHistory, storage } from "@drincs/pixi-vn";
+import { importPixiVNJson } from "@drincs/pixi-vn-json/importer";
 import { narration } from "@drincs/pixi-vn/narration";
 import { expect, test } from "vitest";
-import { importPixiVNJson, PixiVNJson } from "../src";
+import { PixiVNJson } from "../src";
 
 test("Params", async () => {
     narration.clear();

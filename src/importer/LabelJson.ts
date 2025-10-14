@@ -137,11 +137,16 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             });
             text = texts;
         } else {
-            let res = JsonUnifier.getLogichValue<string | any[]>(origin) || "";
+            let res = JsonUnifier.getLogichValue<string | any[]>(origin);
             if (res && !Array.isArray(res) && typeof res === "object") {
-                res = JsonUnifier.getLogichValue<string | string[]>(res) || "";
+                res = JsonUnifier.getLogichValue<string | string[]>(res);
             }
-            text = res;
+
+            if (res && Array.isArray(res)) {
+                text = res.map((v) => `${v}`);
+            } else {
+                text = `${res}`;
+            }
         }
         return `${text}`;
     }
@@ -164,7 +169,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 text: translator.t(this.getDialogueText(dialogue.text)),
             };
         } else {
-            return translator.t(this.getDialogueText(`${dialogue}`));
+            return translator.t(this.getDialogueText(dialogue));
         }
     }
 

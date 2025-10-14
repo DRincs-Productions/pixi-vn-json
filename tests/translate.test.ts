@@ -1,6 +1,6 @@
+import { translator } from "@drincs/pixi-vn-json/translator";
 import { expect, test } from "vitest";
 import { PixiVNJson } from "../src";
-import TranslatorManager from "../src/translator/TranslatorManager";
 
 test("Translate test 1", async () => {
     let input: PixiVNJson = {
@@ -33,7 +33,7 @@ test("Translate test 1", async () => {
     };
     let res = {};
     Object.values(input.labels!).forEach((value) => {
-        TranslatorManager.generateJsonTranslation(value, res);
+        translator.generateJsonTranslation(value, res);
     });
     expect(res).toEqual(expected);
 });
@@ -56,7 +56,7 @@ test("Translate test 2", async () => {
     };
     let res = {};
     Object.values(input.labels!).forEach((value) => {
-        TranslatorManager.generateJsonTranslation(value, res);
+        translator.generateJsonTranslation(value, res);
     });
     expect(res).toEqual(expected);
 });
