@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
