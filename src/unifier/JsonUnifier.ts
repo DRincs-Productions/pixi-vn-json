@@ -5,6 +5,7 @@ import {
     StorageElementType,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
+import { PixiVNJsonOnlyStorageSet } from "src/interface/PixiVNJsonValue";
 import {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
@@ -63,6 +64,7 @@ export default class JsonUnifier {
                 | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
         ) => Promise<void>;
         setStorageValue?: (value: PixiVNJsonValueSet) => void;
+        setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void;
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
         tickerOperation?: (operation: PixiVNJsonCanvasTicker) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
@@ -87,6 +89,7 @@ export default class JsonUnifier {
         if (options.textOperation) JsonUnifier._textOperation = options.textOperation;
         if (options.canvasElementOperation) JsonUnifier._canvasElementOperation = options.canvasElementOperation;
         if (options.setStorageValue) JsonUnifier._setStorageValue = options.setStorageValue;
+        if (options.setInitialStorageValue) JsonUnifier._setInitialStorageValue = options.setInitialStorageValue;
         if (options.narrationOperation) JsonUnifier._narrationOperation = options.narrationOperation;
         if (options.tickerOperation) JsonUnifier._tickerOperation = options.tickerOperation;
         if (options.effectOperation) JsonUnifier._effectOperation = options.effectOperation;
@@ -199,6 +202,17 @@ export default class JsonUnifier {
     };
     static get setStorageValue() {
         return JsonUnifier._setStorageValue;
+    }
+    private static _setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+        throw new Error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+        );
+    };
+    static get setInitialStorageValue() {
+        return JsonUnifier._setInitialStorageValue;
     }
     private static _narrationOperation: (operation: PixiVNJsonNarration) => void = () => {
         logger.error(

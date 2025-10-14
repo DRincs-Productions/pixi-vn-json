@@ -1,6 +1,7 @@
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
 import { storage, StorageElementType, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
+import type { PixiVNJsonOnlyStorageSet } from "src/interface/PixiVNJsonValue";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
@@ -47,6 +48,24 @@ export function setStorageValue(value: PixiVNJsonValueSet) {
                 params[value.key as number] = valueToSet;
             }
             storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`, params);
+            break;
+    }
+}
+
+export function setInitialStorageValue(value: PixiVNJsonOnlyStorageSet) {
+    let v = getLogichValue<StorageElementType>(value.value);
+    let valueToSet: StorageElementType;
+    if (v && typeof v === "object" && "type" in v) {
+        valueToSet = getLogichValue<StorageElementType>(v);
+    } else {
+        valueToSet = v;
+    }
+    switch (value.storageType) {
+        case "storage":
+        case "tempstorage":
+            storage.startingStorage = {
+                [value.key]: valueToSet,
+            };
             break;
     }
 }

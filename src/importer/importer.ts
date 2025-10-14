@@ -1,9 +1,9 @@
 import { RegisteredLabels } from "@drincs/pixi-vn/narration";
-import { storage, StorageElementType } from "@drincs/pixi-vn/storage";
 import { LabelJson } from ".";
 import { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
 import { logger } from "../utils/log-utility";
 import { LabelJsonOptions } from "./LabelJson";
+import { runInitialOperation } from "./operation-utility";
 
 /**
  * Import a Pixi'VN JSON to the system.
@@ -15,8 +15,6 @@ export async function importPixiVNJson(
     values: PixiVNJson | string | (PixiVNJson | string)[],
     options: LabelJsonOptions = {}
 ) {
-    const { operationStringConvert, skipEmptyDialogs } = options;
-
     if (!Array.isArray(values)) {
         if (typeof values === "object" || typeof values === "string") {
             values = [values];
@@ -42,13 +40,9 @@ export async function importPixiVNJson(
     const promises = jsons.map(async (data) => {
         const promises: Promise<void>[] = [];
         if (data.initialOperations) {
-            let basicStorage: {
-                [key: string]: StorageElementType;
-            } = {};
-            [...storage.storage.keys()].forEach((value, key) => {
-                basicStorage[value] = storage.storage.get(value);
-            });
-            storage.startingStorage = basicStorage;
+            for (let operation of data.initialOperations) {
+                runInitialOperation(operation);
+            }
         }
         if (data.labels) {
             let labels = data.labels;

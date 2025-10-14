@@ -17,7 +17,7 @@ import {
 } from "./utils/canvas";
 import { narrationOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
-import { getConditionalStep, getLogichValue, setStorageValue } from "./utils/storage";
+import { getConditionalStep, getLogichValue, setInitialStorageValue, setStorageValue } from "./utils/storage";
 
 export function init() {
     JsonUnifier.init({
@@ -33,6 +33,7 @@ export function init() {
         tickerOperation: tickerOperation,
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
+        setInitialStorageValue: setInitialStorageValue,
         getLogichValue: getLogichValue,
         getConditionalStep: getConditionalStep,
     });

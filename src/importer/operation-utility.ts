@@ -65,3 +65,22 @@ export async function runOperation(
             break;
     }
 }
+
+export function runInitialOperation(
+    origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
+) {
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    if (!operation) {
+        return;
+    }
+    switch (operation.type) {
+        case "value":
+            if (
+                operation.storageOperationType === "set" &&
+                (operation.storageType === "storage" || operation.storageType === "tempstorage")
+            ) {
+                JsonUnifier.setInitialStorageValue(operation);
+            }
+            break;
+    }
+}

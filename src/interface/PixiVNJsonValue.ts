@@ -64,7 +64,7 @@ export type PixiVNJsonValueGet =
     | PixiVNJsonChoiceGet
     | PixiVNJsonLogicGet;
 
-type PixiVNJsonOnlyStorageSet = {
+export type PixiVNJsonOnlyStorageSet = {
     type: "value";
     storageOperationType: "set";
     /**
