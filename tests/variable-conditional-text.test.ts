@@ -54,6 +54,10 @@ test("Conditional Text 2", async () => {
                                 },
                                 {
                                     dialogue: "text 2",
+                                    goNextStep: true,
+                                },
+                                {
+                                    dialogue: "text 3",
                                 },
                             ],
                         },
@@ -71,9 +75,10 @@ test("Conditional Text 2", async () => {
     expect(narration.dialogue).toEqual({
         text: [
             "",
+            "text 2",
             `
 
-text 2`,
+text 3`,
         ],
     });
 });

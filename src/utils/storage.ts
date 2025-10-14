@@ -390,6 +390,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
     if (typeof toCheck[0] === "object") {
         let steps = toCheck as PixiVNJsonLabelStep[];
         let beforeIsGlueEnabled: undefined | boolean = undefined;
+        let beforeHaveText = false;
         let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
             step = getConditionalStep(step);
             let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || "";
@@ -399,8 +400,11 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             } else if (typeof value === "object" && "text" in value) {
                 value = value.character + ": " + value.text;
             }
-            if (beforeIsGlueEnabled === false) {
+            if (beforeIsGlueEnabled === false && beforeHaveText) {
                 value = "\n\n" + value;
+            }
+            if (value) {
+                beforeHaveText = true;
             }
             beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false;
             return value;
