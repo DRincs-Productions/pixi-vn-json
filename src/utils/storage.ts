@@ -6,6 +6,7 @@ import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonChoiceGet,
+    PixiVNJsonConditionalOperation,
     PixiVNJsonConditionalResultToCombine,
     PixiVNJsonConditionalStatements,
     PixiVNJsonConditions,
@@ -14,7 +15,6 @@ import type {
     PixiVNJsonLabelGet,
     PixiVNJsonLabelStep,
     PixiVNJsonLogicGet,
-    PixiVNJsonOperation,
     PixiVNJsonStepSwitchElementType,
     PixiVNJsonStorageGet,
     PixiVNJsonUnionCondition,
@@ -447,12 +447,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                 .find((step) => !(step.operations && (!step.dialogue || !step.choices)))?.goNextStep;
         }
         let labelToOpen = steps.find((step) => step.labelToOpen);
-        let operations: PixiVNJsonOperation[] = [];
+        let operations: PixiVNJsonConditionalOperation[] = [];
         steps.forEach((step) => {
             if (step.operations) {
-                operations.forEach((operation) => {
-                    operations.push(operation);
-                });
+                operations = [...operations, ...step.operations];
             }
         });
 

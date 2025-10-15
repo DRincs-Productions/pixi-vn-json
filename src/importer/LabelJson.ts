@@ -10,6 +10,7 @@ import {
 } from "@drincs/pixi-vn/narration";
 import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
+import { logger } from "src/utils/log-utility";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -66,8 +67,12 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 step = JsonUnifier.getConditionalStep(step);
 
                 if (step.operations) {
-                    let promises = step.operations.map((operation) => JsonUnifier.loadAssets(operation));
-                    await Promise.all(promises);
+                    try {
+                        let promises = step.operations.map((operation) => JsonUnifier.loadAssets(operation));
+                        await Promise.all(promises);
+                    } catch (error) {
+                        logger.error("The operation in the onLoadingLabel function of the label has an error:", error);
+                    }
                 }
             }
         };
