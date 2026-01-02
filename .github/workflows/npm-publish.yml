@@ -53,7 +53,7 @@ jobs:
     - name: Extract pixi-vn version
       id: extract-version
       run: |
-        PIXIVN_VERSION=$(cat package.json | jq -r '.peerDependencies["@drincs/pixi-vn"]')
+        PIXIVN_VERSION=$(jq -r '.peerDependencies["@drincs/pixi-vn"] // "Not specified"' package.json)
         echo "pixivn_version=$PIXIVN_VERSION" >> $GITHUB_OUTPUT
     - uses: ncipollo/release-action@v1
       with:
