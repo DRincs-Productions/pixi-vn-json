@@ -37,13 +37,13 @@ export function setStorageValue(value: PixiVNJsonValueSet) {
             storage.setFlag(value.key, value.value);
             break;
         case "storage":
-            storage.setVariable(value.key, valueToSet);
+            storage.set(value.key, valueToSet);
             break;
         case "tempstorage":
             storage.setTempVariable(value.key, valueToSet);
             break;
         case "params":
-            let params: any[] = storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
+            let params: any[] = storage.get(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
             if (params && params.length - 1 >= (value.key as number)) {
                 params[value.key as number] = valueToSet;
             }
@@ -63,7 +63,7 @@ export function setInitialStorageValue(value: PixiVNJsonOnlyStorageSet) {
     switch (value.storageType) {
         case "storage":
         case "tempstorage":
-            storage.startingStorage = {
+            storage.default = {
                 [value.key]: valueToSet,
             };
             break;
@@ -147,7 +147,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                 switch (value.storageType) {
                     case "storage":
                     case "tempstorage":
-                        return storage.getVariable((value as PixiVNJsonStorageGet).key) as unknown as T;
+                        return storage.get((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "flagStorage":
                         return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "label":
@@ -158,7 +158,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
                     case "params":
                         let params: any[] =
-                            storage.getVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
+                            storage.get(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
                         if (params && params.length > (value.key as number)) {
                             return params[value.key as number] as unknown as T;
                         }
