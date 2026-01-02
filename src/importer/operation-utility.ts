@@ -50,12 +50,6 @@ export async function runOperation(
         case "dialogue":
             JsonUnifier.narrationOperation(operation);
             break;
-        case "fade":
-        case "move":
-        case "rotate":
-        case "zoom":
-            JsonUnifier.tickerOperation(operation);
-            break;
         case "shake":
             await JsonUnifier.effectOperation(operation);
             break;

@@ -3,18 +3,15 @@ import {
     canvas,
     ContainerChild,
     ContainerMemory,
-    FadeAlphaTicker,
     ImageContainer,
     ImageSprite,
     ImageSpriteMemory,
     moveIn,
     moveOut,
-    MoveTicker,
     pushIn,
     pushOut,
     removeWithDissolve,
     removeWithFade,
-    RotateTicker,
     shakeEffect,
     showImage,
     showImageContainer,
@@ -27,14 +24,12 @@ import {
     VideoSpriteMemory,
     zoomIn,
     zoomOut,
-    ZoomTicker,
 } from "@drincs/pixi-vn/canvas";
 import {
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasShow,
-    PixiVNJsonCanvasTicker,
     PixiVNJsonMediaTransiotions,
 } from "../interface";
 import {
@@ -279,28 +274,6 @@ export async function canvasElementOperation(
             break;
     }
 }
-
-export function tickerOperation(operation: PixiVNJsonCanvasTicker) {
-    switch (operation.type) {
-        case "fade":
-            let tickerFade = new FadeAlphaTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerFade);
-            break;
-        case "move":
-            let tickerMove = new MoveTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerMove);
-            break;
-        case "rotate":
-            let tickerRotate = new RotateTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerRotate);
-            break;
-        case "zoom":
-            let tickerZoom = new ZoomTicker(operation.props, operation.duration, operation.priority);
-            canvas.addTicker(operation.alias, tickerZoom);
-            break;
-    }
-}
-
 export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
     switch (operation.type) {
         case "shake":
