@@ -10,7 +10,6 @@ import {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
-    PixiVNJsonCanvasTicker,
     PixiVNJsonConditionalStatements,
     PixiVNJsonConditions,
     PixiVNJsonIfElse,
@@ -66,7 +65,6 @@ export default class JsonUnifier {
         setStorageValue?: (value: PixiVNJsonValueSet) => void;
         setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void;
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
-        tickerOperation?: (operation: PixiVNJsonCanvasTicker) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
         animateOperation?: (operation: PixiVNJsonCanvasAnimate) => void;
         getLogichValue?: <T = StorageElementType>(
@@ -91,7 +89,6 @@ export default class JsonUnifier {
         if (options.setStorageValue) JsonUnifier._setStorageValue = options.setStorageValue;
         if (options.setInitialStorageValue) JsonUnifier._setInitialStorageValue = options.setInitialStorageValue;
         if (options.narrationOperation) JsonUnifier._narrationOperation = options.narrationOperation;
-        if (options.tickerOperation) JsonUnifier._tickerOperation = options.tickerOperation;
         if (options.effectOperation) JsonUnifier._effectOperation = options.effectOperation;
         if (options.animateOperation) JsonUnifier._animateOperation = options.animateOperation;
         if (options.getLogichValue) JsonUnifier._getLogichValue = options.getLogichValue;
@@ -224,17 +221,6 @@ export default class JsonUnifier {
     };
     static get narrationOperation() {
         return JsonUnifier._narrationOperation;
-    }
-    private static _tickerOperation: (operation: PixiVNJsonCanvasTicker) => void = () => {
-        logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
-        );
-        throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
-        );
-    };
-    static get tickerOperation() {
-        return JsonUnifier._tickerOperation;
     }
     private static _effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void> = () => {
         logger.error(
