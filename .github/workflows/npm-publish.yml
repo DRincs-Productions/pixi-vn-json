@@ -50,6 +50,14 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
+    - name: Extract pixi-vn version
+      id: extract-version
+      run: |
+        PIXIVN_VERSION=$(cat package.json | jq -r '.peerDependencies["@drincs/pixi-vn"]')
+        echo "pixivn_version=$PIXIVN_VERSION" >> $GITHUB_OUTPUT
     - uses: ncipollo/release-action@v1
       with:
-        body: "Release ${{ github.ref }}"
+        body: |
+          Release ${{ github.ref }}
+          
+          **pixi-vn version:** ${{ steps.extract-version.outputs.pixivn_version }}
