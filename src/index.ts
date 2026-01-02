@@ -12,7 +12,6 @@ import {
     imageContainerOperation,
     imageOperation,
     textOperation,
-    tickerOperation,
     videoOperation,
 } from "./utils/canvas";
 import { narrationOperation } from "./utils/narration";
@@ -30,7 +29,6 @@ export function init() {
         narrationOperation: narrationOperation,
         loadAssets: loadAssets,
         soundOperation: soundOperation,
-        tickerOperation: tickerOperation,
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,

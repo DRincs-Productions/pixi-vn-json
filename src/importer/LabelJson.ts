@@ -259,9 +259,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     };
                     return res;
                 });
-                narration.choiceMenuOptions = options;
+                narration.choices = options;
             } else {
-                narration.choiceMenuOptions = undefined;
+                narration.choices = undefined;
             }
 
             if (dialogue !== undefined) {
@@ -301,22 +301,22 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 if (label.type === "jump") {
                     if (narration.openedLabels.length > 0) narration.closeCurrentLabel();
                     storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams);
-                    await narration.callLabel(labelString, props);
+                    await narration.call(labelString, props);
                 } else {
                     storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams);
-                    await narration.callLabel(labelString, props);
+                    await narration.call(labelString, props);
                 }
             }
 
             if (end === "game_end") {
                 narration.closeAllLabels();
-                await narration.goNext(props, { runNow: true });
+                await narration.continue(props, { runNow: true });
             } else if (end === "label_end") {
                 narration.closeCurrentLabel();
             }
 
             if (goNextStep) {
-                await narration.goNext(props, { runNow: true });
+                await narration.continue(props, { runNow: true });
             }
         };
     }

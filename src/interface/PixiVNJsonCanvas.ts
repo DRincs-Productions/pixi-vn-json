@@ -12,7 +12,6 @@ import {
 } from "@drincs/pixi-vn";
 import PixiVNJsonCanvasAnimate from "./PixiVNJsonCanvasAnimate";
 import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
-import PixiVNJsonCanvasTicker from "./PixiVNJsonCanvasTicker";
 import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
 
 export type PixiVNJsonCanvasImageVideoShow = {
@@ -107,7 +106,6 @@ type PixiVNJsonCanvas =
     | PixiVNJsonCanvasRemove
     | PixiVNJsonVideoPauseResume
     | PixiVNJsonAssetsLoad
-    | PixiVNJsonCanvasTicker
     | PixiVNJsonCanvasAnimate
     | PixiVNJsonCanvasEffect;
 export default PixiVNJsonCanvas;
