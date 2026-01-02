@@ -61,7 +61,7 @@
     "url": "git+https://github.com/DRincs-Productions/pixi-vn-json.git"
   },
   "author": "DRincs-Productions",
-  "license": "GPL-3.0",
+  "license": "LGPL-2.1",
   "bugs": {
     "url": "https://github.com/DRincs-Productions/pixi-vn-json/issues"
   },
