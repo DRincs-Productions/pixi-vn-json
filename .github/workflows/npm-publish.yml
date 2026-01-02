@@ -60,4 +60,5 @@ jobs:
         body: |
           Release ${{ github.ref }}
           
-          **pixi-vn version:** ${{ steps.extract-version.outputs.pixivn_version }}
+          ### Dependencies
+          - **Pixi’VN**: ${{ steps.extract-version.outputs.pixivn_version }}
