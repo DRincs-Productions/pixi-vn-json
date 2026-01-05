@@ -1,4 +1,4 @@
-import { sound } from "@drincs/pixi-vn";
+import { sound } from "@drincs/pixi-vn/sound";
 import { PixiVNJsonSound } from "../interface";
 
 export function soundOperation(operation: PixiVNJsonSound) {
