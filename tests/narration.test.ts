@@ -63,8 +63,11 @@ test("Request input", async () => {
     await importPixiVNJson(json);
     await narration.call("start", {});
     expect(narration.dialogue).toEqual(undefined);
-    expect(narration.inputValue).toEqual(undefined);
+    expect(narration.isRequiredInput).toEqual(true);
+    expect(narration.inputType).toEqual("number");
+    narration.inputValue = 0;
     await narration.continue({});
-    expect(narration.dialogue).toEqual(undefined);
-    expect(narration.inputValue).toEqual(0);
+    expect(narration.dialogue).toEqual({ text: "Hello" });
+    expect(narration.isRequiredInput).toEqual(true);
+    expect(narration.inputType).toEqual("array of string");
 });
