@@ -1,6 +1,7 @@
-import { stepHistory, storage } from "@drincs/pixi-vn";
 import { importPixiVNJson } from "@drincs/pixi-vn-json/importer";
+import { stepHistory } from "@drincs/pixi-vn/history";
 import { narration } from "@drincs/pixi-vn/narration";
+import { storage } from "@drincs/pixi-vn/storage";
 import { expect, test } from "vitest";
 import { PixiVNJson } from "../src";
 

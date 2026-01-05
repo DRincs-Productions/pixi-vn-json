@@ -1,4 +1,4 @@
-import {
+import type {
     ContainerChild,
     ContainerMemory,
     ImageSpriteMemory,
@@ -39,7 +39,7 @@ export default class JsonUnifier {
     static init(options: {
         loadAssets?: (
             origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
-        ) => Promise<void>;
+        ) => Promise<void> | void;
         soundOperation?: (operation: PixiVNJsonSound) => void;
         imageOperation?: (
             operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
@@ -96,14 +96,7 @@ export default class JsonUnifier {
     }
     private static _loadAssets: (
         origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
-    ) => Promise<void> = () => {
-        logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
-        );
-        throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
-        );
-    };
+    ) => Promise<void> | void = () => {};
     static get loadAssets() {
         return JsonUnifier._loadAssets;
     }
