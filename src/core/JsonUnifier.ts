@@ -1,9 +1,10 @@
-import type {
-    ContainerChild,
-    ContainerMemory,
-    ImageSpriteMemory,
-    StorageElementType,
-    VideoSpriteMemory,
+import {
+    PixiError,
+    type ContainerChild,
+    type ContainerMemory,
+    type ImageSpriteMemory,
+    type StorageElementType,
+    type VideoSpriteMemory,
 } from "@drincs/pixi-vn";
 import {
     PixiVNJsonArithmeticOperations,
@@ -104,7 +105,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -117,7 +119,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -134,7 +137,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -147,7 +151,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -160,7 +165,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -175,7 +181,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -186,7 +193,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -197,7 +205,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -208,7 +217,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -219,7 +229,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -230,7 +241,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -250,7 +262,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
@@ -261,7 +274,8 @@ export default class JsonUnifier {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
-        throw new Error(
+        throw new PixiError(
+            "invalid_usage",
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };

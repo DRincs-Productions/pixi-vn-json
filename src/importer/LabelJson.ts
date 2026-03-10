@@ -1,3 +1,4 @@
+import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
@@ -20,7 +21,6 @@ import {
     PixiVNJsonDialogText,
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
-import { createExportableElement } from "../utils/createExportableElement";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 
