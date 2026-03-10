@@ -3,9 +3,9 @@ import type {
     PushInOutProps,
     ShowWithDissolveTransitionProps,
     ShowWithFadeTransitionProps,
-    UPDATE_PRIORITY,
     ZoomInOutProps,
 } from "@drincs/pixi-vn";
+import { UPDATE_PRIORITY } from "pixi.js";
 
 type DissolveTransition = {
     type: "dissolve";

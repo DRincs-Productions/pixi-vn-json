@@ -1,4 +1,5 @@
-import type { ShakeEffectProps, UPDATE_PRIORITY } from "@drincs/pixi-vn";
+import type { ShakeEffectProps } from "@drincs/pixi-vn";
+import { UPDATE_PRIORITY } from "pixi.js";
 
 type PixiVNJsonEffectShake = {
     type: "shake";

@@ -67,13 +67,14 @@
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
     "jsdom": "^27.4.0",
+    "pixi.js": "^8.17.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.0.3"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=1.4.1"
+    "@drincs/pixi-vn": ">=1.5.17"
   },
   "keywords": [
     "game",
