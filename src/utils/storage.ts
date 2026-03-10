@@ -1,7 +1,6 @@
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
 import { storage, StorageElementType, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
-import type { PixiVNJsonOnlyStorageSet } from "src/interface/PixiVNJsonValue";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
@@ -21,6 +20,7 @@ import type {
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
+import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { createExportableElement } from "../utils/createExportableElement";
 import { logger } from "./log-utility";
 
@@ -78,7 +78,7 @@ export function getLogichValue<T = StorageElementType>(
         | PixiVNJsonConditions
         | PixiVNJsonConditionalStatements<
               T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-          >
+          >,
 ): T | undefined {
     let v = getValueFromConditionalStatements<
         T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
@@ -100,7 +100,7 @@ export function getLogichValue<T = StorageElementType>(
 }
 
 function getValueFromArithmeticOperations<T = StorageElementType>(
-    operation: PixiVNJsonArithmeticOperations
+    operation: PixiVNJsonArithmeticOperations,
 ): T | undefined {
     let leftValue = getLogichValue(operation.leftValue);
     switch (operation.type) {
@@ -253,7 +253,7 @@ function randomIntFromInterval(min: number, max: number) {
  * @returns the value from the conditional statements
  */
 function getValueFromConditionalStatements<T>(
-    statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined
+    statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined,
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {
         return statement;
@@ -325,7 +325,7 @@ function getValueFromConditionalStatements<T>(
 export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
     if (originalStep.conditionalStep) {
         let conditionalStep = createExportableElement(
-            getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any)
+            getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any),
         );
         if (conditionalStep?.glueEnabled === undefined) {
             delete conditionalStep?.glueEnabled;
@@ -438,7 +438,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             if (steps[0].glueEnabled && steps[0].goNextStep && steps[0].dialogue === undefined) {
                 storage.setFlag(
                     SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    true
+                    true,
                 );
             }
             glueEnabled = steps[steps.length - 1].glueEnabled;

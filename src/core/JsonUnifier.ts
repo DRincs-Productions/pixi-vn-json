@@ -5,7 +5,6 @@ import type {
     StorageElementType,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
-import { PixiVNJsonOnlyStorageSet } from "src/interface/PixiVNJsonValue";
 import {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
@@ -33,34 +32,35 @@ import {
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
 } from "../interface/PixiVNJsonCanvas";
+import { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {
     static init(options: {
         loadAssets?: (
-            origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
+            origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
         ) => Promise<void> | void;
         soundOperation?: (operation: PixiVNJsonSound) => void;
         imageOperation?: (
-            operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
+            operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove,
         ) => Promise<void>;
         videoOperation?: (
             operation:
                 | PixiVNJsonCanvasImageVideoShow
                 | PixiVNJsonCanvasRemove
                 | PixiVNJsonVideoEdit
-                | PixiVNJsonVideoPauseResume
+                | PixiVNJsonVideoPauseResume,
         ) => Promise<void>;
         imageContainerOperation?: (
-            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit,
         ) => Promise<void>;
         textOperation?: (
-            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit
+            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
         ) => Promise<void>;
         canvasElementOperation?: (
             operation:
                 | PixiVNJsonCanvasRemove
-                | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
+                | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>,
         ) => Promise<void>;
         setStorageValue?: (value: PixiVNJsonValueSet) => void;
         setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void;
@@ -75,7 +75,7 @@ export default class JsonUnifier {
                 | PixiVNJsonConditions
                 | PixiVNJsonConditionalStatements<
                       T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-                  >
+                  >,
         ) => T | undefined;
         getConditionalStep?: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
@@ -95,30 +95,30 @@ export default class JsonUnifier {
         if (options.getConditionalStep) JsonUnifier._getConditionalStep = options.getConditionalStep;
     }
     private static _loadAssets: (
-        origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
+        origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
     ) => Promise<void> | void = () => {};
     static get loadAssets() {
         return JsonUnifier._loadAssets;
     }
     private static _soundOperation: (operation: PixiVNJsonSound) => void = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get soundOperation() {
         return JsonUnifier._soundOperation;
     }
     private static _imageOperation: (
-        operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
+        operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove,
     ) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get imageOperation() {
@@ -129,39 +129,39 @@ export default class JsonUnifier {
             | PixiVNJsonCanvasImageVideoShow
             | PixiVNJsonCanvasRemove
             | PixiVNJsonVideoEdit
-            | PixiVNJsonVideoPauseResume
+            | PixiVNJsonVideoPauseResume,
     ) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get videoOperation() {
         return JsonUnifier._videoOperation;
     }
     private static _imageContainerOperation: (
-        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit,
     ) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get textOperation() {
         return JsonUnifier._textOperation;
     }
     private static _textOperation: (
-        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit
+        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
     ) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get imageContainerOperation() {
@@ -170,13 +170,13 @@ export default class JsonUnifier {
     private static _canvasElementOperation: (
         operation:
             | PixiVNJsonCanvasRemove
-            | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
+            | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>,
     ) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get canvasElementOperation() {
@@ -184,10 +184,10 @@ export default class JsonUnifier {
     }
     private static _setStorageValue: (value: PixiVNJsonValueSet) => void = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get setStorageValue() {
@@ -195,10 +195,10 @@ export default class JsonUnifier {
     }
     private static _setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get setInitialStorageValue() {
@@ -206,10 +206,10 @@ export default class JsonUnifier {
     }
     private static _narrationOperation: (operation: PixiVNJsonNarration) => void = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get narrationOperation() {
@@ -217,10 +217,10 @@ export default class JsonUnifier {
     }
     private static _effectOperation: (operation: PixiVNJsonCanvasEffect) => Promise<void> = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get effectOperation() {
@@ -228,10 +228,10 @@ export default class JsonUnifier {
     }
     private static _animateOperation: (operation: PixiVNJsonCanvasAnimate) => void = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get animateOperation() {
@@ -245,13 +245,13 @@ export default class JsonUnifier {
             | PixiVNJsonConditions
             | PixiVNJsonConditionalStatements<
                   T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-              >
+              >,
     ) => T | undefined = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get getLogichValue() {
@@ -259,10 +259,10 @@ export default class JsonUnifier {
     }
     private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = () => {
         logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
         throw new Error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue."
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
     static get getConditionalStep() {

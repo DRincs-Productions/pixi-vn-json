@@ -1,5 +1,5 @@
-import { JsonUnifier } from "src/core";
-import { PixiVNJsonOperationString } from "src/interface";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
+import { PixiVNJsonOperationString } from "../interface";
 
 export function operationStringToString(operation: PixiVNJsonOperationString): string {
     let stringOperation = "";

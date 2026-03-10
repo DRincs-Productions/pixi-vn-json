@@ -1,4 +1,4 @@
-import { JsonUnifier } from "src/core";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import { operationStringToString } from "../utils/operationtoconvert";

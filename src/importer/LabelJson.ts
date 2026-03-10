@@ -1,3 +1,4 @@
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     LabelAbstract,
@@ -9,8 +10,6 @@ import {
 } from "@drincs/pixi-vn/narration";
 import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
-import { JsonUnifier } from "src/core";
-import { logger } from "src/utils/log-utility";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
 import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
@@ -22,6 +21,7 @@ import {
     PixiVNJsonLabelToOpen,
 } from "../interface/PixiVNJsonLabelStep";
 import { createExportableElement } from "../utils/createExportableElement";
+import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 
 export type LabelJsonOptions = {
