@@ -1,4 +1,4 @@
-import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
+import { JsonUnifier } from "src/core";
 import { PixiVNJsonOperationString } from "src/interface";
 
 export function operationStringToString(operation: PixiVNJsonOperationString): string {

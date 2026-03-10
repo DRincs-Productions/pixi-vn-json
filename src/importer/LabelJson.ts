@@ -1,5 +1,4 @@
 import { translator } from "@drincs/pixi-vn-json/translator";
-import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
 import {
     LabelAbstract,
     LabelProps,
@@ -10,6 +9,7 @@ import {
 } from "@drincs/pixi-vn/narration";
 import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
+import { JsonUnifier } from "src/core";
 import { logger } from "src/utils/log-utility";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
@@ -32,7 +32,7 @@ export type LabelJsonOptions = {
     operationStringConvert?: (
         value: string,
         step: PixiVNJsonLabelStep,
-        props: StepLabelPropsType | {}
+        props: StepLabelPropsType | {},
     ) => Promise<PixiVNJsonOperation | undefined>;
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
@@ -50,7 +50,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         id: string,
         steps: (PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep))[],
         props?: LabelProps<LabelJson<T>>,
-        options: LabelJsonOptions = {}
+        options: LabelJsonOptions = {},
     ) {
         if (!props) {
             props = {};
@@ -102,7 +102,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     private operationStringConvert?: (
         value: string,
         step: PixiVNJsonLabelStep,
-        props: StepLabelPropsType
+        props: StepLabelPropsType,
     ) => Promise<PixiVNJsonOperation | undefined>;
     private skipEmptyDialogs: boolean = false;
 
@@ -159,7 +159,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         origin:
             | PixiVNJsonDialog<PixiVNJsonDialogText>
             | PixiVNJsonConditionalStatements<PixiVNJsonDialog<PixiVNJsonDialogText>>
-            | undefined
+            | undefined,
     ): PixiVNJsonDialog<string | string[]> | undefined {
         if (origin === undefined || origin === null) {
             return undefined;
@@ -179,7 +179,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
     }
 
     private getChoices(
-        origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined
+        origin: PixiVNJsonChoices | PixiVNJsonConditionalStatements<PixiVNJsonChoices> | undefined,
     ): PixiVNJsonChoice[] | undefined {
         const choices = JsonUnifier.getLogichValue<PixiVNJsonChoices>(origin);
         const options = choices
@@ -277,12 +277,12 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             if (glueEnabled) {
                 storage.setFlag(
                     SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    true
+                    true,
                 );
             } else if (glueEnabled === false) {
                 storage.setFlag(
                     SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    false
+                    false,
                 );
             }
 

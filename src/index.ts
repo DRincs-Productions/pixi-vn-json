@@ -1,9 +1,9 @@
 export * from "@drincs/pixi-vn-json/importer";
 export * from "@drincs/pixi-vn-json/translator";
-export * from "@drincs/pixi-vn-json/unifier";
+export * from "src/core";
 export { PIXIVNJSON_PARAM_ID } from "./constants";
 export * from "./interface";
-import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
+import { JsonUnifier } from "src/core";
 import { loadAssets } from "./utils/assets";
 import {
     animateOperation,

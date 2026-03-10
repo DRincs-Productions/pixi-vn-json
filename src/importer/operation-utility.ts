@@ -1,11 +1,11 @@
-import { JsonUnifier } from "@drincs/pixi-vn-json/unifier";
+import { JsonUnifier } from "src/core";
 import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import { operationStringToString } from "../utils/operationtoconvert";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
-    operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>
+    operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>,
 ) {
     let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
     if (!operation) {
@@ -61,7 +61,7 @@ export async function runOperation(
 }
 
 export function runInitialOperation(
-    origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString
+    origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {
     let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
     if (!operation) {
