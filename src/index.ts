@@ -3,6 +3,7 @@ export * from "@drincs/pixi-vn-json/importer";
 export * from "@drincs/pixi-vn-json/translator";
 export { PIXIVNJSON_PARAM_ID } from "./constants";
 export * from "./interface";
+import { StorageElementType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { loadAssets } from "./utils/assets";
 import {
@@ -18,7 +19,11 @@ import { narrationOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
 import { getConditionalStep, getLogichValue, setInitialStorageValue, setStorageValue } from "./utils/storage";
 
-export function init() {
+export function init({
+    _getLogichValue = getLogichValue,
+}: {
+    _getLogichValue?: <T = StorageElementType>(value: T, defaultFn: (value: T) => T | undefined) => T | undefined;
+}) {
     JsonUnifier.init({
         animateOperation: animateOperation,
         canvasElementOperation: canvasElementOperation,
@@ -32,7 +37,7 @@ export function init() {
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: getLogichValue,
+        getLogichValue: _getLogichValue as any,
         getConditionalStep: getConditionalStep,
     });
 }
