@@ -2,6 +2,14 @@
 
 ![pixi-vn-cover-json](https://github.com/user-attachments/assets/ec9aa39e-6e3c-4198-8a65-e1fce1f1d637)
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img src="https://img.shields.io/npm/v/@drincs/pixi-vn-json?label=version" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img src="https://img.shields.io/npm/dm/@drincs/pixi-vn-json" alt="npm downloads per month"></a>
+  <a target="_blank" href="https://www.jsdelivr.com/package/npm/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/@drincs/pixi-vn-json?logo=jsdeliver"></a>
+  <a href="https://www.npmjs.com/package/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img alt="NPM License" src="https://img.shields.io/npm/l/@drincs/pixi-vn-json"></a>
+  <a target="_blank" href="https://discord.gg/E95FZWakzp" rel="noopener noreferrer nofollow"><img alt="Discord" src="https://img.shields.io/discord/1263071210011496501?color=7289da&label=discord"></a>
+</p>
+
 Pixi’VN can be integrated with JSON files to create a visual novel. This method is useful for:
 
 * Add a new narrative to Pixi’VN (It was used to create the integration with [Ink](https://pixi-vn.web.app/ink/ink.html) and [Ren'Py](https://pixi-vn.web.app/renpy/renpy.html))
