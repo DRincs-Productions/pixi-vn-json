@@ -39,7 +39,7 @@ export function init({
         setInitialStorageValue: setInitialStorageValue,
         getLogichValue: (value) => {
             if (getLogichValueParam) {
-                return getLogichValueParam(value, getLogichValue);
+                return getLogichValueParam(value, getLogichValue) as any;
             }
             return getLogichValue(value);
         },
