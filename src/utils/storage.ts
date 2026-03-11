@@ -1,4 +1,5 @@
 import { createExportableElement } from "@drincs/pixi-vn";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
 import { storage, StorageElementType, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
@@ -25,10 +26,10 @@ import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet) {
-    let v = getLogichValue<StorageElementType>(value.value);
+    let v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
     let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = getLogichValue<StorageElementType>(v);
+        valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v);
     } else {
         valueToSet = v;
     }
@@ -53,10 +54,10 @@ export function setStorageValue(value: PixiVNJsonValueSet) {
 }
 
 export function setInitialStorageValue(value: PixiVNJsonOnlyStorageSet) {
-    let v = getLogichValue<StorageElementType>(value.value);
+    let v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
     let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = getLogichValue<StorageElementType>(v);
+        valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v);
     } else {
         valueToSet = v;
     }
@@ -102,10 +103,10 @@ export function getLogichValue<T = StorageElementType>(
 function getValueFromArithmeticOperations<T = StorageElementType>(
     operation: PixiVNJsonArithmeticOperations,
 ): T | undefined {
-    let leftValue = getLogichValue(operation.leftValue);
+    let leftValue = JsonUnifier.getLogichValue(operation.leftValue);
     switch (operation.type) {
         case "arithmetic":
-            let rightValue = getLogichValue(operation.rightValue);
+            let rightValue = JsonUnifier.getLogichValue(operation.rightValue);
             switch (operation.operator) {
                 case "*":
                     return ((leftValue as any) * (rightValue as any)) as T;
@@ -155,7 +156,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                     case "choice":
                         return narration.getTimesChoiceMade((value as PixiVNJsonChoiceGet).index) as unknown as T;
                     case "logic":
-                        return getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
+                        return JsonUnifier.getLogichValue((value as PixiVNJsonLogicGet).operation) as unknown as T;
                     case "params":
                         let params: any[] =
                             storage.get(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
@@ -188,8 +189,8 @@ function getConditionResult(condition: PixiVNJsonConditions): boolean {
     }
     switch (condition.type) {
         case "compare":
-            let leftValue = getLogichValue<any>(condition.leftValue);
-            let rightValue = getLogichValue<any>(condition.rightValue);
+            let leftValue = JsonUnifier.getLogichValue<any>(condition.leftValue);
+            let rightValue = JsonUnifier.getLogichValue<any>(condition.rightValue);
             switch (condition.operator) {
                 case "==":
                     return leftValue === rightValue;
@@ -208,7 +209,7 @@ function getConditionResult(condition: PixiVNJsonConditions): boolean {
             }
             break;
         case "valueCondition":
-            return getLogichValue(condition.value) ? true : false;
+            return JsonUnifier.getLogichValue(condition.value) ? true : false;
         case "union":
             return getUnionConditionResult(condition as PixiVNJsonUnionCondition);
     }
@@ -229,7 +230,7 @@ function getUnionConditionResult(condition: PixiVNJsonUnionCondition): boolean {
     }
     let result: boolean = condition.unionType === "and" ? true : false;
     for (let i = 0; i < condition.conditions.length; i++) {
-        result = getLogichValue<boolean>(condition.conditions[i]) || false;
+        result = JsonUnifier.getLogichValue<boolean>(condition.conditions[i]) || false;
         if (condition.unionType === "and") {
             if (!result) {
                 return false;
@@ -262,14 +263,15 @@ export function getValueFromConditionalStatements<T>(
             case "resulttocombine":
                 return combinateResult(statement);
             case "ifelse":
-                let conditionResult = getLogichValue<boolean>(statement.condition);
+                let conditionResult = JsonUnifier.getLogichValue<boolean>(statement.condition);
                 if (conditionResult) {
-                    return getLogichValue<T>(statement.then as any);
+                    return JsonUnifier.getLogichValue<T>(statement.then as any);
                 } else {
-                    return getLogichValue<T>(statement.else as any);
+                    return JsonUnifier.getLogichValue<T>(statement.else as any);
                 }
             case "stepswitch":
-                let elements = getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || [];
+                let elements =
+                    JsonUnifier.getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(statement.elements) || [];
                 if (elements.length === 0) {
                     logger.error("getValueFromConditionalStatements elements.length === 0");
                     return undefined;
@@ -277,26 +279,26 @@ export function getValueFromConditionalStatements<T>(
                 switch (statement.choiceType) {
                     case "random":
                         let randomIndex = randomIntFromInterval(0, elements.length - 1);
-                        return getLogichValue<T>(elements[randomIndex] as any);
+                        return JsonUnifier.getLogichValue<T>(elements[randomIndex] as any);
                     case "loop":
                         let currentStepTimesCounter1 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1;
                         if (currentStepTimesCounter1 > elements.length - 1) {
                             currentStepTimesCounter1 = currentStepTimesCounter1 % elements.length;
-                            return getLogichValue<T>(elements[currentStepTimesCounter1] as any);
+                            return JsonUnifier.getLogichValue<T>(elements[currentStepTimesCounter1] as any);
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter1] as any);
+                        return JsonUnifier.getLogichValue<T>(elements[currentStepTimesCounter1] as any);
                     case "sequential":
                         let end: T | undefined = undefined;
                         let currentStepTimesCounter2 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) - 1;
                         if (statement.end == "lastItem") {
-                            end = getLogichValue<T>(elements[elements.length - 1] as any);
+                            end = JsonUnifier.getLogichValue<T>(elements[elements.length - 1] as any);
                         }
                         if (currentStepTimesCounter2 > elements.length - 1) {
                             return end;
                         }
-                        return getLogichValue<T>(elements[currentStepTimesCounter2] as any);
+                        return JsonUnifier.getLogichValue<T>(elements[currentStepTimesCounter2] as any);
                     case "sequentialrandom":
                         let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(0, elements.length - 1, {
                             nestedId: statement.nestedId,
@@ -309,13 +311,13 @@ export function getValueFromConditionalStatements<T>(
                                 return undefined;
                             }
                             let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`];
-                            return getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any);
+                            return JsonUnifier.getLogichValue<T>(elements[lastItem[lastItem.length - 1]] as any);
                         }
                         if (randomIndexWhitExclude == undefined) {
                             logger.warn("getValueFromConditionalStatements randomIndexWhitExclude == undefined");
                             return undefined;
                         }
-                        return getLogichValue<T>(elements[randomIndexWhitExclude] as any);
+                        return JsonUnifier.getLogichValue<T>(elements[randomIndexWhitExclude] as any);
                 }
         }
     }
@@ -325,7 +327,7 @@ export function getValueFromConditionalStatements<T>(
 export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
     if (originalStep.conditionalStep) {
         let conditionalStep = createExportableElement(
-            getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any),
+            JsonUnifier.getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any),
         );
         if (conditionalStep?.glueEnabled === undefined) {
             delete conditionalStep?.glueEnabled;
@@ -369,11 +371,11 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
     let second: T[] = [];
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
-            let i = getLogichValue<T>(item as any);
+            let i = JsonUnifier.getLogichValue<T>(item as any);
             second.push(i as any);
         } else {
             item.forEach((i) => {
-                let j = getLogichValue<T>(i);
+                let j = JsonUnifier.getLogichValue<T>(i);
                 second.push(j as any);
             });
         }
@@ -393,9 +395,9 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
         let beforeHaveText = false;
         let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
             step = getConditionalStep(step);
-            let value = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || "";
+            let value = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) || "";
             if (index === 0) {
-                beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false;
+                beforeIsGlueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled) || false;
                 return value;
             } else if (typeof value === "object" && "text" in value) {
                 value = value.character + ": " + value.text;
@@ -406,10 +408,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             if (value) {
                 beforeHaveText = true;
             }
-            beforeIsGlueEnabled = getLogichValue<boolean>(step.glueEnabled) || false;
+            beforeIsGlueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled) || false;
             return value;
         });
-        let firstDialogue = getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0]);
+        let firstDialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(dialogueArray[0]);
         let character =
             typeof firstDialogue === "object" && "character" in firstDialogue ? firstDialogue.character : undefined;
         let dialogues: string | string[] = dialogueArray.flatMap((dialogue) => {
@@ -422,11 +424,11 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             let textEasy: string | string[];
             if (Array.isArray(text)) {
                 textEasy = text.map((t) => {
-                    let value = getLogichValue<string>(t);
+                    let value = JsonUnifier.getLogichValue<string>(t);
                     return translator.t(`${value}`);
                 });
             } else {
-                textEasy = getLogichValue<string>(text) || "";
+                textEasy = JsonUnifier.getLogichValue<string>(text) || "";
             }
             return translator.t(textEasy);
         });
