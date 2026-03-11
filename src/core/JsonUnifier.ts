@@ -68,16 +68,7 @@ export default class JsonUnifier {
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
         animateOperation?: (operation: PixiVNJsonCanvasAnimate) => void;
-        getLogichValue?: <T = StorageElementType>(
-            value:
-                | T
-                | PixiVNJsonValueGet
-                | PixiVNJsonArithmeticOperations
-                | PixiVNJsonConditions
-                | PixiVNJsonConditionalStatements<
-                      T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
-                  >,
-        ) => T | undefined;
+        getLogichValue?: <T = StorageElementType>(value: T) => T | undefined;
         getConditionalStep?: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
         if (options.loadAssets) JsonUnifier._loadAssets = options.loadAssets;

@@ -20,9 +20,9 @@ import { soundOperation } from "./utils/sound";
 import { getConditionalStep, getLogichValue, setInitialStorageValue, setStorageValue } from "./utils/storage";
 
 export function init({
-    _getLogichValue = getLogichValue,
+    getLogichValue: getLogichValueParam = getLogichValue,
 }: {
-    _getLogichValue?: <T = StorageElementType>(value: T, defaultFn: (value: T) => T | undefined) => T | undefined;
+    getLogichValue?: <T = StorageElementType>(value: T, next: (value: T) => T | undefined) => T | undefined;
 }) {
     JsonUnifier.init({
         animateOperation: animateOperation,
@@ -37,7 +37,12 @@ export function init({
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: _getLogichValue as any,
+        getLogichValue: (value) => {
+            if (getLogichValueParam) {
+                return getLogichValueParam(value, getLogichValue);
+            }
+            return getLogichValue(value);
+        },
         getConditionalStep: getConditionalStep,
     });
 }
