@@ -252,7 +252,7 @@ function randomIntFromInterval(min: number, max: number) {
  * @param statement is the conditional statements object
  * @returns the value from the conditional statements
  */
-function getValueFromConditionalStatements<T>(
+export function getValueFromConditionalStatements<T>(
     statement: PixiVNJsonConditionalResultToCombine<T> | PixiVNJsonConditionalStatements<T> | T | undefined,
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {

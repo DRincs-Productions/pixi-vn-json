@@ -17,7 +17,13 @@ import {
 } from "./utils/canvas";
 import { narrationOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
-import { getConditionalStep, getLogichValue, setInitialStorageValue, setStorageValue } from "./utils/storage";
+import {
+    getConditionalStep,
+    getLogichValue,
+    getValueFromConditionalStatements,
+    setInitialStorageValue,
+    setStorageValue,
+} from "./utils/storage";
 
 export function init({
     getLogichValue: getLogichValueParam = getLogichValue,
@@ -39,7 +45,7 @@ export function init({
         setInitialStorageValue: setInitialStorageValue,
         getLogichValue: (value) => {
             if (getLogichValueParam) {
-                return getLogichValueParam(value, getLogichValue) as any;
+                return getLogichValueParam(getValueFromConditionalStatements(value), getLogichValue) as any;
             }
             return getLogichValue(value);
         },
