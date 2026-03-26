@@ -71,3 +71,30 @@ test("Request input", async () => {
     expect(narration.isRequiredInput).toEqual(true);
     expect(narration.inputType).toEqual("array of string");
 });
+
+test("glue", async () => {
+    narration.clear();
+    storage.clear();
+    stepHistory.clear();
+    let json: PixiVNJson = {
+        labels: {
+            glue: [
+                {
+                    dialogue: "Hello",
+                },
+                {
+                    goNextStep: true,
+                    glueEnabled: true,
+                },
+                {
+                    dialogue: ", world!",
+                },
+            ],
+        },
+    };
+    await importPixiVNJson(json);
+    await narration.call("glue", {});
+    expect(narration.dialogue).toEqual({ text: "Hello" });
+    await narration.continue({});
+    expect(narration.dialogue).toEqual({ text: ["Hello", ", world!"] });
+});
