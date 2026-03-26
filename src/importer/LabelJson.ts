@@ -9,7 +9,7 @@ import {
     StepLabelType,
     StoredChoiceInterface,
 } from "@drincs/pixi-vn/narration";
-import { storage, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
+import { storage } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
@@ -275,15 +275,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 }
             }
             if (glueEnabled) {
-                storage.setFlag(
-                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    true,
-                );
+                narration.dialogGlue = true;
             } else if (glueEnabled === false) {
-                storage.setFlag(
-                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    false,
-                );
+                narration.dialogGlue = false;
             }
 
             for (let label of labelToOpen) {

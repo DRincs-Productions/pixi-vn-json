@@ -2,7 +2,7 @@ import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
-import { storage, StorageElementType, SYSTEM_RESERVED_STORAGE_KEYS } from "@drincs/pixi-vn/storage";
+import { storage, StorageElementType } from "@drincs/pixi-vn/storage";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
@@ -357,10 +357,8 @@ export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJso
                 ...conditionalStep,
             };
             return getConditionalStep(obj);
-        } else if (
-            storage.getFlag(SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY)
-        ) {
-            storage.setFlag(SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY, false);
+        } else if (narration.dialogGlue) {
+            narration.dialogGlue = false;
         }
     }
     return originalStep;
@@ -438,10 +436,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
         let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;
         if (steps.length > 0) {
             if (steps[0].glueEnabled && steps[0].goNextStep && steps[0].dialogue === undefined) {
-                storage.setFlag(
-                    SYSTEM_RESERVED_STORAGE_KEYS.ADD_NEXT_DIALOG_TEXT_INTO_THE_CURRENT_DIALOG_FLAG_KEY,
-                    true,
-                );
+                narration.dialogGlue = true;
             }
             glueEnabled = steps[steps.length - 1].glueEnabled;
             goNextStep = steps
