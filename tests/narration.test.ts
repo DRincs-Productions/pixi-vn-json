@@ -98,3 +98,38 @@ test("glue", async () => {
     await narration.continue({});
     expect(narration.dialogue).toEqual({ text: ["Hello", ", world!"] });
 });
+
+test("_input_value_", async () => {
+    narration.clear();
+    storage.clear();
+    stepHistory.clear();
+    let json: PixiVNJson = {
+        labels: {
+            _input_value_: [
+                {
+                    operations: [
+                        {
+                            type: "input",
+                            operationType: "request",
+                            valueType: "string",
+                            defaultValue: "test",
+                        },
+                    ],
+                },
+                {
+                    dialogue: {
+                        key: "_input_value_",
+                        type: "value",
+                        storageOperationType: "get",
+                        storageType: "storage",
+                    },
+                },
+            ],
+        },
+    };
+    await importPixiVNJson(json);
+    await narration.call("_input_value_", {});
+    narration.inputValue = "new value";
+    await narration.continue({});
+    expect(narration.dialogue).toEqual({ text: "new value" });
+});
