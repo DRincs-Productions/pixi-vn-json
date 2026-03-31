@@ -148,6 +148,9 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                 switch (value.storageType) {
                     case "storage":
                     case "tempstorage":
+                        if (value.key === "_input_value_") {
+                            return narration.inputValue as unknown as T;
+                        }
                         return storage.get((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "flagStorage":
                         return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
