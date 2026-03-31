@@ -1,10 +1,11 @@
-import type { IMediaInstance, SoundPlayOptions } from "@drincs/pixi-vn";
+import type { IMediaInstance, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
 
 type PixiVNJsonSoundPlay = {
     type: "sound";
     operationType: "play";
     alias: string;
-    props?: SoundPlayOptions;
+    url?: string;
+    props?: SoundPlayOptionsWithChannel;
 };
 type PixiVNJsonSoundRemove = {
     type: "sound";

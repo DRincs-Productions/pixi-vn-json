@@ -5,7 +5,11 @@ import { PixiVNJsonSoundEdit } from "../interface/PixiVNJsonSound";
 export function soundOperation(operation: PixiVNJsonSound) {
     switch (operation.operationType) {
         case "play":
-            sound.play(operation.alias, operation.props);
+            if (operation.url) {
+                sound.play(operation.alias, operation.url, operation.props);
+            } else {
+                sound.play(operation.alias, operation.props);
+            }
             break;
         case "stop":
             sound.stop(operation.alias);
