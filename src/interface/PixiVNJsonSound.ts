@@ -1,4 +1,4 @@
-import type { SoundPlayOptions } from "@drincs/pixi-vn";
+import type { IMediaInstance, SoundPlayOptions } from "@drincs/pixi-vn";
 
 type PixiVNJsonSoundPlay = {
     type: "sound";
@@ -12,16 +12,16 @@ type PixiVNJsonSoundRemove = {
     alias: string;
 };
 type PixiVNJsonSoundPauseResume = {
-    type: "sound";
+    type: "sound" | "channel" | "all";
     operationType: "pause" | "resume";
     alias: string;
 };
-type PixiVNJsonSoundVolume = {
+export type PixiVNJsonSoundEdit = {
     type: "sound";
-    operationType: "volume";
+    operationType: "edit";
     alias: string;
-    value: number;
+    props: Partial<Pick<IMediaInstance, "speed" | "volume" | "muted" | "loop" | "paused">>;
 };
 
-type PixiVNJsonSound = PixiVNJsonSoundPlay | PixiVNJsonSoundRemove | PixiVNJsonSoundPauseResume | PixiVNJsonSoundVolume;
+type PixiVNJsonSound = PixiVNJsonSoundPlay | PixiVNJsonSoundRemove | PixiVNJsonSoundPauseResume | PixiVNJsonSoundEdit;
 export default PixiVNJsonSound;
