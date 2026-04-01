@@ -12,11 +12,16 @@ type PixiVNJsonSoundRemove = {
     operationType: "stop";
     alias: string;
 };
-type PixiVNJsonSoundPauseResume = {
-    type: "sound" | "channel" | "all";
-    operationType: "pause" | "resume";
-    alias: string;
-};
+type PixiVNJsonSoundPauseResume =
+    | {
+          type: "sound" | "channel";
+          operationType: "pause" | "resume";
+          alias: string;
+      }
+    | {
+          type: "all";
+          operationType: "pause" | "resume";
+      };
 export type PixiVNJsonSoundEdit = {
     type: "sound";
     operationType: "edit";
