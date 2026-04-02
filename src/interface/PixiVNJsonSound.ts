@@ -20,7 +20,7 @@ type PixiVNJsonSoundPauseResume =
       }
     | {
           type: "all";
-          operationType: "pause" | "resume";
+          operationType: "pause" | "resume" | "stop";
       };
 export type PixiVNJsonSoundEdit = {
     type: "sound";

@@ -12,7 +12,14 @@ export function soundOperation(operation: PixiVNJsonSound) {
             }
             break;
         case "stop":
-            sound.stop(operation.alias);
+            switch (operation.type) {
+                case "sound":
+                    sound.stop(operation.alias);
+                    break;
+                case "all":
+                    sound.stopAll();
+                    break;
+            }
             break;
         case "pause":
             switch (operation.type) {
