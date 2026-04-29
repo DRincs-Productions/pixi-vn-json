@@ -120,4 +120,7 @@ type PixiVNJsonFlagSet = {
     storageType: "flagStorage";
 };
 
-export type PixiVNJsonValueSet = PixiVNJsonOnlyStorageSet | PixiVNJsonFlagSet | PixiVNJsonOnlyParamSet;
+export type PixiVNJsonValueSet =
+    | PixiVNJsonOnlyStorageSet
+    | PixiVNJsonFlagSet
+    | PixiVNJsonOnlyParamSet;

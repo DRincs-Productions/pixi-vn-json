@@ -48,7 +48,7 @@ import { logger } from "./log-utility";
 async function showCanvasElemet(
     element: ImageSprite | VideoSprite | ImageContainer | Text,
     operation: PixiVNJsonCanvasShow,
-    transition: PixiVNJsonMediaTransiotions
+    transition: PixiVNJsonMediaTransiotions,
 ) {
     switch (transition.type) {
         case "fade":
@@ -76,10 +76,18 @@ function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
     if (operation.transition) {
         switch (operation.transition.type) {
             case "fade":
-                removeWithFade(operation.alias, operation.transition.props, operation.transition.priority);
+                removeWithFade(
+                    operation.alias,
+                    operation.transition.props,
+                    operation.transition.priority,
+                );
                 break;
             case "dissolve":
-                removeWithDissolve(operation.alias, operation.transition.props, operation.transition.priority);
+                removeWithDissolve(
+                    operation.alias,
+                    operation.transition.props,
+                    operation.transition.priority,
+                );
                 break;
             case "movein":
             case "moveout":
@@ -100,12 +108,15 @@ function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
 }
 
 export async function imageOperation(
-    operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove
+    operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove,
 ) {
     switch (operation.operationType) {
         case "show":
             if (operation.transition) {
-                let imageToShow = new ImageSprite(operation.props, operation.url || operation.alias);
+                let imageToShow = new ImageSprite(
+                    operation.props,
+                    operation.url || operation.alias,
+                );
                 await showCanvasElemet(imageToShow, operation, operation.transition);
             } else {
                 await showImage(operation.alias, operation.url, operation.props);
@@ -135,12 +146,15 @@ export async function videoOperation(
         | PixiVNJsonCanvasRemove
         | PixiVNJsonCanvasImageVideoShow
         | PixiVNJsonVideoEdit
-        | PixiVNJsonVideoPauseResume
+        | PixiVNJsonVideoPauseResume,
 ) {
     switch (operation.operationType) {
         case "show":
             if (operation.transition) {
-                let videoToShow = new VideoSprite(operation.props, operation.url || operation.alias);
+                let videoToShow = new VideoSprite(
+                    operation.props,
+                    operation.url || operation.alias,
+                );
                 await showCanvasElemet(videoToShow, operation, operation.transition);
             } else {
                 await showVideo(operation.alias, operation.url, operation.props);
@@ -182,7 +196,10 @@ export async function videoOperation(
 }
 
 export async function imageContainerOperation(
-    operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit
+    operation:
+        | PixiVNJsonCanvasRemove
+        | PixiVNJsonCanvasImageContainerShow
+        | PixiVNJsonImageContainerEdit,
 ) {
     switch (operation.operationType) {
         case "show":
@@ -212,7 +229,9 @@ export async function imageContainerOperation(
     }
 }
 
-export async function textOperation(operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit) {
+export async function textOperation(
+    operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
+) {
     switch (operation.operationType) {
         case "show":
             operation.props = operation.props || {};
@@ -245,8 +264,10 @@ export async function textOperation(operation: PixiVNJsonCanvasRemove | PixiVNJs
 
 export async function canvasElementOperation(
     operation:
-        | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>
-        | PixiVNJsonCanvasRemove
+        | PixiVNJsonUnknownEdit<
+              ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>
+          >
+        | PixiVNJsonCanvasRemove,
 ) {
     switch (operation.operationType) {
         case "edit":
@@ -265,7 +286,7 @@ export async function canvasElementOperation(
             } catch (e) {
                 logger.error(
                     `There was an error while trying to edit the canvas element with alias ${operation.alias}.`,
-                    e
+                    e,
                 );
             }
             break;
@@ -285,10 +306,20 @@ export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
 export function animateOperation(operation: PixiVNJsonCanvasAnimate) {
     switch (operation.type) {
         case "animate":
-            canvas.animate(operation.alias, operation.keyframes, operation.options, operation.priority);
+            canvas.animate(
+                operation.alias,
+                operation.keyframes,
+                operation.options,
+                operation.priority,
+            );
             break;
         case "animate-sequence":
-            canvas.animate(operation.alias, operation.sequence, operation.options, operation.priority);
+            canvas.animate(
+                operation.alias,
+                operation.sequence,
+                operation.options,
+                operation.priority,
+            );
             break;
     }
 }

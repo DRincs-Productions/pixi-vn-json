@@ -49,7 +49,7 @@ export default class TranslatorManager {
         key: string[] | string,
         options: {
             defaultValue: "empty_string" | "copy_key";
-        }
+        },
     ) {
         let defaultValue = options.defaultValue || "empty_string";
         if (typeof key === "string") {
@@ -73,7 +73,7 @@ export default class TranslatorManager {
     }
     private static getConditionalsThenElse<T>(
         data: PixiVNJsonConditionalStatements<T> | PixiVNJsonConditionalResultToCombine<T> | T,
-        res: T[] = []
+        res: T[] = [],
     ): T[] {
         if (typeof data === "object" && data && "type" in data) {
             if (data.type === "ifelse") {
@@ -146,9 +146,9 @@ export default class TranslatorManager {
             operationStringConvert?: (
                 value: string,
                 step: PixiVNJsonLabelStep,
-                props: StepLabelPropsType | {}
+                props: StepLabelPropsType | {},
             ) => Promise<PixiVNJsonOperation | undefined>;
-        } = {}
+        } = {},
     ) {
         const { defaultValue = "copy_key", operationStringConvert } = options;
         let promises = labels.map(async (label) => {
@@ -168,26 +168,38 @@ export default class TranslatorManager {
                             } else {
                                 res = [choice];
                             }
-                            let texts = res.map((item) => TranslatorManager.getConditionalsThenElse(item.text));
+                            let texts = res.map((item) =>
+                                TranslatorManager.getConditionalsThenElse(item.text),
+                            );
                             texts.forEach((text) => {
                                 if (Array.isArray(text)) {
                                     text.forEach((t) => {
                                         if (Array.isArray(t)) {
                                             t.forEach((tt) => {
                                                 if (typeof tt === "string") {
-                                                    TranslatorManager.addKey(json, tt, { defaultValue });
+                                                    TranslatorManager.addKey(json, tt, {
+                                                        defaultValue,
+                                                    });
                                                 } else {
-                                                    TranslatorManager.getConditionalsThenElse(tt).forEach((t) => {
+                                                    TranslatorManager.getConditionalsThenElse(
+                                                        tt,
+                                                    ).forEach((t) => {
                                                         if (Array.isArray(t)) {
                                                             t.forEach((tt) => {
                                                                 if (typeof tt === "string") {
-                                                                    TranslatorManager.addKey(json, tt, {
-                                                                        defaultValue,
-                                                                    });
+                                                                    TranslatorManager.addKey(
+                                                                        json,
+                                                                        tt,
+                                                                        {
+                                                                            defaultValue,
+                                                                        },
+                                                                    );
                                                                 }
                                                             });
                                                         } else if (typeof t === "string") {
-                                                            TranslatorManager.addKey(json, t, { defaultValue });
+                                                            TranslatorManager.addKey(json, t, {
+                                                                defaultValue,
+                                                            });
                                                         }
                                                     });
                                                 }
@@ -199,7 +211,7 @@ export default class TranslatorManager {
                                 }
                             });
                         }
-                    })
+                    }),
                 );
             }
             if (label.dialogue) {
@@ -228,11 +240,17 @@ export default class TranslatorManager {
                                     } else if (Array.isArray(tt)) {
                                         tt.forEach((ttt) => {
                                             if (typeof ttt === "string") {
-                                                TranslatorManager.addKey(json, ttt, { defaultValue });
+                                                TranslatorManager.addKey(json, ttt, {
+                                                    defaultValue,
+                                                });
                                             } else {
-                                                TranslatorManager.getConditionalsThenElse(ttt).forEach((t) => {
+                                                TranslatorManager.getConditionalsThenElse(
+                                                    ttt,
+                                                ).forEach((t) => {
                                                     if (typeof t === "string") {
-                                                        TranslatorManager.addKey(json, t, { defaultValue });
+                                                        TranslatorManager.addKey(json, t, {
+                                                            defaultValue,
+                                                        });
                                                     }
                                                 });
                                             }
@@ -258,7 +276,9 @@ export default class TranslatorManager {
                         case "text":
                             switch (operation.operationType) {
                                 case "show":
-                                    TranslatorManager.addKey(json, operation.text, { defaultValue });
+                                    TranslatorManager.addKey(json, operation.text, {
+                                        defaultValue,
+                                    });
                                     break;
                             }
                             break;

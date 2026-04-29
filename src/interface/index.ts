@@ -18,7 +18,10 @@ export type {
 export type { default as PixiVNJsonCanvasEffect } from "./PixiVNJsonCanvasEffect";
 export type { default as PixiVNJsonConditionalResultToCombine } from "./PixiVNJsonConditionalResultToCombine";
 export type { default as PixiVNJsonConditionalStatements } from "./PixiVNJsonConditionalStatements";
-export type { PixiVNJsonComparation, default as PixiVNJsonConditions } from "./PixiVNJsonConditions";
+export type {
+    PixiVNJsonComparation,
+    default as PixiVNJsonConditions,
+} from "./PixiVNJsonConditions";
 export type { default as PixiVNJsonIfElse } from "./PixiVNJsonIfElse";
 export type { default as PixiVNJsonLabels } from "./PixiVNJsonLabels";
 export type {

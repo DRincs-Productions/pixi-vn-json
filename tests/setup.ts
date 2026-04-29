@@ -1,7 +1,12 @@
 import { Game } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { narrationOperation } from "../src/utils/narration";
-import { getConditionalStep, getLogichValue, setInitialStorageValue, setStorageValue } from "../src/utils/storage";
+import {
+    getConditionalStep,
+    getLogichValue,
+    setInitialStorageValue,
+    setStorageValue,
+} from "../src/utils/storage";
 
 Game.init();
 JsonUnifier.init({

@@ -39,11 +39,17 @@ import { logger } from "../utils/log-utility";
 export default class JsonUnifier {
     static init(options: {
         loadAssets?: (
-            origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
+            origin:
+                | PixiVNJsonOperation
+                | PixiVNJsonIfElse<PixiVNJsonOperation>
+                | PixiVNJsonOperationString,
         ) => Promise<void> | void;
         soundOperation?: (operation: PixiVNJsonSound) => void;
         imageOperation?: (
-            operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove,
+            operation:
+                | PixiVNJsonCanvasImageVideoShow
+                | PixiVNJsonImageEdit
+                | PixiVNJsonCanvasRemove,
         ) => Promise<void>;
         videoOperation?: (
             operation:
@@ -53,7 +59,10 @@ export default class JsonUnifier {
                 | PixiVNJsonVideoPauseResume,
         ) => Promise<void>;
         imageContainerOperation?: (
-            operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit,
+            operation:
+                | PixiVNJsonCanvasRemove
+                | PixiVNJsonCanvasImageContainerShow
+                | PixiVNJsonImageContainerEdit,
         ) => Promise<void>;
         textOperation?: (
             operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
@@ -61,7 +70,9 @@ export default class JsonUnifier {
         canvasElementOperation?: (
             operation:
                 | PixiVNJsonCanvasRemove
-                | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>,
+                | PixiVNJsonUnknownEdit<
+                      ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>
+                  >,
         ) => Promise<void>;
         setStorageValue?: (value: PixiVNJsonValueSet) => void;
         setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void;
@@ -84,19 +95,27 @@ export default class JsonUnifier {
         if (options.soundOperation) JsonUnifier._soundOperation = options.soundOperation;
         if (options.imageOperation) JsonUnifier._imageOperation = options.imageOperation;
         if (options.videoOperation) JsonUnifier._videoOperation = options.videoOperation;
-        if (options.imageContainerOperation) JsonUnifier._imageContainerOperation = options.imageContainerOperation;
+        if (options.imageContainerOperation)
+            JsonUnifier._imageContainerOperation = options.imageContainerOperation;
         if (options.textOperation) JsonUnifier._textOperation = options.textOperation;
-        if (options.canvasElementOperation) JsonUnifier._canvasElementOperation = options.canvasElementOperation;
+        if (options.canvasElementOperation)
+            JsonUnifier._canvasElementOperation = options.canvasElementOperation;
         if (options.setStorageValue) JsonUnifier._setStorageValue = options.setStorageValue;
-        if (options.setInitialStorageValue) JsonUnifier._setInitialStorageValue = options.setInitialStorageValue;
-        if (options.narrationOperation) JsonUnifier._narrationOperation = options.narrationOperation;
+        if (options.setInitialStorageValue)
+            JsonUnifier._setInitialStorageValue = options.setInitialStorageValue;
+        if (options.narrationOperation)
+            JsonUnifier._narrationOperation = options.narrationOperation;
         if (options.effectOperation) JsonUnifier._effectOperation = options.effectOperation;
         if (options.animateOperation) JsonUnifier._animateOperation = options.animateOperation;
         if (options.getLogichValue) JsonUnifier._getLogichValue = options.getLogichValue;
-        if (options.getConditionalStep) JsonUnifier._getConditionalStep = options.getConditionalStep;
+        if (options.getConditionalStep)
+            JsonUnifier._getConditionalStep = options.getConditionalStep;
     }
     private static _loadAssets: (
-        origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
+        origin:
+            | PixiVNJsonOperation
+            | PixiVNJsonIfElse<PixiVNJsonOperation>
+            | PixiVNJsonOperationString,
     ) => Promise<void> | void = () => {};
     static get loadAssets() {
         return JsonUnifier._loadAssets;
@@ -146,7 +165,10 @@ export default class JsonUnifier {
         return JsonUnifier._videoOperation;
     }
     private static _imageContainerOperation: (
-        operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasImageContainerShow | PixiVNJsonImageContainerEdit,
+        operation:
+            | PixiVNJsonCanvasRemove
+            | PixiVNJsonCanvasImageContainerShow
+            | PixiVNJsonImageContainerEdit,
     ) => Promise<void> = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
@@ -176,7 +198,9 @@ export default class JsonUnifier {
     private static _canvasElementOperation: (
         operation:
             | PixiVNJsonCanvasRemove
-            | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>>,
+            | PixiVNJsonUnknownEdit<
+                  ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>
+              >,
     ) => Promise<void> = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
@@ -270,15 +294,16 @@ export default class JsonUnifier {
     static get getLogichValue() {
         return JsonUnifier._getLogichValue;
     }
-    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep = () => {
-        logger.error(
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
-        );
-        throw new PixiError(
-            "invalid_usage",
-            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
-        );
-    };
+    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep =
+        () => {
+            logger.error(
+                "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+            );
+            throw new PixiError(
+                "invalid_usage",
+                "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+            );
+        };
     static get getConditionalStep() {
         return JsonUnifier._getConditionalStep;
     }

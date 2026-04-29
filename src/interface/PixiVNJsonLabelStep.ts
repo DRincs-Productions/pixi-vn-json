@@ -1,4 +1,9 @@
-import type { LabelRunModeType, narration, StepLabelPropsType, StorageObjectType } from "@drincs/pixi-vn";
+import type {
+    LabelRunModeType,
+    narration,
+    StepLabelPropsType,
+    StorageObjectType,
+} from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
 import PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
@@ -34,13 +39,20 @@ export type PixiVNJsonChoice = {
      */
     autoSelect?: boolean;
 };
-export type PixiVNJsonChoices = (PixiVNJsonChoice | PixiVNJsonConditionalStatements<PixiVNJsonChoice>)[];
+export type PixiVNJsonChoices = (
+    | PixiVNJsonChoice
+    | PixiVNJsonConditionalStatements<PixiVNJsonChoice>
+)[];
 
 export type PixiVNJsonDialogText =
     | string
     | PixiVNJsonValueGet
     | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet | string[]>
-    | (string | PixiVNJsonValueGet | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet | string[]>)[];
+    | (
+          | string
+          | PixiVNJsonValueGet
+          | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet | string[]>
+      )[];
 
 export type PixiVNJsonDialog<Text = string> =
     | {

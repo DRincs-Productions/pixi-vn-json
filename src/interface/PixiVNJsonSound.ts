@@ -29,5 +29,9 @@ export type PixiVNJsonSoundEdit = {
     props: Partial<Pick<IMediaInstance, "speed" | "volume" | "muted" | "loop" | "paused">>;
 };
 
-type PixiVNJsonSound = PixiVNJsonSoundPlay | PixiVNJsonSoundRemove | PixiVNJsonSoundPauseResume | PixiVNJsonSoundEdit;
+type PixiVNJsonSound =
+    | PixiVNJsonSoundPlay
+    | PixiVNJsonSoundRemove
+    | PixiVNJsonSoundPauseResume
+    | PixiVNJsonSoundEdit;
 export default PixiVNJsonSound;

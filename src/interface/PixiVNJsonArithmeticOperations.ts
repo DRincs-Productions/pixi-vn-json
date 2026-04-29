@@ -11,7 +11,9 @@ export interface PixiVNJsonArithmeticOperationsArithmetic {
         | StorageElementType
         | PixiVNJsonValueGet
         | PixiVNJsonArithmeticOperations
-        | PixiVNJsonConditionalStatements<StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations>;
+        | PixiVNJsonConditionalStatements<
+              StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations
+          >;
     /**
      * Right value of the arithmetic operation
      */
@@ -19,7 +21,9 @@ export interface PixiVNJsonArithmeticOperationsArithmetic {
         | StorageElementType
         | PixiVNJsonValueGet
         | PixiVNJsonArithmeticOperations
-        | PixiVNJsonConditionalStatements<StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations>;
+        | PixiVNJsonConditionalStatements<
+              StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations
+          >;
     /**
      * Operator of the arithmetic operation
      */
@@ -35,7 +39,9 @@ export interface PixiVNJsonArithmeticOperationsArithmeticSingle {
         | StorageElementType
         | PixiVNJsonValueGet
         | PixiVNJsonArithmeticOperations
-        | PixiVNJsonConditionalStatements<StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations>;
+        | PixiVNJsonConditionalStatements<
+              StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations
+          >;
     /**
      * Operator of the arithmetic operation
      */

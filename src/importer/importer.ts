@@ -13,7 +13,7 @@ import { runInitialOperation } from "./operation-utility";
  */
 export async function importPixiVNJson(
     values: PixiVNJson | string | (PixiVNJson | string)[],
-    options: LabelJsonOptions = {}
+    options: LabelJsonOptions = {},
 ) {
     if (!Array.isArray(values)) {
         if (typeof values === "object" || typeof values === "string") {

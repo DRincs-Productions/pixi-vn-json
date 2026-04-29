@@ -6,7 +6,9 @@ import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 export async function loadAssets(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {
-    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
+        origin,
+    );
     if (!operation) {
         return;
     }

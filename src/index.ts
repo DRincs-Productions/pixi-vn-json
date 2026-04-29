@@ -28,7 +28,10 @@ import {
 export function init({
     getLogichValue: getLogichValueParam = getLogichValue,
 }: {
-    getLogichValue?: <T = StorageElementType>(value: T, next: (value: T) => T | undefined) => T | undefined;
+    getLogichValue?: <T = StorageElementType>(
+        value: T,
+        next: (value: T) => T | undefined,
+    ) => T | undefined;
 }) {
     JsonUnifier.init({
         animateOperation: animateOperation,
@@ -45,7 +48,10 @@ export function init({
         setInitialStorageValue: setInitialStorageValue,
         getLogichValue: (value) => {
             if (getLogichValueParam) {
-                return getLogichValueParam(getValueFromConditionalStatements(value), getLogichValue) as any;
+                return getLogichValueParam(
+                    getValueFromConditionalStatements(value),
+                    getLogichValue,
+                ) as any;
             }
             return getLogichValue(value);
         },

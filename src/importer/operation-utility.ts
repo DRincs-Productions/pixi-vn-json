@@ -7,7 +7,9 @@ export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
     operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>,
 ) {
-    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
+        origin,
+    );
     if (!operation) {
         return;
     }
@@ -63,7 +65,9 @@ export async function runOperation(
 export function runInitialOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {
-    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(origin);
+    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
+        origin,
+    );
     if (!operation) {
         return;
     }

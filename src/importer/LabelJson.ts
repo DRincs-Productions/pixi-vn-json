@@ -68,10 +68,15 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
                 if (step.operations) {
                     try {
-                        let promises = step.operations.map((operation) => JsonUnifier.loadAssets(operation));
+                        let promises = step.operations.map((operation) =>
+                            JsonUnifier.loadAssets(operation),
+                        );
                         await Promise.all(promises);
                     } catch (error) {
-                        logger.error("The operation in the onLoadingLabel function of the label has an error:", error);
+                        logger.error(
+                            "The operation in the onLoadingLabel function of the label has an error:",
+                            error,
+                        );
                     }
                 }
             }
@@ -190,7 +195,9 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         return options;
     }
 
-    private stepConverter(stepProp: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep)): StepLabelType<T> {
+    private stepConverter(
+        stepProp: PixiVNJsonLabelStep | (() => PixiVNJsonLabelStep),
+    ): StepLabelType<T> {
         return async (props) => {
             let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
             step = createExportableElement(step);
@@ -294,10 +301,16 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 };
                 if (label.type === "jump") {
                     if (narration.openedLabels.length > 0) narration.closeCurrentLabel();
-                    storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams);
+                    storage.setTempVariable(
+                        `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
+                        labelParams,
+                    );
                     await narration.call(labelString, props);
                 } else {
-                    storage.setTempVariable(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`, labelParams);
+                    storage.setTempVariable(
+                        `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
+                        labelParams,
+                    );
                     await narration.call(labelString, props);
                 }
             }

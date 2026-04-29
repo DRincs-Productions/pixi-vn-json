@@ -7,10 +7,18 @@ import { PixiVNJsonValueGet, PixiVNJsonValueSet } from "./PixiVNJsonValue";
 
 export type PixiVNJsonOperationString = {
     type: "operationtoconvert";
-    values: (string | PixiVNJsonValueGet | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet>)[];
+    values: (
+        | string
+        | PixiVNJsonValueGet
+        | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet>
+    )[];
 };
 
-export type PixiVNJsonOperation = PixiVNJsonValueSet | PixiVNJsonCanvas | PixiVNJsonSound | PixiVNJsonNarration;
+export type PixiVNJsonOperation =
+    | PixiVNJsonValueSet
+    | PixiVNJsonCanvas
+    | PixiVNJsonSound
+    | PixiVNJsonNarration;
 
 type PixiVNJsonConditionalOperation =
     | PixiVNJsonOperation
