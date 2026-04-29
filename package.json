@@ -72,8 +72,8 @@
     "@biomejs/biome": "^2.4.13",
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
-    "jsdom": "^29.0.1",
-    "pixi.js": "^8.17.0",
+    "jsdom": "^29.1.0",
+    "pixi.js": "^8.18.1",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typedoc": "^0.28.19",
@@ -82,7 +82,7 @@
     "vite-tsconfig-paths": "^6.1.1"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=1.6.0"
+    "@drincs/pixi-vn": ">=1.8.0"
   },
   "keywords": [
     "game",
