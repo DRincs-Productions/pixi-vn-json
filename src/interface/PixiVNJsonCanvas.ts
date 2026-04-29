@@ -10,9 +10,9 @@ import type {
     TextOptions,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
-import PixiVNJsonCanvasAnimate from "./PixiVNJsonCanvasAnimate";
-import PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
-import PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
+import type PixiVNJsonCanvasAnimate from "./PixiVNJsonCanvasAnimate";
+import type PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
+import type PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
 
 export type PixiVNJsonCanvasImageVideoShow = {
     type: "image" | "video";

@@ -1,5 +1,5 @@
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import { PixiVNJsonOperationString } from "../interface";
+import type { PixiVNJsonOperationString } from "../interface";
 
 export function operationStringToString(operation: PixiVNJsonOperationString): string {
     let stringOperation = "";
@@ -7,7 +7,7 @@ export function operationStringToString(operation: PixiVNJsonOperationString): s
         if (typeof value === "string") {
             stringOperation += value;
         } else {
-            let res = JsonUnifier.getLogichValue<string>(value);
+            const res = JsonUnifier.getLogichValue<string>(value);
             stringOperation += `${res}`;
         }
     });

@@ -1,4 +1,4 @@
-import PixiVNJsonConditions from "./PixiVNJsonConditions";
+import type PixiVNJsonConditions from "./PixiVNJsonConditions";
 
 /**
  * If-Else condition for PixiVNJson

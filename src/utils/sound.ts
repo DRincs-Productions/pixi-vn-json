@@ -1,6 +1,5 @@
 import { sound } from "@drincs/pixi-vn/sound";
-import { PixiVNJsonSound } from "../interface";
-import { PixiVNJsonSoundEdit } from "../interface/PixiVNJsonSound";
+import type { PixiVNJsonSound } from "../interface";
 
 export function soundOperation(operation: PixiVNJsonSound) {
     switch (operation.operationType) {
@@ -51,7 +50,14 @@ export function soundOperation(operation: PixiVNJsonSound) {
             Object.entries(operation.props).forEach(([key, value]) => {
                 const mediaInstance = sound.find(operation.alias);
                 if (mediaInstance) {
-                    mediaInstance.set(key as keyof PixiVNJsonSoundEdit["props"], value);
+                    switch (key) {
+                        case "volume":
+                            mediaInstance.volume.value = value as any;
+                            break;
+                        default:
+                            mediaInstance.paused = value as any;
+                            break;
+                    }
                 }
             });
             break;

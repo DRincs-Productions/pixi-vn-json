@@ -1,12 +1,12 @@
 import type { CanvasBaseInterface, ImageSprite } from "@drincs/pixi-vn";
-import {
+import type {
     AnimationOptions,
     KeyframesType,
     ObjectSegment,
     ObjectSegmentWithTransition,
     SequenceOptions,
 } from "@drincs/pixi-vn/motion";
-import { UPDATE_PRIORITY } from "pixi.js";
+import type { UPDATE_PRIORITY } from "pixi.js";
 
 export type PixiVNJsonAnimateBase<T extends CanvasBaseInterface<any>> = {
     type: "animate";

@@ -1,11 +1,11 @@
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     canvas,
-    ContainerChild,
-    ContainerMemory,
+    type ContainerChild,
+    type ContainerMemory,
     ImageContainer,
     ImageSprite,
-    ImageSpriteMemory,
+    type ImageSpriteMemory,
     moveIn,
     moveOut,
     pushIn,
@@ -21,18 +21,18 @@ import {
     showWithFade,
     Text,
     VideoSprite,
-    VideoSpriteMemory,
+    type VideoSpriteMemory,
     zoomIn,
     zoomOut,
 } from "@drincs/pixi-vn/canvas";
-import {
+import type {
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasShow,
     PixiVNJsonMediaTransiotions,
 } from "../interface";
-import {
+import type {
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasTextShow,
@@ -113,7 +113,7 @@ export async function imageOperation(
     switch (operation.operationType) {
         case "show":
             if (operation.transition) {
-                let imageToShow = new ImageSprite(
+                const imageToShow = new ImageSprite(
                     operation.props,
                     operation.url || operation.alias,
                 );
@@ -122,8 +122,8 @@ export async function imageOperation(
                 await showImage(operation.alias, operation.url, operation.props);
             }
             break;
-        case "edit":
-            let image = canvas.find<ImageSprite>(operation.alias);
+        case "edit": {
+            const image = canvas.find<ImageSprite>(operation.alias);
             if (image) {
                 if (operation.props) {
                     await image.setMemory({
@@ -135,6 +135,7 @@ export async function imageOperation(
                 logger.error(`Image with alias ${operation.alias} not found.`);
             }
             break;
+        }
         case "remove":
             removeCanvasElement(operation);
             break;
@@ -151,7 +152,7 @@ export async function videoOperation(
     switch (operation.operationType) {
         case "show":
             if (operation.transition) {
-                let videoToShow = new VideoSprite(
+                const videoToShow = new VideoSprite(
                     operation.props,
                     operation.url || operation.alias,
                 );
@@ -160,8 +161,8 @@ export async function videoOperation(
                 await showVideo(operation.alias, operation.url, operation.props);
             }
             break;
-        case "edit":
-            let video = canvas.find<VideoSprite>(operation.alias);
+        case "edit": {
+            const video = canvas.find<VideoSprite>(operation.alias);
             if (video) {
                 if (operation.props) {
                     await video.setMemory({
@@ -173,25 +174,28 @@ export async function videoOperation(
                 logger.error(`Video with alias ${operation.alias} not found.`);
             }
             break;
+        }
         case "remove":
             removeCanvasElement(operation);
             break;
-        case "pause":
-            let videoPause = canvas.find<VideoSprite>(operation.alias);
+        case "pause": {
+            const videoPause = canvas.find<VideoSprite>(operation.alias);
             if (videoPause) {
                 videoPause.paused = true;
             } else {
                 logger.error(`Video with alias ${operation.alias} not found.`);
             }
             break;
-        case "resume":
-            let videoResume = canvas.find<VideoSprite>(operation.alias);
+        }
+        case "resume": {
+            const videoResume = canvas.find<VideoSprite>(operation.alias);
             if (videoResume) {
                 videoResume.paused = false;
             } else {
                 logger.error(`Video with alias ${operation.alias} not found.`);
             }
             break;
+        }
     }
 }
 
@@ -204,14 +208,14 @@ export async function imageContainerOperation(
     switch (operation.operationType) {
         case "show":
             if (operation.transition) {
-                let imageContainerToShow = new ImageContainer(operation.props, operation.urls);
+                const imageContainerToShow = new ImageContainer(operation.props, operation.urls);
                 await showCanvasElemet(imageContainerToShow, operation, operation.transition);
             } else {
                 await showImageContainer(operation.alias, operation.urls, operation.props);
             }
             break;
-        case "edit":
-            let image = canvas.find<ImageContainer>(operation.alias);
+        case "edit": {
+            const image = canvas.find<ImageContainer>(operation.alias);
             if (image) {
                 if (operation.props) {
                     await image.setMemory({
@@ -223,6 +227,7 @@ export async function imageContainerOperation(
                 logger.error(`ImageContainer with alias ${operation.alias} not found.`);
             }
             break;
+        }
         case "remove":
             removeCanvasElement(operation);
             break;
@@ -237,14 +242,14 @@ export async function textOperation(
             operation.props = operation.props || {};
             operation.props.text = translator.t(operation.text);
             if (operation.transition) {
-                let imageContainerToShow = new Text(operation.props);
+                const imageContainerToShow = new Text(operation.props);
                 await showCanvasElemet(imageContainerToShow, operation, operation.transition);
             } else {
                 showText(operation.alias, operation.text, operation.props);
             }
             break;
-        case "edit":
-            let image = canvas.find<Text>(operation.alias);
+        case "edit": {
+            const image = canvas.find<Text>(operation.alias);
             if (image) {
                 if (operation.props) {
                     await image.setMemory({
@@ -256,6 +261,7 @@ export async function textOperation(
                 logger.error(`Text with alias ${operation.alias} not found.`);
             }
             break;
+        }
         case "remove":
             removeCanvasElement(operation);
             break;
@@ -272,7 +278,7 @@ export async function canvasElementOperation(
     switch (operation.operationType) {
         case "edit":
             try {
-                let unknown = canvas.find(operation.alias);
+                const unknown = canvas.find(operation.alias);
                 if (unknown) {
                     if (operation.props) {
                         unknown.memory = {

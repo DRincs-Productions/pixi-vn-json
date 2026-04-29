@@ -5,9 +5,9 @@ import type {
     StorageObjectType,
 } from "@drincs/pixi-vn";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
-import PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
-import { PixiVNJsonValueGet } from "./PixiVNJsonValue";
+import type PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
+import type PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
+import type { PixiVNJsonValueGet } from "./PixiVNJsonValue";
 
 export type PixiVNJsonChoice = {
     /**

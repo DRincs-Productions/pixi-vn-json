@@ -1,4 +1,4 @@
-import type { IMediaInstance, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
+import type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
 
 type PixiVNJsonSoundPlay = {
     type: "sound";
@@ -26,7 +26,7 @@ export type PixiVNJsonSoundEdit = {
     type: "sound";
     operationType: "edit";
     alias: string;
-    props: Partial<Pick<IMediaInstance, "speed" | "volume" | "muted" | "loop" | "paused">>;
+    props: Partial<Pick<MediaInterface, "speed" | "volume" | "muted" | "loop" | "paused">>;
 };
 
 type PixiVNJsonSound =

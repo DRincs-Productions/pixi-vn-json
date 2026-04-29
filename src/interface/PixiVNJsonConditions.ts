@@ -1,7 +1,7 @@
 import type { StorageElementType } from "@drincs/pixi-vn";
-import PixiVNJsonArithmeticOperations from "./PixiVNJsonArithmeticOperations";
-import PixiVNJsonUnionCondition from "./PixiVNJsonUnionCondition";
-import { PixiVNJsonValueGet } from "./PixiVNJsonValue";
+import type PixiVNJsonArithmeticOperations from "./PixiVNJsonArithmeticOperations";
+import type PixiVNJsonUnionCondition from "./PixiVNJsonUnionCondition";
+import type { PixiVNJsonValueGet } from "./PixiVNJsonValue";
 
 /**
  * Comparation for PixiVNJson.

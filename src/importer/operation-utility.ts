@@ -1,13 +1,13 @@
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
-import { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import type { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
+import type { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 import { operationStringToString } from "../utils/operationtoconvert";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
     operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>,
 ) {
-    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
+    const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
     );
     if (!operation) {
@@ -41,8 +41,8 @@ export async function runOperation(
             break;
         case "operationtoconvert":
             if (operationStringConvert) {
-                let stringOperation = operationStringToString(operation);
-                let op = await operationStringConvert(stringOperation);
+                const stringOperation = operationStringToString(operation);
+                const op = await operationStringConvert(stringOperation);
                 if (op) {
                     await runOperation(op, operationStringConvert);
                 }
@@ -65,7 +65,7 @@ export async function runOperation(
 export function runInitialOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {
-    let operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
+    const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
     );
     if (!operation) {

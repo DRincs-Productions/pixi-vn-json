@@ -6,7 +6,7 @@ import {
     type StorageElementType,
     type VideoSpriteMemory,
 } from "@drincs/pixi-vn";
-import {
+import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
@@ -21,7 +21,7 @@ import {
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
-import {
+import type {
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasRemove,
@@ -33,7 +33,7 @@ import {
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
 } from "../interface/PixiVNJsonCanvas";
-import { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
+import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {

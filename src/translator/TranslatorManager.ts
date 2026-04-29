@@ -1,5 +1,5 @@
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
-import {
+import type {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
     PixiVNJsonConditionalResultToCombine,
@@ -51,7 +51,7 @@ export default class TranslatorManager {
             defaultValue: "empty_string" | "copy_key";
         },
     ) {
-        let defaultValue = options.defaultValue || "empty_string";
+        const defaultValue = options.defaultValue || "empty_string";
         if (typeof key === "string") {
             key = [key];
         }
@@ -91,13 +91,13 @@ export default class TranslatorManager {
                         });
                     } else {
                         if (data.elements.type === "ifelse") {
-                            let tempRes: T[][] = [];
+                            const tempRes: T[][] = [];
                             TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item);
                             });
                         } else if (data.elements.type === "stepswitch") {
-                            let tempRes: T[][] = [];
+                            const tempRes: T[][] = [];
                             TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item);
@@ -151,7 +151,7 @@ export default class TranslatorManager {
         } = {},
     ) {
         const { defaultValue = "copy_key", operationStringConvert } = options;
-        let promises = labels.map(async (label) => {
+        const promises = labels.map(async (label) => {
             if (label.choices) {
                 let multichoices: PixiVNJsonChoices[] = [];
                 if (!Array.isArray(label.choices)) {
@@ -168,7 +168,7 @@ export default class TranslatorManager {
                             } else {
                                 res = [choice];
                             }
-                            let texts = res.map((item) =>
+                            const texts = res.map((item) =>
                                 TranslatorManager.getConditionalsThenElse(item.text),
                             );
                             texts.forEach((text) => {
@@ -233,7 +233,7 @@ export default class TranslatorManager {
                             if (typeof text === "string") {
                                 TranslatorManager.addKey(json, text, { defaultValue });
                             } else {
-                                let t = TranslatorManager.getConditionalsThenElse(text);
+                                const t = TranslatorManager.getConditionalsThenElse(text);
                                 t.forEach((tt) => {
                                     if (typeof tt === "string") {
                                         TranslatorManager.addKey(json, tt, { defaultValue });
@@ -265,8 +265,8 @@ export default class TranslatorManager {
             if (label.operations) {
                 for (let operation of label.operations) {
                     if (operation.type === "operationtoconvert" && operationStringConvert) {
-                        let stringOperation = operationStringToString(operation);
-                        let res = await operationStringConvert(stringOperation, label, {});
+                        const stringOperation = operationStringToString(operation);
+                        const res = await operationStringConvert(stringOperation, label, {});
                         if (!res) {
                             return;
                         }
@@ -286,7 +286,7 @@ export default class TranslatorManager {
                 }
             }
             if (label.conditionalStep) {
-                let l = TranslatorManager.getConditionalsThenElse(label.conditionalStep);
+                const l = TranslatorManager.getConditionalsThenElse(label.conditionalStep);
                 l.forEach((item) => {
                     if (Array.isArray(item)) {
                         TranslatorManager.generateJsonTranslation(item, json, options);

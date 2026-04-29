@@ -3,18 +3,18 @@ import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     LabelAbstract,
-    LabelProps,
+    type LabelProps,
     narration,
-    StepLabelPropsType,
-    StepLabelType,
-    StoredChoiceInterface,
+    type StepLabelPropsType,
+    type StepLabelType,
+    type StoredChoiceInterface,
 } from "@drincs/pixi-vn/narration";
 import { storage } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
-import PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
-import {
+import type { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
+import type PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
+import type {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
     PixiVNJsonDialog,
@@ -56,7 +56,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             props = {};
         }
         props.onLoadingLabel = async () => {
-            for (let stepProp of steps) {
+            for (const stepProp of steps) {
                 let step: PixiVNJsonLabelStep;
                 if (typeof stepProp === "function") {
                     step = stepProp();
@@ -68,7 +68,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
 
                 if (step.operations) {
                     try {
-                        let promises = step.operations.map((operation) =>
+                        const promises = step.operations.map((operation) =>
                             JsonUnifier.loadAssets(operation),
                         );
                         await Promise.all(promises);
@@ -100,7 +100,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         if (stepId < 0 || stepId >= this._steps.length) {
             return undefined;
         }
-        let step = this._steps[stepId];
+        const step = this._steps[stepId];
         return this.stepConverter(step);
     }
 
@@ -115,8 +115,8 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         if (index < 0 || index >= this.steps.length) {
             return undefined;
         }
-        let step = this._steps[index];
-        let sha1String = sha1(step.toString().toLocaleLowerCase());
+        const step = this._steps[index];
+        const sha1String = sha1(step.toString().toLocaleLowerCase());
         return sha1String.toString();
     }
 
@@ -169,7 +169,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
         if (origin === undefined || origin === null) {
             return undefined;
         }
-        let dialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin);
+        const dialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(origin);
         if (dialogue === undefined || dialogue === null) {
             return `${dialogue}`;
         }
@@ -206,7 +206,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 ? (value: string) => this.operationStringConvert!(value, step, props)
                 : undefined;
             const { operations = [] } = step;
-            for (let operation of operations) {
+            for (const operation of operations) {
                 await runOperation(operation, operationStringConvert);
             }
 
@@ -215,22 +215,22 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
             const glueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled);
             const dialogue = this.getDialogue(step.dialogue);
 
-            let labelToOpen: PixiVNJsonLabelToOpen[] = [];
+            const labelToOpen: PixiVNJsonLabelToOpen[] = [];
             if (!Array.isArray(tempLabelToOpen)) {
                 tempLabelToOpen = [tempLabelToOpen];
             }
             tempLabelToOpen.forEach((label) => {
-                let i = JsonUnifier.getLogichValue<PixiVNJsonLabelToOpen<{}>>(label);
+                const i = JsonUnifier.getLogichValue<PixiVNJsonLabelToOpen<{}>>(label);
                 if (i) {
                     labelToOpen.push(i);
                 }
             });
 
             let goNextStep = JsonUnifier.getLogichValue<boolean>(step.goNextStep);
-            let end = JsonUnifier.getLogichValue<"game_end" | "label_end">(step.end);
+            const end = JsonUnifier.getLogichValue<"game_end" | "label_end">(step.end);
 
             if (choices) {
-                let options: StoredChoiceInterface[] = choices.map((option) => {
+                const options: StoredChoiceInterface[] = choices.map((option) => {
                     let text: string | string[] = "";
                     if (Array.isArray(option.text)) {
                         let texts: string[] = [];
@@ -287,12 +287,12 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 narration.dialogGlue = false;
             }
 
-            for (let label of labelToOpen) {
+            for (const label of labelToOpen) {
                 let labelString = label.label;
                 if (typeof labelString === "object") {
                     labelString = JsonUnifier.getLogichValue<string>(labelString) || "";
                 }
-                let labelParams = label.params?.map((param) => {
+                const labelParams = label.params?.map((param) => {
                     return JsonUnifier.getLogichValue(param);
                 });
                 props = {

@@ -2,7 +2,7 @@ import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
-import { storage, StorageElementType } from "@drincs/pixi-vn/storage";
+import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
@@ -26,7 +26,7 @@ import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet) {
-    let v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
+    const v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
     let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
         valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v);
@@ -43,8 +43,8 @@ export function setStorageValue(value: PixiVNJsonValueSet) {
         case "tempstorage":
             storage.setTempVariable(value.key, valueToSet);
             break;
-        case "params":
-            let params: any[] =
+        case "params": {
+            const params: any[] =
                 storage.get(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
             if (params && params.length - 1 >= (value.key as number)) {
                 params[value.key as number] = valueToSet;
@@ -54,11 +54,12 @@ export function setStorageValue(value: PixiVNJsonValueSet) {
                 params,
             );
             break;
+        }
     }
 }
 
 export function setInitialStorageValue(value: PixiVNJsonOnlyStorageSet) {
-    let v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
+    const v = JsonUnifier.getLogichValue<StorageElementType>(value.value);
     let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
         valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v);
@@ -85,7 +86,7 @@ export function getLogichValue<T = StorageElementType>(
               T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
           >,
 ): T | undefined {
-    let v = getValueFromConditionalStatements<
+    const v = getValueFromConditionalStatements<
         T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
     >(value);
     if (v && typeof v === "object" && "type" in v) {
@@ -107,10 +108,10 @@ export function getLogichValue<T = StorageElementType>(
 function getValueFromArithmeticOperations<T = StorageElementType>(
     operation: PixiVNJsonArithmeticOperations,
 ): T | undefined {
-    let leftValue = JsonUnifier.getLogichValue(operation.leftValue);
+    const leftValue = JsonUnifier.getLogichValue(operation.leftValue);
     switch (operation.type) {
-        case "arithmetic":
-            let rightValue = JsonUnifier.getLogichValue(operation.rightValue);
+        case "arithmetic": {
+            const rightValue = JsonUnifier.getLogichValue(operation.rightValue);
             switch (operation.operator) {
                 case "*":
                     return ((leftValue as any) * (rightValue as any)) as T;
@@ -123,10 +124,11 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
                 case "%":
                     return ((leftValue as any) % (rightValue as any)) as T;
                 case "POW":
-                    return Math.pow(leftValue as any, rightValue as any) as T;
+                    return ((leftValue as any) ** (rightValue as any)) as T;
                 case "RANDOM":
                     return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
             }
+        }
         case "arithmeticsingle":
             switch (operation.operator) {
                 case "INT":
@@ -134,7 +136,6 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
                 case "FLOOR":
                     return Math.floor(leftValue as any) as T;
                 case "FLOAT":
-                    return parseFloat(leftValue as any) as T;
             }
             break;
     }
@@ -170,8 +171,8 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         return JsonUnifier.getLogichValue(
                             (value as PixiVNJsonLogicGet).operation,
                         ) as unknown as T;
-                    case "params":
-                        let params: any[] =
+                    case "params": {
+                        const params: any[] =
                             storage.get(
                                 `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`,
                             ) || [];
@@ -180,6 +181,7 @@ function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet): T | 
                         }
                         logger.warn("getValue params not found");
                         return undefined;
+                    }
                 }
             }
         }
@@ -203,9 +205,9 @@ function getConditionResult(condition: PixiVNJsonConditions): boolean {
         return false;
     }
     switch (condition.type) {
-        case "compare":
-            let leftValue = JsonUnifier.getLogichValue<any>(condition.leftValue);
-            let rightValue = JsonUnifier.getLogichValue<any>(condition.rightValue);
+        case "compare": {
+            const leftValue = JsonUnifier.getLogichValue<any>(condition.leftValue);
+            const rightValue = JsonUnifier.getLogichValue<any>(condition.rightValue);
             switch (condition.operator) {
                 case "==":
                     return leftValue === rightValue;
@@ -223,6 +225,7 @@ function getConditionResult(condition: PixiVNJsonConditions): boolean {
                     return leftValue.toString().includes(rightValue.toString());
             }
             break;
+        }
         case "valueCondition":
             return JsonUnifier.getLogichValue(condition.value) ? true : false;
         case "union":
@@ -281,15 +284,16 @@ export function getValueFromConditionalStatements<T>(
         switch (statement.type) {
             case "resulttocombine":
                 return combinateResult(statement);
-            case "ifelse":
-                let conditionResult = JsonUnifier.getLogichValue<boolean>(statement.condition);
+            case "ifelse": {
+                const conditionResult = JsonUnifier.getLogichValue<boolean>(statement.condition);
                 if (conditionResult) {
                     return JsonUnifier.getLogichValue<T>(statement.then as any);
                 } else {
                     return JsonUnifier.getLogichValue<T>(statement.else as any);
                 }
-            case "stepswitch":
-                let elements =
+            }
+            case "stepswitch": {
+                const elements =
                     JsonUnifier.getLogichValue<PixiVNJsonStepSwitchElementType<T>[]>(
                         statement.elements,
                     ) || [];
@@ -298,10 +302,11 @@ export function getValueFromConditionalStatements<T>(
                     return undefined;
                 }
                 switch (statement.choiceType) {
-                    case "random":
-                        let randomIndex = randomIntFromInterval(0, elements.length - 1);
+                    case "random": {
+                        const randomIndex = randomIntFromInterval(0, elements.length - 1);
                         return JsonUnifier.getLogichValue<T>(elements[randomIndex] as any);
-                    case "loop":
+                    }
+                    case "loop": {
                         let currentStepTimesCounter1 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) -
                             1;
@@ -314,9 +319,10 @@ export function getValueFromConditionalStatements<T>(
                         return JsonUnifier.getLogichValue<T>(
                             elements[currentStepTimesCounter1] as any,
                         );
-                    case "sequential":
-                        let end: T | undefined = undefined;
-                        let currentStepTimesCounter2 =
+                    }
+                    case "sequential": {
+                        let end: T | undefined;
+                        const currentStepTimesCounter2 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) -
                             1;
                         if (statement.end == "lastItem") {
@@ -330,8 +336,9 @@ export function getValueFromConditionalStatements<T>(
                         return JsonUnifier.getLogichValue<T>(
                             elements[currentStepTimesCounter2] as any,
                         );
-                    case "sequentialrandom":
-                        let randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(
+                    }
+                    case "sequentialrandom": {
+                        const randomIndexWhitExclude = NarrationManagerStatic.getRandomNumber(
                             0,
                             elements.length - 1,
                             {
@@ -340,7 +347,7 @@ export function getValueFromConditionalStatements<T>(
                             },
                         );
                         if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
-                            let obj = NarrationManagerStatic.getCurrentStepTimesCounterData(
+                            const obj = NarrationManagerStatic.getCurrentStepTimesCounterData(
                                 statement.nestedId,
                             );
                             if (!obj || !obj?.usedRandomNumbers) {
@@ -349,7 +356,7 @@ export function getValueFromConditionalStatements<T>(
                                 );
                                 return undefined;
                             }
-                            let lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`];
+                            const lastItem = obj.usedRandomNumbers[`${0}-${elements.length - 1}`];
                             return JsonUnifier.getLogichValue<T>(
                                 elements[lastItem[lastItem.length - 1]] as any,
                             );
@@ -363,7 +370,9 @@ export function getValueFromConditionalStatements<T>(
                         return JsonUnifier.getLogichValue<T>(
                             elements[randomIndexWhitExclude] as any,
                         );
+                    }
                 }
+            }
         }
     }
     return statement;
@@ -371,7 +380,7 @@ export function getValueFromConditionalStatements<T>(
 
 export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJsonLabelStep {
     if (originalStep.conditionalStep) {
-        let conditionalStep = createExportableElement(
+        const conditionalStep = createExportableElement(
             JsonUnifier.getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any),
         );
         if (conditionalStep?.glueEnabled === undefined) {
@@ -396,7 +405,7 @@ export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJso
             delete conditionalStep?.operations;
         }
         if (conditionalStep) {
-            let obj = {
+            const obj = {
                 ...originalStep,
                 conditionalStep: undefined,
                 ...conditionalStep,
@@ -410,20 +419,20 @@ export function getConditionalStep(originalStep: PixiVNJsonLabelStep): PixiVNJso
 }
 
 function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): undefined | T {
-    let first = value.firstItem;
-    let second: T[] = [];
+    const first = value.firstItem;
+    const second: T[] = [];
     value.secondConditionalItem?.forEach((item) => {
         if (!Array.isArray(item)) {
-            let i = JsonUnifier.getLogichValue<T>(item as any);
+            const i = JsonUnifier.getLogichValue<T>(item as any);
             second.push(i as any);
         } else {
             item.forEach((i) => {
-                let j = JsonUnifier.getLogichValue<T>(i);
+                const j = JsonUnifier.getLogichValue<T>(i);
                 second.push(j as any);
             });
         }
     });
-    let toCheck = first ? [first, ...second] : second;
+    const toCheck = first ? [first, ...second] : second;
     if (toCheck.length === 0) {
         logger.warn("combinateResult toCheck.length === 0");
         return undefined;
@@ -433,10 +442,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
         return translator.t(toCheck) as T;
     }
     if (typeof toCheck[0] === "object") {
-        let steps = toCheck as PixiVNJsonLabelStep[];
-        let beforeIsGlueEnabled: undefined | boolean = undefined;
+        const steps = toCheck as PixiVNJsonLabelStep[];
+        let beforeIsGlueEnabled: undefined | boolean;
         let beforeHaveText = false;
-        let dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
+        const dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
             step = getConditionalStep(step);
             let value =
                 JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue) ||
@@ -457,14 +466,14 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             beforeIsGlueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled) || false;
             return value;
         });
-        let firstDialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(
+        const firstDialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(
             dialogueArray[0],
         );
-        let character =
+        const character =
             typeof firstDialogue === "object" && "character" in firstDialogue
                 ? firstDialogue.character
                 : undefined;
-        let dialogues: string | string[] = dialogueArray.flatMap((dialogue) => {
+        const dialogues: string | string[] = dialogueArray.flatMap((dialogue) => {
             let text: PixiVNJsonDialogText;
             if (dialogue && typeof dialogue === "object" && "text" in dialogue) {
                 text = dialogue.text;
@@ -474,7 +483,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             let textEasy: string | string[];
             if (Array.isArray(text)) {
                 textEasy = text.map((t) => {
-                    let value = JsonUnifier.getLogichValue<string>(t);
+                    const value = JsonUnifier.getLogichValue<string>(t);
                     return translator.t(`${value}`);
                 });
             } else {
@@ -482,8 +491,8 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             }
             return translator.t(textEasy);
         });
-        let end = steps.find((step) => step.end);
-        let choices = steps.find((step) => step.choices);
+        const end = steps.find((step) => step.end);
+        const choices = steps.find((step) => step.choices);
         let glueEnabled: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;
         let goNextStep: boolean | PixiVNJsonConditionalStatements<boolean> | undefined = false;
         if (steps.length > 0) {
@@ -497,7 +506,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                     (step) => !(step.operations && (!step.dialogue || !step.choices)),
                 )?.goNextStep;
         }
-        let labelToOpen = steps.find((step) => step.labelToOpen);
+        const labelToOpen = steps.find((step) => step.labelToOpen);
         let operations: PixiVNJsonConditionalOperation[] = [];
         steps.forEach((step) => {
             if (step.operations) {
@@ -505,7 +514,7 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
             }
         });
 
-        let res: PixiVNJsonLabelStep = {
+        const res: PixiVNJsonLabelStep = {
             dialogue: character
                 ? {
                       character: character,
