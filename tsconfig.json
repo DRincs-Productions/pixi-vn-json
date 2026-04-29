@@ -29,6 +29,7 @@
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
     // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
     "paths": {                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
+      "@/*": ["./src/*"],
       "@drincs/pixi-vn-json/importer": ["./src/importer/index.ts"],
       "@drincs/pixi-vn-json/core": ["./src/core/index.ts"],
       "@drincs/pixi-vn-json/translator": ["./src/translator/index.ts"],
