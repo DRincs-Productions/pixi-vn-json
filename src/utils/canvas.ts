@@ -281,10 +281,10 @@ export async function canvasElementOperation(
                 const unknown = canvas.find(operation.alias);
                 if (unknown) {
                     if (operation.props) {
-                        unknown.memory = {
+                        unknown.setMemory({
                             ...unknown.memory,
                             ...operation.props,
-                        };
+                        });
                     }
                 } else {
                     logger.error(`Canvas Element with alias ${operation.alias} not found.`);
