@@ -23,7 +23,7 @@ export type PixiVNJsonOperation = (
     /**
      * This value is used by the system to know where this operation is from, for example, if is generated from a string operation.
      */
-    $origin: string;
+    $origin?: string;
 };
 
 type PixiVNJsonConditionalOperation =
