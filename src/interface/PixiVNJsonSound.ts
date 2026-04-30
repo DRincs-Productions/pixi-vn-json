@@ -26,7 +26,14 @@ export type PixiVNJsonSoundEdit = {
     type: "sound";
     operationType: "edit";
     alias: string;
-    props: Partial<Pick<MediaInterface, "speed" | "volume" | "muted" | "loop" | "paused">>;
+    props: Partial<
+        Pick<MediaInterface, "speed" | "muted" | "loop" | "paused"> & {
+            /**
+             * Volume is a value between 0 and 1, where 0 is silent and 1 is the original volume of the sound. Values above 1 will increase the volume of the sound, while values below 0 will decrease it. For example, a value of 0.5 will make the sound half as loud, while a value of 2 will make it twice as loud.
+             */
+            volume: number;
+        }
+    >;
 };
 
 type PixiVNJsonSound =
