@@ -1,9 +1,9 @@
+import type { LabelJsonOptions } from "@/importer/LabelJson";
+import { runInitialOperation } from "@/importer/operation-utility";
+import type { PixiVNJson, PixiVNJsonLabelStep } from "@/interface";
+import { logger } from "@/utils/log-utility";
 import { RegisteredLabels } from "@drincs/pixi-vn/narration";
 import { LabelJson } from ".";
-import type { PixiVNJson, PixiVNJsonLabelStep } from "../interface";
-import { logger } from "../utils/log-utility";
-import type { LabelJsonOptions } from "./LabelJson";
-import { runInitialOperation } from "./operation-utility";
 
 /**
  * Import a Pixi'VN JSON to the system.

@@ -1,4 +1,3 @@
-import type { StepLabelPropsType } from "@drincs/pixi-vn";
 import type {
     PixiVNJsonChoice,
     PixiVNJsonChoices,
@@ -8,8 +7,9 @@ import type {
     PixiVNJsonDialogText,
     PixiVNJsonLabelStep,
     PixiVNJsonOperation,
-} from "../interface";
-import { operationStringToString } from "../utils/operationtoconvert";
+} from "@/interface";
+import { operationStringToString } from "@/utils/operationtoconvert";
+import type { StepLabelPropsType } from "@drincs/pixi-vn";
 
 export default class TranslatorManager {
     private static _beforeToTranslate: ((key: string) => string) | undefined = undefined;
