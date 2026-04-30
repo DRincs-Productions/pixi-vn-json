@@ -14,11 +14,17 @@ export type PixiVNJsonOperationString = {
     )[];
 };
 
-export type PixiVNJsonOperation =
+export type PixiVNJsonOperation = (
     | PixiVNJsonValueSet
     | PixiVNJsonCanvas
     | PixiVNJsonSound
-    | PixiVNJsonNarration;
+    | PixiVNJsonNarration
+) & {
+    /**
+     * This value is used by the system to know where this operation is from, for example, if is generated from a string operation.
+     */
+    $origin: string;
+};
 
 type PixiVNJsonConditionalOperation =
     | PixiVNJsonOperation
