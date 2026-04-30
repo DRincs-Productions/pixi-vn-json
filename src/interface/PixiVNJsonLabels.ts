@@ -1,4 +1,4 @@
-import type PixiVNJsonLabelStep from "./PixiVNJsonLabelStep";
+import type PixiVNJsonLabelStep from "@/interface/PixiVNJsonLabelStep";
 
 /**
  * Collection of labels to be used in the narrative.

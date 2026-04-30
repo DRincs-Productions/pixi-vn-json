@@ -1,13 +1,12 @@
+import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
+import type PixiVNJsonConditionalOperation from "@/interface/PixiVNJsonOperations";
+import type { PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
 import type {
     LabelRunModeType,
     narration,
     StepLabelPropsType,
     StorageObjectType,
 } from "@drincs/pixi-vn";
-import { PIXIVNJSON_PARAM_ID } from "../constants";
-import type PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
-import type PixiVNJsonConditionalOperation from "./PixiVNJsonOperations";
-import type { PixiVNJsonValueGet } from "./PixiVNJsonValue";
 
 export type PixiVNJsonChoice = {
     /**
@@ -67,7 +66,7 @@ export type PixiVNJsonDialog<Text = string> =
       }
     | Text;
 
-export type PixiVNJsonLabelToOpen<T extends {} = {}> = {
+export type PixiVNJsonLabelToOpen<T extends {} = object> = {
     /**
      * The id of the label to open.
      */
@@ -84,7 +83,7 @@ export type PixiVNJsonLabelToOpen<T extends {} = {}> = {
      * **It is not recommended to use it, use it only if necessary**. The parameters to be passed to the label. If you want to pass an object, use the {@link PixiVNJsonLabelToOpen.props} attribute.
      * "params" attribute will be stored in the temp storage with the key: {@link PIXIVNJSON_PARAM_ID} + ({@link narration.openedLabels.length} - 1).
      */
-    params?: any[];
+    params?: unknown[];
 };
 
 /**

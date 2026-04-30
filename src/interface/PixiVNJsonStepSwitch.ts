@@ -1,5 +1,5 @@
-import type PixiVNJsonConditionalResultToCombine from "./PixiVNJsonConditionalResultToCombine";
-import type PixiVNJsonConditionalStatements from "./PixiVNJsonConditionalStatements";
+import type PixiVNJsonConditionalResultToCombine from "@/interface/PixiVNJsonConditionalResultToCombine";
+import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
 
 export type PixiVNJsonStepSwitchElementType<Then> =
     | Then

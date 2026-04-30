@@ -1,6 +1,6 @@
-import type PixiVNJsonIfElse from "./PixiVNJsonIfElse";
-import type PixiVNJsonLabels from "./PixiVNJsonLabels";
-import type { PixiVNJsonValueSet } from "./PixiVNJsonValue";
+import type PixiVNJsonIfElse from "@/interface/PixiVNJsonIfElse";
+import type PixiVNJsonLabels from "@/interface/PixiVNJsonLabels";
+import type { PixiVNJsonValueSet } from "@/interface/PixiVNJsonValue";
 
 /**
  * PixiVNJson It can be defined as a programming language to write a narrative written in json.

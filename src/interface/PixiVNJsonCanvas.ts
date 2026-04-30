@@ -1,3 +1,6 @@
+import type PixiVNJsonCanvasAnimate from "@/interface/PixiVNJsonCanvasAnimate";
+import type PixiVNJsonCanvasEffect from "@/interface/PixiVNJsonCanvasEffect";
+import type PixiVNJsonMediaTransiotions from "@/interface/PixiVNJsonMediaTransiotions";
 import type {
     ContainerMemory,
     ContainerOptions,
@@ -10,9 +13,6 @@ import type {
     TextOptions,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
-import type PixiVNJsonCanvasAnimate from "./PixiVNJsonCanvasAnimate";
-import type PixiVNJsonCanvasEffect from "./PixiVNJsonCanvasEffect";
-import type PixiVNJsonMediaTransiotions from "./PixiVNJsonMediaTransiotions";
 
 export type PixiVNJsonCanvasImageVideoShow = {
     type: "image" | "video";
