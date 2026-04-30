@@ -9,7 +9,7 @@ import {
     type StepLabelType,
     type StoredChoiceInterface,
 } from "@drincs/pixi-vn/narration";
-import { storage } from "@drincs/pixi-vn/storage";
+import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
@@ -32,7 +32,7 @@ export type LabelJsonOptions = {
     operationStringConvert?: (
         value: string,
         step: PixiVNJsonLabelStep,
-        props: StepLabelPropsType | {},
+        props: StepLabelPropsType | object,
     ) => Promise<PixiVNJsonOperation | undefined>;
     /**
      * If true and a dialog is empty or has only spaces, {@link PixiVNJsonLabelStep.goNextStep} will be set to true.
@@ -40,7 +40,7 @@ export type LabelJsonOptions = {
     skipEmptyDialogs?: boolean;
 };
 
-export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJson<T>, T> {
+export default class LabelJson<T extends {} = object> extends LabelAbstract<LabelJson<T>, T> {
     /**
      * @param id is the id of the label
      * @param steps is the list of steps that the label will perform
@@ -220,7 +220,7 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                 tempLabelToOpen = [tempLabelToOpen];
             }
             tempLabelToOpen.forEach((label) => {
-                const i = JsonUnifier.getLogichValue<PixiVNJsonLabelToOpen<{}>>(label);
+                const i = JsonUnifier.getLogichValue<PixiVNJsonLabelToOpen>(label);
                 if (i) {
                     labelToOpen.push(i);
                 }
@@ -303,13 +303,13 @@ export default class LabelJson<T extends {} = {}> extends LabelAbstract<LabelJso
                     if (narration.openedLabels.length > 0) narration.closeCurrentLabel();
                     storage.setTempVariable(
                         `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
-                        labelParams,
+                        labelParams as StorageElementType,
                     );
                     await narration.call(labelString, props);
                 } else {
                     storage.setTempVariable(
                         `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
-                        labelParams,
+                        labelParams as StorageElementType,
                     );
                     await narration.call(labelString, props);
                 }
