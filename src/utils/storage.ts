@@ -295,7 +295,7 @@ export function getValueFromConditionalStatements<T>(
     props: StepLabelPropsType = {},
 ): T | undefined {
     if (Array.isArray(statement) || !statement) {
-        return statement ?? undefined;
+        return statement;
     } else if (statement && typeof statement === "object" && "type" in statement) {
         switch (statement.type) {
             case "resulttocombine":
