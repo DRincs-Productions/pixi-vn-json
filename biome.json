@@ -23,14 +23,13 @@
         "noExplicitAny": "info",
         "noArrayIndexKey": "warn",
         "noDoubleEquals": "info",
-        "useIsArray": "warn"
+        "noThenProperty": "off"
       },
       "a11y": "info",
       "style": {
         "noDefaultExport": "off",
-        "useImportType": "warn",
-        "useConst": "warn",
-        "useTemplate": "warn"
+        "useImportType": "info",
+        "useConst": "warn"
       }
     },
     "domains": {
