@@ -41,11 +41,11 @@ export async function runOperation(
             await JsonUnifier.canvasElementOperation(operation);
             break;
         case "value":
-            JsonUnifier.setStorageValue(operation);
+            JsonUnifier.setStorageValue(operation, props);
             break;
         case "operationtoconvert":
             if (operationStringConvert) {
-                const stringOperation = operationStringToString(operation);
+                const stringOperation = operationStringToString(operation, props);
                 const op = await operationStringConvert(stringOperation);
                 if (op) {
                     await runOperation(op, props, operationStringConvert);

@@ -75,7 +75,7 @@ export default class JsonUnifier {
                       ImageSpriteMemory | VideoSpriteMemory | ContainerMemory<ContainerChild>
                   >,
         ) => Promise<void>;
-        setStorageValue?: (value: PixiVNJsonValueSet) => void;
+        setStorageValue?: (value: PixiVNJsonValueSet, props?: StepLabelPropsType) => void;
         setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet) => void;
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
@@ -89,7 +89,7 @@ export default class JsonUnifier {
                 | PixiVNJsonConditionalStatements<
                       T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
                   >,
-            props: StepLabelPropsType,
+            props?: StepLabelPropsType,
         ) => T | undefined;
         getConditionalStep?: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
@@ -215,7 +215,7 @@ export default class JsonUnifier {
     static get canvasElementOperation() {
         return JsonUnifier._canvasElementOperation;
     }
-    private static _setStorageValue: (value: PixiVNJsonValueSet) => void = () => {
+    private static _setStorageValue: (value: PixiVNJsonValueSet, props?: StepLabelPropsType) => void = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
@@ -284,7 +284,7 @@ export default class JsonUnifier {
             | PixiVNJsonConditionalStatements<
                   T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
               >,
-        props: StepLabelPropsType,
+        props?: StepLabelPropsType,
     ) => T | undefined = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
