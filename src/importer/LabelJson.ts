@@ -215,7 +215,7 @@ export default class LabelJson<T extends {} = object> extends LabelAbstract<Labe
                 : undefined;
             const { operations = [] } = step;
             for (const operation of operations) {
-                await runOperation(operation, operationStringConvert);
+                await runOperation(operation, props, operationStringConvert);
             }
 
             let { labelToOpen: tempLabelToOpen = [] } = step;

@@ -48,7 +48,7 @@ export async function runOperation(
                 const stringOperation = operationStringToString(operation);
                 const op = await operationStringConvert(stringOperation);
                 if (op) {
-                    await runOperation(op, operationStringConvert);
+                    await runOperation(op, props, operationStringConvert);
                 }
             }
             break;
