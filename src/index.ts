@@ -26,7 +26,7 @@ import {
 } from "./utils/storage";
 
 export function init({
-    getLogichValue: getLogichValueParam = getLogichValue,
+    getLogichValue: getLogichValueParam,
 }: {
     getLogichValue?: <T = StorageElementType>(
         value: T,
@@ -46,14 +46,13 @@ export function init({
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: (value) => {
+        getLogichValue: (value, props) => {
             if (getLogichValueParam) {
-                return getLogichValueParam(
-                    getValueFromConditionalStatements(value),
-                    getLogichValue,
-                ) as any;
+                return getLogichValueParam(getValueFromConditionalStatements(value), (value) =>
+                    getLogichValue(value, props),
+                );
             }
-            return getLogichValue(value);
+            return getLogichValue(value, props);
         },
         getConditionalStep: getConditionalStep,
     });

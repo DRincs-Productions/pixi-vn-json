@@ -1,10 +1,9 @@
-import type { LabelJson } from "@/importer";
 import {
     PixiError,
     type ContainerChild,
     type ContainerMemory,
     type ImageSpriteMemory,
-    type LabelProps,
+    type StepLabelPropsType,
     type StorageElementType,
     type VideoSpriteMemory,
 } from "@drincs/pixi-vn";
@@ -90,6 +89,7 @@ export default class JsonUnifier {
                 | PixiVNJsonConditionalStatements<
                       T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
                   >,
+            props: StepLabelPropsType,
         ) => T | undefined;
         getConditionalStep?: (originalStep: PixiVNJsonLabelStep) => PixiVNJsonLabelStep;
     }) {
@@ -284,7 +284,7 @@ export default class JsonUnifier {
             | PixiVNJsonConditionalStatements<
                   T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
               >,
-        props: LabelProps<LabelJson>,
+        props: StepLabelPropsType,
     ) => T | undefined = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",

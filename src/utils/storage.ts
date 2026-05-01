@@ -2,7 +2,12 @@ import type { LabelJson } from "@/importer";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
-import { type LabelProps, narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
+import {
+    type LabelProps,
+    narration,
+    NarrationManagerStatic,
+    type StepLabelPropsType,
+} from "@drincs/pixi-vn/narration";
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
@@ -87,7 +92,7 @@ export function getLogichValue<T = StorageElementType>(
         | PixiVNJsonConditionalStatements<
               T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
           >,
-    props: LabelProps<LabelJson>,
+    props: StepLabelPropsType,
 ): T | undefined {
     const v = getValueFromConditionalStatements<
         | T
@@ -109,8 +114,16 @@ export function getLogichValue<T = StorageElementType>(
                 return getConditionResult(v) as T;
             case "function":
                 if (props && typeof props === "object"&&
-                    v.functionName in props &&                    typeof props[v.functionName] === "function") {
-                      return  props[v.functionName](...v.args.map((arg) => JsonUnifier.getLogichValue(arg))) as T;
+                    typeof v.functionName === "string" &&
+                    v.functionName in props ) {
+                    const func = props[v.functionName as keyof LabelProps<LabelJson>] as any
+                    if (typeof func === "function") {
+                        const args = (v as PixiVNJsonFunction).args.map((arg) => getLogichValue(arg, props));
+                        return func(...args);
+                    } else {
+                        logger.warn(`getLogichValue function ${v.functionName} not found in props`);
+                    }
+                        
         }
     }
     return v as T;
