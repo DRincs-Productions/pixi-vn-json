@@ -22,7 +22,8 @@
       "suspicious": {
         "noExplicitAny": "info",
         "noArrayIndexKey": "warn",
-        "noDoubleEquals": "info"
+        "noDoubleEquals": "info",
+        "useIsArray": "warn"
       },
       "a11y": "info",
       "style": {
