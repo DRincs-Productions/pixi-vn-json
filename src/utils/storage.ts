@@ -1,7 +1,8 @@
+import type { LabelJson } from "@/importer";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
-import { narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
+import { type LabelProps, narration, NarrationManagerStatic } from "@drincs/pixi-vn/narration";
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
@@ -22,7 +23,7 @@ import type {
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
 } from "../interface";
-import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
+import type { PixiVNJsonFunction, PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
 import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet) {
@@ -82,12 +83,18 @@ export function getLogichValue<T = StorageElementType>(
         | PixiVNJsonValueGet
         | PixiVNJsonArithmeticOperations
         | PixiVNJsonConditions
+        | PixiVNJsonFunction
         | PixiVNJsonConditionalStatements<
               T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
           >,
+    props: LabelProps<LabelJson>,
 ): T | undefined {
     const v = getValueFromConditionalStatements<
-        T | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations | PixiVNJsonConditions
+        | T
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+        | PixiVNJsonConditions
+        | PixiVNJsonFunction
     >(value);
     if (v && typeof v === "object" && "type" in v) {
         switch (v.type) {
@@ -100,6 +107,10 @@ export function getLogichValue<T = StorageElementType>(
             case "valueCondition":
             case "union":
                 return getConditionResult(v) as T;
+            case "function":
+                if (props && typeof props === "object"&&
+                    v.functionName in props &&                    typeof props[v.functionName] === "function") {
+                      return  props[v.functionName](...v.args.map((arg) => JsonUnifier.getLogichValue(arg))) as T;
         }
     }
     return v as T;
@@ -132,7 +143,7 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
         case "arithmeticsingle":
             switch (operation.operator) {
                 case "INT":
-                    return parseInt(leftValue as any) as T;
+                    return Number(leftValue as any) as T;
                 case "FLOOR":
                     return Math.floor(leftValue as any) as T;
                 case "FLOAT":
