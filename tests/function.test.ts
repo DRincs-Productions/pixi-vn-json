@@ -4,6 +4,7 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { storage } from "@drincs/pixi-vn/storage";
 import { expect, test, vi } from "vitest";
 import { PixiVNJson } from "../src";
+import type { PixiVNJsonFunction } from "../src";
 
 test("PixiVNJsonFunction as operation - basic call without args", async () => {
     narration.clear();
@@ -174,7 +175,7 @@ test("PixiVNJsonFunction in condition leftValue - result used in ifelse", async 
                                 type: "function",
                                 functionName: "getNumber",
                                 args: [],
-                            } as any,
+                            } as PixiVNJsonFunction,
                             rightValue: 7,
                         },
                         then: {
@@ -213,7 +214,7 @@ test("PixiVNJsonFunction in condition rightValue - result used in ifelse", async
                                 type: "function",
                                 functionName: "getNumber",
                                 args: [],
-                            } as any,
+                            } as PixiVNJsonFunction,
                         },
                         then: {
                             dialogue: "different",
