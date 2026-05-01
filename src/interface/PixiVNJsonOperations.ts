@@ -3,7 +3,11 @@ import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditio
 import type PixiVNJsonIfElse from "@/interface/PixiVNJsonIfElse";
 import type PixiVNJsonNarration from "@/interface/PixiVNJsonNarration";
 import type PixiVNJsonSound from "@/interface/PixiVNJsonSound";
-import type { PixiVNJsonValueGet, PixiVNJsonValueSet } from "@/interface/PixiVNJsonValue";
+import type {
+    PixiVNJsonFunction,
+    PixiVNJsonValueGet,
+    PixiVNJsonValueSet,
+} from "@/interface/PixiVNJsonValue";
 
 export type PixiVNJsonOperationString = {
     type: "operationtoconvert";
@@ -19,6 +23,7 @@ export type PixiVNJsonOperation = (
     | PixiVNJsonCanvas
     | PixiVNJsonSound
     | PixiVNJsonNarration
+    | PixiVNJsonFunction
 ) & {
     /**
      * This value is used by the system to know where this operation is from, for example, if is generated from a string operation.

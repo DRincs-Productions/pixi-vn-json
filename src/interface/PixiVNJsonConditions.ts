@@ -1,6 +1,6 @@
 import type PixiVNJsonArithmeticOperations from "@/interface/PixiVNJsonArithmeticOperations";
 import type PixiVNJsonUnionCondition from "@/interface/PixiVNJsonUnionCondition";
-import type { PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
+import type { PixiVNJsonFunction, PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
 import type { StorageElementType } from "@drincs/pixi-vn";
 
 export type PixiVNJsonComparationOperatorsType = "==" | "!=" | "<" | "<=" | ">" | ">=" | "CONTAINS";
@@ -14,11 +14,11 @@ export type PixiVNJsonComparation = {
     /**
      * Left value of the comparation
      */
-    leftValue: StorageElementType | PixiVNJsonValueGet | PixiVNJsonConditions;
+    leftValue: StorageElementType | PixiVNJsonValueGet | PixiVNJsonConditions | PixiVNJsonFunction;
     /**
      * Right value of the comparation
      */
-    rightValue: StorageElementType | PixiVNJsonValueGet | PixiVNJsonConditions;
+    rightValue: StorageElementType | PixiVNJsonValueGet | PixiVNJsonConditions | PixiVNJsonFunction;
     /**
      * Operator of the comparation
      */

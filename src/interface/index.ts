@@ -49,6 +49,7 @@ export type {
 export type { default as PixiVNJsonUnionCondition } from "@/interface/PixiVNJsonUnionCondition";
 export type {
     PixiVNJsonChoiceGet,
+    PixiVNJsonFunction,
     PixiVNJsonLabelGet,
     PixiVNJsonLogicGet,
     PixiVNJsonParamGet,
