@@ -325,7 +325,7 @@ export function getValueFromConditionalStatements<T>(
                         const currentStepTimesCounter2 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) -
                             1;
-                        if (statement.end == "lastItem") {
+                        if (statement.end === "lastItem") {
                             end = JsonUnifier.getLogichValue<T>(
                                 elements[elements.length - 1] as any,
                             );
@@ -346,7 +346,7 @@ export function getValueFromConditionalStatements<T>(
                                 onceOnly: true,
                             },
                         );
-                        if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
+                        if (randomIndexWhitExclude === undefined && statement.end === "lastItem") {
                             const obj = NarrationManagerStatic.getCurrentStepTimesCounterData(
                                 statement.nestedId,
                             );
@@ -361,7 +361,7 @@ export function getValueFromConditionalStatements<T>(
                                 elements[lastItem[lastItem.length - 1]] as any,
                             );
                         }
-                        if (randomIndexWhitExclude == undefined) {
+                        if (randomIndexWhitExclude === undefined) {
                             logger.warn(
                                 "getValueFromConditionalStatements randomIndexWhitExclude == undefined",
                             );
@@ -455,10 +455,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                     JsonUnifier.getLogichValue<boolean>(step.glueEnabled) || false;
                 return value;
             } else if (typeof value === "object" && "text" in value) {
-                value = value.character + ": " + value.text;
+                value = `${value.character}: ${value.text}`;
             }
             if (beforeIsGlueEnabled === false && beforeHaveText) {
-                value = "\n\n" + value;
+                value = `\n\n${value}`;
             }
             if (value) {
                 beforeHaveText = true;
