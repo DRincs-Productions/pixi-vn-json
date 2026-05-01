@@ -209,7 +209,7 @@ export default class LabelJson<T extends {} = object> extends LabelAbstract<Labe
         return async (props) => {
             let step: PixiVNJsonLabelStep = typeof stepProp === "function" ? stepProp() : stepProp;
             step = createExportableElement(step);
-            step = JsonUnifier.getConditionalStep(step);
+            step = JsonUnifier.getConditionalStep(step, props);
             const operationStringConvert = this.operationStringConvert
                 ? (value: string) => this.operationStringConvert!(value, step, props)
                 : undefined;
