@@ -1,9 +1,8 @@
-import type { LabelJson } from "@/importer";
+import { functionOperation } from "@/utils/function-utility";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
-    type LabelProps,
     narration,
     NarrationManagerStatic,
     type StepLabelPropsType,
@@ -113,17 +112,7 @@ export function getLogichValue<T = StorageElementType>(
             case "union":
                 return getConditionResult(v) as T;
             case "function":
-                if (props && typeof props === "object"&&
-                    typeof v.functionName === "string" &&
-                    v.functionName in props ) {
-                    const func = props[v.functionName as keyof LabelProps<LabelJson>] as any
-                    if (typeof func === "function") {
-                        const args = (v as PixiVNJsonFunction).args.map((arg) => getLogichValue(arg, props));
-                        return func(...args);
-                    } else {
-                        logger.warn(`getLogichValue function ${v.functionName} not found in props`);
-                    }
-                        
+                return functionOperation(v as PixiVNJsonFunction, props) as T;
         }
     }
     return v as T;
