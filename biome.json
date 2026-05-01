@@ -28,7 +28,8 @@
       "style": {
         "noDefaultExport": "off",
         "useImportType": "info",
-        "useConst": "warn"
+        "useConst": "warn",
+        "useTemplate": "warn"
       }
     },
     "domains": {

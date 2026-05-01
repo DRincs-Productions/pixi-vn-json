@@ -455,10 +455,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>): und
                     JsonUnifier.getLogichValue<boolean>(step.glueEnabled) || false;
                 return value;
             } else if (typeof value === "object" && "text" in value) {
-                value = value.character + ": " + value.text;
+                value = `${value.character}: ${value.text}`;
             }
             if (beforeIsGlueEnabled === false && beforeHaveText) {
-                value = "\n\n" + value;
+                value = `\n\n${value}`;
             }
             if (value) {
                 beforeHaveText = true;
