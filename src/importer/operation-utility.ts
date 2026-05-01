@@ -67,6 +67,7 @@ export function runInitialOperation(
 ) {
     const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
+        {},
     );
     if (!operation) {
         return;
