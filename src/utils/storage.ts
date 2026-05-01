@@ -325,7 +325,7 @@ export function getValueFromConditionalStatements<T>(
                         const currentStepTimesCounter2 =
                             NarrationManagerStatic.getCurrentStepTimesCounter(statement.nestedId) -
                             1;
-                        if (statement.end == "lastItem") {
+                        if (statement.end === "lastItem") {
                             end = JsonUnifier.getLogichValue<T>(
                                 elements[elements.length - 1] as any,
                             );
@@ -346,7 +346,7 @@ export function getValueFromConditionalStatements<T>(
                                 onceOnly: true,
                             },
                         );
-                        if (randomIndexWhitExclude == undefined && statement.end == "lastItem") {
+                        if (randomIndexWhitExclude === undefined && statement.end === "lastItem") {
                             const obj = NarrationManagerStatic.getCurrentStepTimesCounterData(
                                 statement.nestedId,
                             );
@@ -361,7 +361,7 @@ export function getValueFromConditionalStatements<T>(
                                 elements[lastItem[lastItem.length - 1]] as any,
                             );
                         }
-                        if (randomIndexWhitExclude == undefined) {
+                        if (randomIndexWhitExclude === undefined) {
                             logger.warn(
                                 "getValueFromConditionalStatements randomIndexWhitExclude == undefined",
                             );
