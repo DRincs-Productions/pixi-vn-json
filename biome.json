@@ -27,7 +27,7 @@
       "a11y": "info",
       "style": {
         "noDefaultExport": "off",
-        "useImportType": "info",
+        "useImportType": "warn",
         "useConst": "warn",
         "useTemplate": "warn"
       }
