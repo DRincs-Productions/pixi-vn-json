@@ -321,7 +321,7 @@ function handleGenericApplication(baseName, decl, paramNames, typeArgNodes, oute
     const safArgKeys = argKeys.map((k) => {
         if (argKeyDepth(k) >= MAX_ARG_NESTING) {
             // Strip array suffixes beyond the limit by using the plain arg key
-            return k.replace(/Arr+$/, "");
+            return k.replace(/(Arr)+$/, "");
         }
         return k;
     });

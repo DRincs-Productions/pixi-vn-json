@@ -516,7 +516,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations"
         }
       ]
     },
@@ -564,7 +564,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations"
         }
       ]
     },
@@ -714,7 +714,7 @@
         "end"
       ]
     },
-    "PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArr": {
+    "PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations": {
       "type": "object",
       "properties": {
         "type": {
@@ -920,91 +920,6 @@
         "type",
         "condition",
         "unionType"
-      ]
-    },
-    "PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/PixiVNJsonValueGet"
-                        },
-                        {
-                          "$ref": "#/definitions/PixiVNJsonArithmeticOperations"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/PixiVNJsonValueGet"
-                        },
-                        {
-                          "$ref": "#/definitions/PixiVNJsonArithmeticOperations"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalStatements_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperations"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonSequential_StorageElementType_or_PixiVNJsonValueGet_or_PixiVNJsonArithmeticOperationsArr": {
@@ -1572,7 +1487,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_StorageElementTypeArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementTypeArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType"
         }
       ]
     },
@@ -1620,7 +1535,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementTypeArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementType"
         }
       ]
     },
@@ -1750,73 +1665,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementTypeArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementTypeArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_StorageElementTypeArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_StorageElementTypeArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_StorageElementTypeArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_StorageElementTypeArrArr_or_PixiVNJsonConditionalStatements_StorageElementTypeArrArr_or_PixiVNJsonConditionalResultToCombine_StorageElementType": {
@@ -3388,7 +3236,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_string_or_PixiVNJsonValueGetArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGetArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet"
         }
       ]
     },
@@ -3436,7 +3284,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet"
         }
       ]
     },
@@ -3584,91 +3432,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGetArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "$ref": "#/definitions/PixiVNJsonValueGet"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGetArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "anyOf": [
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "$ref": "#/definitions/PixiVNJsonValueGet"
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGetArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGetArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet": {
@@ -4275,7 +4038,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_string_or_PixiVNJsonValueGet_or_stringArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_stringArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
         }
       ]
     },
@@ -4323,7 +4086,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string"
         }
       ]
     },
@@ -4399,6 +4162,319 @@
       "required": [
         "type",
         "combine"
+      ]
+    },
+    "PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PixiVNJsonStepSwitch_string_or_PixiVNJsonValueGet_or_string"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+        }
+      ]
+    },
+    "PixiVNJsonStepSwitch_string_or_PixiVNJsonValueGet_or_string": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PixiVNJsonRandom_string_or_PixiVNJsonValueGet_or_string"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonSequential_string_or_PixiVNJsonValueGet_or_string"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonLoop_string_or_PixiVNJsonValueGet_or_string"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonSequentialRandom_string_or_PixiVNJsonValueGet_or_string"
+        }
+      ]
+    },
+    "PixiVNJsonRandom_string_or_PixiVNJsonValueGet_or_string": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "random"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_string_or_PixiVNJsonValueGet_or_string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements"
+      ]
+    },
+    "PixiVNJsonStepSwitchElementsType_string_or_PixiVNJsonValueGet_or_string": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PixiVNJsonStepSwitchElementType_string_or_PixiVNJsonValueGet_or_string"
+          }
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArr"
+        }
+      ]
+    },
+    "PixiVNJsonStepSwitchElementType_string_or_PixiVNJsonValueGet_or_string": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonValueGet"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+        }
+      ]
+    },
+    "PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string": {
+      "description": "This element is used in case a  gives a result that must be combined with another calculated through other .\nin case this possibility is not managed, it will be taken into consideration",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "resulttocombine"
+        },
+        "combine": {
+          "description": "This variable is interpreted differently by Pixi'VN depending on the value",
+          "enum": [
+            "cross",
+            "union"
+          ]
+        },
+        "firstItem": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonValueGet"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "secondConditionalItem": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PixiVNJsonStepSwitchElementType_string_or_PixiVNJsonValueGet_or_string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "combine"
+      ]
+    },
+    "PixiVNJsonSequential_string_or_PixiVNJsonValueGet_or_string": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "sequential"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_string_or_PixiVNJsonValueGet_or_string"
+        },
+        "end": {
+          "description": "When the sequential ends, what should be the value? If undefined, it will return undefined.\nIf \"lastItem\", it will return the last item in the array.",
+          "const": "lastItem"
+        },
+        "nestedId": {
+          "description": "The subId is used for manager nested switches",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements",
+        "end"
+      ]
+    },
+    "PixiVNJsonLoop_string_or_PixiVNJsonValueGet_or_string": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "loop"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_string_or_PixiVNJsonValueGet_or_string"
+        },
+        "nestedId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements"
+      ]
+    },
+    "PixiVNJsonSequentialRandom_string_or_PixiVNJsonValueGet_or_string": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "sequentialrandom"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_string_or_PixiVNJsonValueGet_or_string"
+        },
+        "end": {
+          "description": "When the sequential ends, what should be the value? If undefined, it will return undefined.\nIf \"lastItem\", it will return the last item in the array.",
+          "const": "lastItem"
+        },
+        "nestedId": {
+          "description": "The subId is used for manager nested switches",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements",
+        "end"
+      ]
+    },
+    "PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "ifelse"
+        },
+        "condition": {
+          "description": "The list of conditions to be checked.",
+          "$ref": "#/definitions/PixiVNJsonConditions"
+        },
+        "then": {
+          "description": "The value to be returned if the condition is true.",
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/PixiVNJsonValueGet"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+                }
+              ]
+            },
+            {
+              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+            }
+          ]
+        },
+        "else": {
+          "description": "The value to be returned if the condition is false.",
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/PixiVNJsonValueGet"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+                }
+              ]
+            },
+            {
+              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_string_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "condition",
+        "then"
       ]
     },
     "PixiVNJsonSequential_string_or_PixiVNJsonValueGet_or_stringArrArr": {
@@ -4477,97 +4553,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_stringArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "$ref": "#/definitions/PixiVNJsonValueGet"
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_stringArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "type": "string"
-                      },
-                      {
-                        "$ref": "#/definitions/PixiVNJsonValueGet"
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_stringArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalStatements_string_or_PixiVNJsonValueGet_or_stringArrArr_or_PixiVNJsonConditionalResultToCombine_string_or_PixiVNJsonValueGet_or_string": {
@@ -5036,7 +5021,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonChoiceArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoiceArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoice"
         }
       ]
     },
@@ -5084,7 +5069,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoice"
         }
       ]
     },
@@ -5218,77 +5203,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoiceArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonChoice"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonChoiceArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoice"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonChoice"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonChoiceArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoice"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoiceArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoice": {
@@ -5854,7 +5768,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonChoicesArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoicesArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoices"
         }
       ]
     },
@@ -5902,7 +5816,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoices"
         }
       ]
     },
@@ -6036,77 +5950,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoicesArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonChoices"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonChoicesArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoices"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonChoices"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonChoicesArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoices"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonChoicesArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonChoices": {
@@ -6696,7 +6539,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogTextArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogText"
         }
       ]
     },
@@ -6744,7 +6587,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogText"
         }
       ]
     },
@@ -6878,77 +6721,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogTextArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonDialog_PixiVNJsonDialogText"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogText"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonDialog_PixiVNJsonDialogText"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogText"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonDialog_PixiVNJsonDialogTextArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonDialog_PixiVNJsonDialogText": {
@@ -7514,7 +7286,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_booleanArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_booleanArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_boolean"
         }
       ]
     },
@@ -7562,7 +7334,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_booleanArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_boolean"
         }
       ]
     },
@@ -7696,77 +7468,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_booleanArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "type": "boolean"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_booleanArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_booleanArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_boolean"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "type": "boolean"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_booleanArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_booleanArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_boolean"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_booleanArrArr_or_PixiVNJsonConditionalStatements_booleanArrArr_or_PixiVNJsonConditionalResultToCombine_boolean": {
@@ -8363,7 +8064,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonLabelToOpenArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpenArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpen"
         }
       ]
     },
@@ -8411,7 +8112,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpen"
         }
       ]
     },
@@ -8545,77 +8246,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpenArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonLabelToOpen"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpenArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpen"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/PixiVNJsonLabelToOpen"
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpenArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpen"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelToOpenArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelToOpen": {
@@ -9193,7 +8823,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_lit_game_end_or_lit_label_endArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_endArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_end"
         }
       ]
     },
@@ -9241,7 +8871,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_end"
         }
       ]
     },
@@ -9381,83 +9011,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_endArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "enum": [
-                        "game_end",
-                        "label_end"
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_endArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_end"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "enum": [
-                        "game_end",
-                        "label_end"
-                      ]
-                    }
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_endArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_end"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalStatements_lit_game_end_or_lit_label_endArrArr_or_PixiVNJsonConditionalResultToCombine_lit_game_end_or_lit_label_end": {
@@ -9955,7 +9508,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
         }
       ]
     },
@@ -10003,7 +9556,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
         }
       ]
     },
@@ -10073,6 +9626,307 @@
       "required": [
         "type",
         "combine"
+      ]
+    },
+    "PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PixiVNJsonStepSwitch_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        }
+      ]
+    },
+    "PixiVNJsonStepSwitch_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PixiVNJsonRandom_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonSequential_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonLoop_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonSequentialRandom_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        }
+      ]
+    },
+    "PixiVNJsonRandom_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "random"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements"
+      ]
+    },
+    "PixiVNJsonStepSwitchElementsType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PixiVNJsonStepSwitchElementType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+          }
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArr"
+        }
+      ]
+    },
+    "PixiVNJsonStepSwitchElementType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/PixiVNJsonLabelStep"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PixiVNJsonLabelStep"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        }
+      ]
+    },
+    "PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "description": "This element is used in case a  gives a result that must be combined with another calculated through other .\nin case this possibility is not managed, it will be taken into consideration",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "resulttocombine"
+        },
+        "combine": {
+          "description": "This variable is interpreted differently by Pixi'VN depending on the value",
+          "enum": [
+            "cross",
+            "union"
+          ]
+        },
+        "firstItem": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/PixiVNJsonLabelStep"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PixiVNJsonLabelStep"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "secondConditionalItem": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PixiVNJsonStepSwitchElementType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "combine"
+      ]
+    },
+    "PixiVNJsonSequential_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "sequential"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        "end": {
+          "description": "When the sequential ends, what should be the value? If undefined, it will return undefined.\nIf \"lastItem\", it will return the last item in the array.",
+          "const": "lastItem"
+        },
+        "nestedId": {
+          "description": "The subId is used for manager nested switches",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements",
+        "end"
+      ]
+    },
+    "PixiVNJsonLoop_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "loop"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        "nestedId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements"
+      ]
+    },
+    "PixiVNJsonSequentialRandom_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "stepswitch"
+        },
+        "choiceType": {
+          "const": "sequentialrandom"
+        },
+        "elements": {
+          "$ref": "#/definitions/PixiVNJsonStepSwitchElementsType_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+        },
+        "end": {
+          "description": "When the sequential ends, what should be the value? If undefined, it will return undefined.\nIf \"lastItem\", it will return the last item in the array.",
+          "const": "lastItem"
+        },
+        "nestedId": {
+          "description": "The subId is used for manager nested switches",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "choiceType",
+        "elements",
+        "end"
+      ]
+    },
+    "PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "ifelse"
+        },
+        "condition": {
+          "description": "The list of conditions to be checked.",
+          "$ref": "#/definitions/PixiVNJsonConditions"
+        },
+        "then": {
+          "description": "The value to be returned if the condition is true.",
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/PixiVNJsonLabelStep"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/PixiVNJsonLabelStep"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+                }
+              ]
+            },
+            {
+              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+            }
+          ]
+        },
+        "else": {
+          "description": "The value to be returned if the condition is false.",
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/PixiVNJsonLabelStep"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/PixiVNJsonLabelStep"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+                },
+                {
+                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+                }
+              ]
+            },
+            {
+              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "condition",
+        "then"
       ]
     },
     "PixiVNJsonSequential_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr": {
@@ -10151,91 +10005,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/PixiVNJsonLabelStep"
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/definitions/PixiVNJsonLabelStep"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/PixiVNJsonLabelStep"
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/definitions/PixiVNJsonLabelStep"
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalStatements_PixiVNJsonLabelStep_or_PixiVNJsonLabelStepArrArr_or_PixiVNJsonConditionalResultToCombine_PixiVNJsonLabelStep_or_PixiVNJsonLabelStep": {
@@ -10693,7 +10462,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_ThenArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_ThenArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_Then"
         }
       ]
     },
@@ -10741,7 +10510,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_ThenArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_Then"
         }
       ]
     },
@@ -10871,73 +10640,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_ThenArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_ThenArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_ThenArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_Then"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_ThenArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_ThenArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_Then"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_ThenArrArr_or_PixiVNJsonConditionalStatements_ThenArrArr_or_PixiVNJsonConditionalResultToCombine_Then": {
@@ -11606,7 +11308,7 @@
           "$ref": "#/definitions/PixiVNJsonStepSwitch_TArrArr"
         },
         {
-          "$ref": "#/definitions/PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_TArr"
+          "$ref": "#/definitions/PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_T"
         }
       ]
     },
@@ -11654,7 +11356,7 @@
           }
         },
         {
-          "$ref": "#/definitions/PixiVNJsonConditionalStatements_TArrArr"
+          "$ref": "#/definitions/PixiVNJsonConditionalStatements_T"
         }
       ]
     },
@@ -11784,73 +11486,6 @@
         "choiceType",
         "elements",
         "end"
-      ]
-    },
-    "PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_TArr": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "ifelse"
-        },
-        "condition": {
-          "description": "The list of conditions to be checked.",
-          "$ref": "#/definitions/PixiVNJsonConditions"
-        },
-        "then": {
-          "description": "The value to be returned if the condition is true.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_TArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_TArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_T"
-            }
-          ]
-        },
-        "else": {
-          "description": "The value to be returned if the condition is false.",
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalStatements_TArrArr"
-                },
-                {
-                  "$ref": "#/definitions/PixiVNJsonConditionalResultToCombine_TArrArr"
-                }
-              ]
-            },
-            {
-              "$ref": "#/definitions/PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_T"
-            }
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "condition",
-        "then"
       ]
     },
     "PixiVNJsonIfElse_TArrArr_or_PixiVNJsonConditionalStatements_TArrArr_or_PixiVNJsonConditionalResultToCombine_T": {
