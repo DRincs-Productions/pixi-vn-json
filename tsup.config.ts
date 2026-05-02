@@ -18,7 +18,7 @@ export default defineConfig((options) => {
             dts: true,
             treeshake: true,
             splitting: false,
-            clean: false,
+            clean: true,
             minify: true,
             bundle: true,
             skipNodeModulesBundle: false,
