@@ -51,9 +51,33 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
+  generate-schema:
+    name: Generate Schema and Commit
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24.12.0
+      - run: npm i
+      - run: npm run generate-schema
+      - name: Commit schema if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add schemas/
+          git diff --cached --quiet || git commit -m "chore: update generated schema [skip ci]"
+          git push
+
   create-release:
     name: Create Release
-    needs: publish-npm
+    needs: generate-schema
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     permissions:
