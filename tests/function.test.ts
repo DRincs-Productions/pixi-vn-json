@@ -304,6 +304,158 @@ test("PixiVNJsonFunction as operation - multiple function calls in sequence", as
     expect(narration.dialogue).toEqual({ text: "Finished" });
 });
 
+test("PixiVNJsonFunction in complex arithmetic condition with storage args and call flow", async () => {
+    narration.clear();
+    storage.clear();
+    stepHistory.clear();
+
+    const testCallArgs: unknown[][] = [];
+    const randomEventCallArgs: unknown[][] = [];
+
+    const props = {
+        // test(0) returns 0
+        test: (...args: unknown[]) => {
+            testCallArgs.push([...args]);
+            return 0;
+        },
+        // random_event_value(max, offset) returns max (i.e. first arg)
+        random_event_value: (...args: unknown[]) => {
+            randomEventCallArgs.push([...args]);
+            return args[0] as number;
+        },
+    };
+
+    const json: PixiVNJson = {
+        initialOperations: [
+            {
+                type: "value",
+                storageOperationType: "set",
+                storageType: "storage",
+                key: "max",
+                value: 3,
+            },
+        ],
+        labels: {
+            main: [
+                {
+                    dialogue: "You walk through the forest.",
+                },
+                {
+                    labelToOpen: {
+                        label: "random_event",
+                        type: "call",
+                        params: undefined,
+                    },
+                    glueEnabled: undefined,
+                },
+                {
+                    dialogue: "You continue your journey.",
+                },
+                {
+                    end: "game_end",
+                },
+            ],
+            random_event: [
+                {
+                    conditionalStep: {
+                        type: "ifelse",
+                        condition: {
+                            type: "compare",
+                            operator: "==",
+                            rightValue: 1,
+                            leftValue: {
+                                type: "arithmetic",
+                                operator: "+",
+                                rightValue: 3,
+                                leftValue: {
+                                    type: "arithmetic",
+                                    operator: "+",
+                                    rightValue: {
+                                        type: "function",
+                                        functionName: "test",
+                                        args: [0],
+                                    },
+                                    leftValue: {
+                                        type: "arithmetic",
+                                        operator: "+",
+                                        rightValue: 1,
+                                        leftValue: {
+                                            type: "arithmetic",
+                                            operator: "+",
+                                            rightValue: {
+                                                type: "function",
+                                                functionName: "random_event_value",
+                                                args: [
+                                                    {
+                                                        type: "value",
+                                                        storageOperationType: "get",
+                                                        storageType: "storage",
+                                                        key: "max",
+                                                    },
+                                                    {
+                                                        type: "arithmetic",
+                                                        operator: "+",
+                                                        rightValue: 0,
+                                                        leftValue: 0,
+                                                    },
+                                                ],
+                                            },
+                                            leftValue: 2,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        then: {
+                            dialogue: "You encounter an animal.",
+                        },
+                        else: {
+                            conditionalStep: {
+                                type: "ifelse",
+                                condition: 2,
+                                then: {
+                                    dialogue: "You find a coin.",
+                                },
+                                else: {
+                                    dialogue: "Nothing happens.",
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+    };
+
+    await importPixiVNJson(json);
+
+    // initialOperations sets storage "max" = 3
+    expect(storage.get("max")).toEqual(3);
+
+    // main step 0: dialogue "You walk through the forest."
+    await narration.call("main", props);
+    expect(narration.dialogue).toEqual({ text: "You walk through the forest." });
+
+    // main step 1: call random_event
+    // condition: ((2 + random_event_value(3, 0)) + 1 + test(0)) + 3
+    //          = ((2 + 3) + 1 + 0) + 3 = 9 ≠ 1  →  false
+    // else: condition 2 (truthy) → "You find a coin."
+    await narration.continue(props);
+    expect(narration.dialogue).toEqual({ text: "You find a coin." });
+
+    // verify random_event_value was called with resolved args: max=3, 0+0=0
+    expect(randomEventCallArgs.length).toBeGreaterThan(0);
+    expect(randomEventCallArgs[0]).toEqual([3, 0]);
+
+    // verify test was called with the static arg: 0
+    expect(testCallArgs.length).toBeGreaterThan(0);
+    expect(testCallArgs[0]).toEqual([0]);
+
+    // random_event ends (call), return to main step 2
+    await narration.continue(props);
+    expect(narration.dialogue).toEqual({ text: "You continue your journey." });
+});
+
 test("PixiVNJsonFunction as operation - function modifies storage", async () => {
     narration.clear();
     storage.clear();
