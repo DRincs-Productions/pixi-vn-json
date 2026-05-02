@@ -1,3 +1,6 @@
+import { PIXIVNJSON_PARAM_ID } from "@/constants";
+import { runOperation } from "@/importer/operation-utility";
+import { logger } from "@/utils/log-utility";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import type {
@@ -21,9 +24,6 @@ import {
 } from "@drincs/pixi-vn/narration";
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
-import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { logger } from "../utils/log-utility";
-import { runOperation } from "./operation-utility";
 
 export type LabelJsonOptions = {
     /**
