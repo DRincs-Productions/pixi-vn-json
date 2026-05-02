@@ -98,6 +98,9 @@
         },
         {
           "$ref": "#/definitions/PixiVNJsonLogicGet"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonFunction"
         }
       ]
     },
@@ -851,15 +854,7 @@
         },
         "operator": {
           "description": "Operator of the comparation",
-          "enum": [
-            "==",
-            "!=",
-            "<",
-            "<=",
-            ">",
-            ">=",
-            "CONTAINS"
-          ]
+          "$ref": "#/definitions/PixiVNJsonComparationOperatorsType"
         }
       },
       "required": [
@@ -867,6 +862,17 @@
         "leftValue",
         "rightValue",
         "operator"
+      ]
+    },
+    "PixiVNJsonComparationOperatorsType": {
+      "enum": [
+        "==",
+        "!=",
+        "<",
+        "<=",
+        ">",
+        ">=",
+        "CONTAINS"
       ]
     },
     "PixiVNJsonValueCondition": {
@@ -1286,6 +1292,38 @@
         "leftValue",
         "rightValue",
         "operator"
+      ]
+    },
+    "PixiVNJsonFunction": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "function"
+        },
+        "functionName": {
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/PixiVNJsonConditions"
+              },
+              {
+                "$ref": "#/definitions/PixiVNJsonValueGet"
+              },
+              {
+                "$ref": "#/definitions/PixiVNJsonArithmeticOperations"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type",
+        "functionName",
+        "args"
       ]
     },
     "PixiVNJsonConditionalStatements_StorageElementType": {
@@ -2251,6 +2289,9 @@
             },
             {
               "$ref": "#/definitions/PixiVNJsonNarration"
+            },
+            {
+              "$ref": "#/definitions/PixiVNJsonFunction"
             }
           ]
         },
@@ -11856,16 +11897,6 @@
         "then"
       ]
     },
-    "PixiVNJsonConditionalStatements": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/PixiVNJsonStepSwitch_Then"
-        },
-        {
-          "$ref": "#/definitions/PixiVNJsonIfElse_Then_or_PixiVNJsonConditionalStatements_Then_or_PixiVNJsonConditionalResultToCombine_Then"
-        }
-      ]
-    },
     "PixiVNJsonIfElse": {
       "type": "object",
       "properties": {
@@ -11914,6 +11945,16 @@
         "type",
         "condition",
         "then"
+      ]
+    },
+    "PixiVNJsonConditionalStatements": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PixiVNJsonStepSwitch_Then"
+        },
+        {
+          "$ref": "#/definitions/PixiVNJsonIfElse_Then_or_PixiVNJsonConditionalStatements_Then_or_PixiVNJsonConditionalResultToCombine_Then"
+        }
       ]
     },
     "PixiVNJsonAnimateBase": {
