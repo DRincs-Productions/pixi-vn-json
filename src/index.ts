@@ -1,12 +1,13 @@
-export { VariableGetter } from "@/handlers/VariableGetter";
+export {
+    PIXIVNJSON_PARAM_ID,
+    PIXIVNJSON_SCHEMA_URL,
+    PixiVNJsonComparationOperators,
+} from "@/constants";
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";
-export {
-    PIXIVNJSON_PARAM_ID,
-    PIXIVNJSON_SCHEMA_URL,
-} from "./constants";
+export { VariableGetter };
 import { VariableGetter } from "@/handlers/VariableGetter";
 import {
     animateOperation,
