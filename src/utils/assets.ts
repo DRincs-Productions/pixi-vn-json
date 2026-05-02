@@ -8,6 +8,7 @@ export async function loadAssets(
 ) {
     const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
+        {},
     );
     if (!operation) {
         return;

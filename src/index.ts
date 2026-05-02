@@ -3,7 +3,7 @@ export * from "@drincs/pixi-vn-json/importer";
 export * from "@drincs/pixi-vn-json/translator";
 export { PIXIVNJSON_PARAM_ID, PixiVNJsonComparationOperators } from "./constants";
 export * from "./interface";
-import type { StorageElementType } from "@drincs/pixi-vn";
+import type { StorageElementType, StepLabelPropsType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import { loadAssets } from "./utils/assets";
 import {
@@ -26,7 +26,7 @@ import {
 } from "./utils/storage";
 
 export function init({
-    getLogichValue: getLogichValueParam = getLogichValue,
+    getLogichValue: getLogichValueParam,
 }: {
     getLogichValue?: <T = StorageElementType>(
         value: T,
@@ -46,14 +46,13 @@ export function init({
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: (value) => {
+        getLogichValue: <T = StorageElementType>(value: any, props: StepLabelPropsType = {}): T | undefined => {
             if (getLogichValueParam) {
-                return getLogichValueParam(
-                    getValueFromConditionalStatements(value),
-                    getLogichValue,
-                ) as any;
+                return (getLogichValueParam(getValueFromConditionalStatements(value, props), (value) =>
+                    getLogichValue(value, props),
+                ) ?? undefined) as T | undefined;
             }
-            return getLogichValue(value);
+            return (getLogichValue(value, props) ?? undefined) as T | undefined;
         },
         getConditionalStep: getConditionalStep,
     });
