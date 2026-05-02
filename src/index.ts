@@ -1,3 +1,4 @@
+export { VariableGetter } from "@/handlers/VariableGetter";
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
@@ -6,26 +7,23 @@ export {
     PIXIVNJSON_PARAM_ID,
     PIXIVNJSON_SCHEMA_URL,
 } from "./constants";
-import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import {
-    applyGetLogichValueHandlers,
-    getLogichValueHandlers,
-} from "./handlers/getLogichValueHandlers";
-import { loadAssets } from "./utils/assets";
+import { VariableGetter } from "@/handlers/VariableGetter";
 import {
     animateOperation,
     canvasElementOperation,
     effectOperation,
+    getConditionalStep,
     imageContainerOperation,
     imageOperation,
+    loadAssets,
+    narrationOperation,
+    setInitialStorageValue,
+    setStorageValue,
+    soundOperation,
     textOperation,
     videoOperation,
-} from "./utils/canvas";
-import { narrationOperation } from "./utils/narration";
-import { soundOperation } from "./utils/sound";
-import { getConditionalStep, setInitialStorageValue, setStorageValue } from "./utils/storage";
-
-export { getLogichValueHandlers };
+} from "@drincs/pixi-vn-json/actions";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 
 export function init() {
     JsonUnifier.init({
@@ -41,7 +39,7 @@ export function init() {
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: applyGetLogichValueHandlers,
+        getLogichValue: VariableGetter.getLogichValue,
         getConditionalStep: getConditionalStep,
     });
 }

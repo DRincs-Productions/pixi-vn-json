@@ -1,3 +1,4 @@
+import { logger } from "@/utils/log-utility";
 import type {
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
@@ -41,7 +42,6 @@ import {
     zoomIn,
     zoomOut,
 } from "@drincs/pixi-vn/canvas";
-import { logger } from "./log-utility";
 
 async function showCanvasElemet(
     element: ImageSprite | VideoSprite | ImageContainer | Text,

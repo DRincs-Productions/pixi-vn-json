@@ -50,6 +50,12 @@
       "require": "./dist/interpreter.cjs",
       "default": "./dist/interpreter.mjs"
     },
+    "./actions": {
+      "types": "./dist/actions.d.ts",
+      "import": "./dist/actions.mjs",
+      "require": "./dist/actions.cjs",
+      "default": "./dist/actions.mjs"
+    },
     "./schema": {
       "types": "./dist/schema.d.ts",
       "import": "./dist/schema.mjs",
@@ -70,6 +76,9 @@
       ],
       "interpreter": [
         "./dist/interpreter.d.ts"
+      ],
+      "actions": [
+        "./dist/actions.d.ts"
       ],
       "schema": [
         "./dist/schema.d.ts"

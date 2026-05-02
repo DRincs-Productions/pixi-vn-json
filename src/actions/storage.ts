@@ -1,4 +1,6 @@
+import { PIXIVNJSON_PARAM_ID } from "@/constants";
 import { functionOperation } from "@/utils/function-utility";
+import { logger } from "@/utils/log-utility";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import type {
@@ -28,8 +30,6 @@ import {
     type StepLabelPropsType,
 } from "@drincs/pixi-vn/narration";
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
-import { PIXIVNJSON_PARAM_ID } from "../constants";
-import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelPropsType = {}) {
     const v = JsonUnifier.getLogichValue<StorageElementType>(value.value, props);
@@ -384,7 +384,7 @@ export function getValueFromConditionalStatements<T>(
                             const obj = NarrationManagerStatic.getCurrentStepTimesCounterData(
                                 statement.nestedId,
                             );
-                            if (!obj || !obj?.usedRandomNumbers) {
+                            if (!obj?.usedRandomNumbers) {
                                 logger.warn(
                                     "getValueFromConditionalStatements randomIndexWhitExclude == undefined",
                                 );

@@ -52,6 +52,7 @@ export default defineConfig((options) => {
             target: "es2020",
             entry: {
                 interpreter: "src/interpreter/index.ts",
+                actions: "src/actions/index.ts",
             },
             format: ["cjs", "esm"],
             dts: true,
@@ -83,6 +84,7 @@ export default defineConfig((options) => {
             external: [
                 "@drincs/pixi-vn-json/core",
                 "@drincs/pixi-vn-json/interpreter",
+                "@drincs/pixi-vn-json/actions",
                 "@drincs/pixi-vn-json/translator",
             ],
             outExtension({ format }) {
