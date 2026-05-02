@@ -1,7 +1,7 @@
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/importer";
 export * from "@drincs/pixi-vn-json/translator";
-export { PIXIVNJSON_PARAM_ID } from "./constants";
+export { PIXIVNJSON_PARAM_ID, PIXIVNJSON_SCHEMA_URL } from "./constants";
 export * from "./interface";
 import type { StorageElementType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
