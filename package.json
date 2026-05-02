@@ -44,6 +44,12 @@
       "require": "./dist/translator.cjs",
       "default": "./dist/translator.mjs"
     },
+    "./interpreter": {
+      "types": "./dist/interpreter.d.ts",
+      "import": "./dist/interpreter.mjs",
+      "require": "./dist/interpreter.cjs",
+      "default": "./dist/interpreter.mjs"
+    },
     "./schema": {
       "types": "./dist/schema.d.ts",
       "import": "./dist/schema.mjs",
@@ -61,6 +67,9 @@
       ],
       "translator": [
         "./dist/translator.d.ts"
+      ],
+      "interpreter": [
+        "./dist/interpreter.d.ts"
       ],
       "schema": [
         "./dist/schema.d.ts"

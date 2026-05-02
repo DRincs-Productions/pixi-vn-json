@@ -1,10 +1,10 @@
-import { importPixiVNJson } from "@drincs/pixi-vn-json/importer";
+import { importPixiVNJson } from "@drincs/pixi-vn-json/interpreter";
 import { stepHistory } from "@drincs/pixi-vn/history";
 import { narration } from "@drincs/pixi-vn/narration";
 import { storage } from "@drincs/pixi-vn/storage";
 import { expect, test, vi } from "vitest";
-import { PixiVNJson } from "../src";
 import type { PixiVNJsonFunction } from "../src";
+import { PixiVNJson } from "../src";
 
 test("PixiVNJsonFunction as operation - basic call without args", async () => {
     narration.clear();

@@ -1,5 +1,5 @@
 export * from "@drincs/pixi-vn-json/core";
-export * from "@drincs/pixi-vn-json/importer";
+export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";
 export {

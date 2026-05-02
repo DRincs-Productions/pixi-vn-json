@@ -51,7 +51,7 @@ export default defineConfig((options) => {
         createConfig({
             target: "es2020",
             entry: {
-                importer: "src/importer/index.ts",
+                interpreter: "src/interpreter/index.ts",
             },
             format: ["cjs", "esm"],
             dts: true,
@@ -82,7 +82,7 @@ export default defineConfig((options) => {
             skipNodeModulesBundle: false, // Skip bundling of node_modules
             external: [
                 "@drincs/pixi-vn-json/core",
-                "@drincs/pixi-vn-json/importer",
+                "@drincs/pixi-vn-json/interpreter",
                 "@drincs/pixi-vn-json/translator",
             ],
             outExtension({ format }) {

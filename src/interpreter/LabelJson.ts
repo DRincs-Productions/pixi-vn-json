@@ -1,5 +1,5 @@
 import { PIXIVNJSON_PARAM_ID } from "@/constants";
-import { runOperation } from "@/importer/operation-utility";
+import { runOperation } from "@/interpreter/operation-utility";
 import { logger } from "@/utils/log-utility";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";

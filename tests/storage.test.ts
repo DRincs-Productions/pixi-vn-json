@@ -1,4 +1,4 @@
-import { importPixiVNJson } from "@drincs/pixi-vn-json/importer";
+import { importPixiVNJson } from "@drincs/pixi-vn-json/interpreter";
 import { stepHistory } from "@drincs/pixi-vn/history";
 import { narration } from "@drincs/pixi-vn/narration";
 import { storage } from "@drincs/pixi-vn/storage";

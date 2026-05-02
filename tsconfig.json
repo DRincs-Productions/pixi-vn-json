@@ -31,7 +31,7 @@
     "paths": {
       /* Specify a set of entries that re-map imports to additional lookup locations. */
       "@/*": ["./src/*"],
-      "@drincs/pixi-vn-json/importer": ["./src/importer/index.ts"],
+      "@drincs/pixi-vn-json/interpreter": ["./src/interpreter/index.ts"],
       "@drincs/pixi-vn-json/core": ["./src/core/index.ts"],
       "@drincs/pixi-vn-json/translator": ["./src/translator/index.ts"],
       "@drincs/pixi-vn-json/schema": ["./src/schema/index.ts"]
