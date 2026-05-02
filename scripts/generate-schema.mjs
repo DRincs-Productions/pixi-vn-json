@@ -7,9 +7,9 @@
  * issues that occur with recursive generic types when using typescript-json-schema directly.
  */
 
+import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { createRequire } from "module";
-import { readFileSync, mkdirSync, writeFileSync, readdirSync } from "fs";
-import { resolve, join, dirname, basename } from "path";
+import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const require = createRequire(import.meta.url);
@@ -25,11 +25,7 @@ const version = pkg.version;
 
 const tsconfigPath = join(rootDir, "tsconfig.schema.json");
 const configFile = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
-const { fileNames, options } = ts.parseJsonConfigFileContent(
-    configFile.config,
-    ts.sys,
-    rootDir,
-);
+const { fileNames, options } = ts.parseJsonConfigFileContent(configFile.config, ts.sys, rootDir);
 
 options.noEmit = true;
 delete options.outDir;
@@ -40,12 +36,12 @@ delete options.declarationMap;
 const program = ts.createProgram({ rootNames: fileNames, options });
 const checker = program.getTypeChecker();
 
-const interfaceDir = join(rootDir, "src", "interface");
+const interfaceDir = join(rootDir, "src", "schema");
 
 // ─── Collect Type Declarations ────────────────────────────────────────────────
 
 /**
- * Map of type/interface name → AST declaration node
+ * Map of type/@drincs/pixi-vn-json/schema name → AST declaration node
  * Only includes types from src/interface/
  */
 const typeDecls = new Map();
@@ -214,7 +210,7 @@ function convertTypeNode(node, ctx) {
 function convertTypeLiteral(node, ctx) {
     const properties = {};
     const required = [];
-    let additionalProperties = undefined;
+    let additionalProperties;
 
     for (const member of node.members) {
         if (ts.isPropertySignature(member)) {
@@ -458,7 +454,7 @@ function convertDeclaration(decl, ctx) {
 function convertInterface(decl, ctx) {
     const properties = {};
     const required = [];
-    let additionalProperties = undefined;
+    let additionalProperties;
 
     // Handle heritage clauses (extends)
     const allOf = [];

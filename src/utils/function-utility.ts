@@ -1,7 +1,7 @@
 import { JsonUnifier } from "@/core";
-import type { PixiVNJsonFunction } from "@/interface";
 import { logger } from "@/utils/log-utility";
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
+import type { PixiVNJsonFunction } from "@drincs/pixi-vn-json/schema";
 
 export function functionOperation(v: PixiVNJsonFunction, props: StepLabelPropsType): any {
     if (

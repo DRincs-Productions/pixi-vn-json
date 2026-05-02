@@ -1,6 +1,6 @@
-import type PixiVNJsonCanvasAnimate from "@/interface/PixiVNJsonCanvasAnimate";
-import type PixiVNJsonCanvasEffect from "@/interface/PixiVNJsonCanvasEffect";
-import type PixiVNJsonMediaTransiotions from "@/interface/PixiVNJsonMediaTransiotions";
+import type PixiVNJsonCanvasAnimate from "@/schema/PixiVNJsonCanvasAnimate";
+import type PixiVNJsonCanvasEffect from "@/schema/PixiVNJsonCanvasEffect";
+import type PixiVNJsonMediaTransiotions from "@/schema/PixiVNJsonMediaTransiotions";
 import type {
     ContainerMemory,
     ContainerOptions,

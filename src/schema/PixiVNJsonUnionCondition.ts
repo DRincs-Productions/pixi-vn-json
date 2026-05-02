@@ -1,4 +1,4 @@
-import type PixiVNJsonConditions from "@/interface/PixiVNJsonConditions";
+import type PixiVNJsonConditions from "@/schema/PixiVNJsonConditions";
 
 type PixiVNJsonUnionConditionAndOr = {
     type: "union";

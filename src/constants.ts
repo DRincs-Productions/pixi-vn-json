@@ -1,4 +1,4 @@
-import type { PixiVNJsonComparationOperatorsType } from "@/interface/PixiVNJsonConditions";
+import type { PixiVNJsonComparationOperatorsType } from "@drincs/pixi-vn-json/schema";
 import pkg from "../package.json";
 
 export const PIXIVNJSON_PARAM_ID = "___param___";

@@ -1,8 +1,11 @@
-import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
-import type { PixiVNJsonOperationString } from "../interface";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
+import type { PixiVNJsonOperationString } from "@drincs/pixi-vn-json/schema";
 
-export function operationStringToString(operation: PixiVNJsonOperationString, props: StepLabelPropsType = {}): string {
+export function operationStringToString(
+    operation: PixiVNJsonOperationString,
+    props: StepLabelPropsType = {},
+): string {
     let stringOperation = "";
     operation.values.forEach((value) => {
         if (typeof value === "string") {

@@ -1,5 +1,5 @@
+import type { PixiVNJsonSound } from "@drincs/pixi-vn-json/schema";
 import { sound } from "@drincs/pixi-vn/sound";
-import type { PixiVNJsonSound } from "../interface";
 
 export function soundOperation(operation: PixiVNJsonSound) {
     switch (operation.operationType) {

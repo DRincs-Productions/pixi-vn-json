@@ -11,30 +11,28 @@ import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
     PixiVNJsonCanvasEffect,
-    PixiVNJsonConditionalStatements,
-    PixiVNJsonConditions,
-    PixiVNJsonIfElse,
-    PixiVNJsonLabelStep,
-    PixiVNJsonNarration,
-    PixiVNJsonOperation,
-    PixiVNJsonOperationString,
-    PixiVNJsonSound,
-    PixiVNJsonValueGet,
-    PixiVNJsonValueSet,
-} from "../interface";
-import type {
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasTextShow,
+    PixiVNJsonConditionalStatements,
+    PixiVNJsonConditions,
+    PixiVNJsonIfElse,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
+    PixiVNJsonLabelStep,
+    PixiVNJsonNarration,
+    PixiVNJsonOnlyStorageSet,
+    PixiVNJsonOperation,
+    PixiVNJsonOperationString,
+    PixiVNJsonSound,
     PixiVNJsonTextEdit,
     PixiVNJsonUnknownEdit,
+    PixiVNJsonValueGet,
+    PixiVNJsonValueSet,
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
-} from "../interface/PixiVNJsonCanvas";
-import type { PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
+} from "@drincs/pixi-vn-json/schema";
 import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {
@@ -76,7 +74,10 @@ export default class JsonUnifier {
                   >,
         ) => Promise<void>;
         setStorageValue?: (value: PixiVNJsonValueSet, props?: StepLabelPropsType) => void;
-        setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet, props?: StepLabelPropsType) => void;
+        setInitialStorageValue: (
+            value: PixiVNJsonOnlyStorageSet,
+            props?: StepLabelPropsType,
+        ) => void;
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
         animateOperation?: (operation: PixiVNJsonCanvasAnimate) => void;
@@ -91,7 +92,10 @@ export default class JsonUnifier {
                   >,
             props?: StepLabelPropsType,
         ) => T | undefined;
-        getConditionalStep?: (originalStep: PixiVNJsonLabelStep, props?: StepLabelPropsType) => PixiVNJsonLabelStep;
+        getConditionalStep?: (
+            originalStep: PixiVNJsonLabelStep,
+            props?: StepLabelPropsType,
+        ) => PixiVNJsonLabelStep;
     }) {
         if (options.loadAssets) JsonUnifier._loadAssets = options.loadAssets;
         if (options.soundOperation) JsonUnifier._soundOperation = options.soundOperation;
@@ -215,7 +219,10 @@ export default class JsonUnifier {
     static get canvasElementOperation() {
         return JsonUnifier._canvasElementOperation;
     }
-    private static _setStorageValue: (value: PixiVNJsonValueSet, props?: StepLabelPropsType) => void = () => {
+    private static _setStorageValue: (
+        value: PixiVNJsonValueSet,
+        props?: StepLabelPropsType,
+    ) => void = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
@@ -227,7 +234,10 @@ export default class JsonUnifier {
     static get setStorageValue() {
         return JsonUnifier._setStorageValue;
     }
-    private static _setInitialStorageValue: (value: PixiVNJsonOnlyStorageSet, props?: StepLabelPropsType) => void = () => {
+    private static _setInitialStorageValue: (
+        value: PixiVNJsonOnlyStorageSet,
+        props?: StepLabelPropsType,
+    ) => void = () => {
         logger.error(
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
@@ -297,16 +307,18 @@ export default class JsonUnifier {
     static get getLogichValue() {
         return JsonUnifier._getLogichValue;
     }
-    private static _getConditionalStep: (originalStep: PixiVNJsonLabelStep, props?: StepLabelPropsType) => PixiVNJsonLabelStep =
-        () => {
-            logger.error(
-                "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
-            );
-            throw new PixiError(
-                "invalid_usage",
-                "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
-            );
-        };
+    private static _getConditionalStep: (
+        originalStep: PixiVNJsonLabelStep,
+        props?: StepLabelPropsType,
+    ) => PixiVNJsonLabelStep = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+        throw new PixiError(
+            "invalid_usage",
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+    };
     static get getConditionalStep() {
         return JsonUnifier._getConditionalStep;
     }

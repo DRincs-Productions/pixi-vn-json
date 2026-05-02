@@ -1,8 +1,11 @@
 import { functionOperation } from "@/utils/function-utility";
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import type { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
-import type { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
+import type {
+    PixiVNJsonIfElse,
+    PixiVNJsonOperation,
+    PixiVNJsonOperationString,
+} from "@drincs/pixi-vn-json/schema";
 import { operationStringToString } from "../utils/operationtoconvert";
 
 export async function runOperation(

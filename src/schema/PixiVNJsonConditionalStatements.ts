@@ -1,6 +1,6 @@
-import type PixiVNJsonConditionalResultToCombine from "@/interface/PixiVNJsonConditionalResultToCombine";
-import type PixiVNJsonIfElse from "@/interface/PixiVNJsonIfElse";
-import type PixiVNJsonStepSwitch from "@/interface/PixiVNJsonStepSwitch";
+import type PixiVNJsonConditionalResultToCombine from "@/schema/PixiVNJsonConditionalResultToCombine";
+import type PixiVNJsonIfElse from "@/schema/PixiVNJsonIfElse";
+import type PixiVNJsonStepSwitch from "@/schema/PixiVNJsonStepSwitch";
 
 type PixiVNJsonConditionalStatements<Then> =
     | PixiVNJsonStepSwitch<Then>

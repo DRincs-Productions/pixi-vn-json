@@ -1,14 +1,6 @@
 import { functionOperation } from "@/utils/function-utility";
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import { translator } from "@drincs/pixi-vn-json/translator";
-import {
-    narration,
-    NarrationManagerStatic,
-    type StepLabelPropsType,
-} from "@drincs/pixi-vn/narration";
-import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
-import { PIXIVNJSON_PARAM_ID } from "../constants";
 import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonChoiceGet,
@@ -18,16 +10,25 @@ import type {
     PixiVNJsonConditions,
     PixiVNJsonDialog,
     PixiVNJsonDialogText,
+    PixiVNJsonFunction,
     PixiVNJsonLabelGet,
     PixiVNJsonLabelStep,
     PixiVNJsonLogicGet,
+    PixiVNJsonOnlyStorageSet,
     PixiVNJsonStepSwitchElementType,
     PixiVNJsonStorageGet,
     PixiVNJsonUnionCondition,
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
-} from "../interface";
-import type { PixiVNJsonFunction, PixiVNJsonOnlyStorageSet } from "../interface/PixiVNJsonValue";
+} from "@drincs/pixi-vn-json/schema";
+import { translator } from "@drincs/pixi-vn-json/translator";
+import {
+    narration,
+    NarrationManagerStatic,
+    type StepLabelPropsType,
+} from "@drincs/pixi-vn/narration";
+import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
+import { PIXIVNJSON_PARAM_ID } from "../constants";
 import { logger } from "./log-utility";
 
 export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelPropsType = {}) {
@@ -63,7 +64,10 @@ export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelProps
     }
 }
 
-export function setInitialStorageValue(value: PixiVNJsonOnlyStorageSet, props: StepLabelPropsType = {}) {
+export function setInitialStorageValue(
+    value: PixiVNJsonOnlyStorageSet,
+    props: StepLabelPropsType = {},
+) {
     const v = JsonUnifier.getLogichValue<StorageElementType>(value.value, props);
     let valueToSet: StorageElementType;
     if (v && typeof v === "object" && "type" in v) {
@@ -160,7 +164,10 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
  * @param value is the value to get
  * @returns the value from the storage or the value
  */
-function getValue<T = any>(value: StorageElementType | PixiVNJsonValueGet, props: StepLabelPropsType): T | undefined {
+function getValue<T = any>(
+    value: StorageElementType | PixiVNJsonValueGet,
+    props: StepLabelPropsType,
+): T | undefined {
     if (value && typeof value === "object") {
         if ("type" in value) {
             if (value.type === "value" && value.storageOperationType === "get") {
@@ -257,7 +264,10 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
  * @param condition is the union condition object
  * @returns the result of the union condition
  */
-function getUnionConditionResult(condition: PixiVNJsonUnionCondition, props: StepLabelPropsType): boolean {
+function getUnionConditionResult(
+    condition: PixiVNJsonUnionCondition,
+    props: StepLabelPropsType,
+): boolean {
     if (condition.unionType === "not") {
         return !getLogichValue<boolean>(condition.condition, props);
     }
@@ -301,7 +311,10 @@ export function getValueFromConditionalStatements<T>(
             case "resulttocombine":
                 return combinateResult(statement, props);
             case "ifelse": {
-                const conditionResult = JsonUnifier.getLogichValue<boolean>(statement.condition, props);
+                const conditionResult = JsonUnifier.getLogichValue<boolean>(
+                    statement.condition,
+                    props,
+                );
                 if (conditionResult) {
                     return JsonUnifier.getLogichValue<T>(statement.then as any, props);
                 } else {
@@ -401,10 +414,16 @@ export function getValueFromConditionalStatements<T>(
     return statement;
 }
 
-export function getConditionalStep(originalStep: PixiVNJsonLabelStep, props: StepLabelPropsType = {}): PixiVNJsonLabelStep {
+export function getConditionalStep(
+    originalStep: PixiVNJsonLabelStep,
+    props: StepLabelPropsType = {},
+): PixiVNJsonLabelStep {
     if (originalStep.conditionalStep) {
         const conditionalStep = createExportableElement(
-            JsonUnifier.getLogichValue<PixiVNJsonLabelStep>(originalStep.conditionalStep as any, props),
+            JsonUnifier.getLogichValue<PixiVNJsonLabelStep>(
+                originalStep.conditionalStep as any,
+                props,
+            ),
         );
         if (conditionalStep?.glueEnabled === undefined) {
             delete conditionalStep?.glueEnabled;
@@ -441,7 +460,10 @@ export function getConditionalStep(originalStep: PixiVNJsonLabelStep, props: Ste
     return originalStep;
 }
 
-function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, props: StepLabelPropsType): undefined | T {
+function combinateResult<T>(
+    value: PixiVNJsonConditionalResultToCombine<T>,
+    props: StepLabelPropsType,
+): undefined | T {
     const first = value.firstItem;
     const second: T[] = [];
     value.secondConditionalItem?.forEach((item) => {
@@ -471,8 +493,10 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, prop
         const dialogueArray: PixiVNJsonDialog<PixiVNJsonDialogText>[] = steps.map((step, index) => {
             step = getConditionalStep(step, props);
             let value =
-                JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(step.dialogue, props) ||
-                "";
+                JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(
+                    step.dialogue,
+                    props,
+                ) || "";
             if (index === 0) {
                 beforeIsGlueEnabled =
                     JsonUnifier.getLogichValue<boolean>(step.glueEnabled, props) || false;
@@ -486,7 +510,8 @@ function combinateResult<T>(value: PixiVNJsonConditionalResultToCombine<T>, prop
             if (value) {
                 beforeHaveText = true;
             }
-            beforeIsGlueEnabled = JsonUnifier.getLogichValue<boolean>(step.glueEnabled, props) || false;
+            beforeIsGlueEnabled =
+                JsonUnifier.getLogichValue<boolean>(step.glueEnabled, props) || false;
             return value;
         });
         const firstDialogue = JsonUnifier.getLogichValue<PixiVNJsonDialog<PixiVNJsonDialogText>>(
