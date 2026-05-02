@@ -19,15 +19,12 @@ Pixi’VN can be integrated with JSON files to create a visual novel. This metho
 
 ```mermaid
 flowchart LR;
-    K@{ img: "https://pixi-vn.web.app/renpy.svg", label: "RenPy", pos: "b", w: 90, h: 90, constraint: "on" }---->Json;
-    H@{ img: "https://pixi-vn.web.app/ink.svg", label: "ink", pos: "b", w: 90, h: 90, constraint: "on" }---->Json;
-    I@{ img: "https://pixi-vn.web.app/twine.svg", label: "Twine", pos: "b", w: 90, h: 90, constraint: "on" }---->Json;
-    J@{ img: "https://pixi-vn.web.app/yarn-spinner.svg", label: "Yarn Spinner", pos: "b", w: 90, h: 90, constraint: "on" }---->Json;
-    Json@{ img: "https://pixi-vn.web.app/pixivn-json.svg", label: "Pixi’VN + Json", pos: "b", w: 140, h: 140, constraint: "on" }
-    Json===>PixiVN;
-    PixiVN@{ img: "https://pixi-vn.web.app/logo.webp", label: "Pixi’VN", pos: "b", w: 180, h: 180, constraint: "on" }
-classDef img fill:none,stroke:none,borderRadius:50px
-class Json,D,K,H,B,I,J,PixiVN img
+    K[RenPy] ---> Json;
+    H[ink] ---> Json;
+    I[Twine] ---> Json;
+    J[Yarn Spinner] ---> Json;
+    Json["Pixi’VN + Json"] ===> PixiVN;
+    PixiVN["Pixi’VN"]
 ```
 
 ## How use Pixi’VN + Json?
