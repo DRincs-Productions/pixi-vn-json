@@ -25,14 +25,24 @@ import {
     setStorageValue,
 } from "./utils/storage";
 
-export function init({
-    getLogichValue: getLogichValueParam,
-}: {
-    getLogichValue?: <T = StorageElementType>(
-        value: T,
-        next: (value: T) => T | undefined,
-    ) => T | undefined;
-}) {
+type GetLogichValueHandler = <T = StorageElementType>(
+    value: T,
+    next: (value: T) => T | undefined,
+) => T | undefined;
+
+const _getLogichValueHandlers: GetLogichValueHandler[] = [];
+
+export const getLogichValueHandlers = {
+    add(handler: GetLogichValueHandler): void {
+        _getLogichValueHandlers.push(handler);
+    },
+    remove(handler: GetLogichValueHandler): void {
+        const index = _getLogichValueHandlers.indexOf(handler);
+        if (index !== -1) _getLogichValueHandlers.splice(index, 1);
+    },
+};
+
+export function init() {
     JsonUnifier.init({
         animateOperation: animateOperation,
         canvasElementOperation: canvasElementOperation,
@@ -47,12 +57,18 @@ export function init({
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
         getLogichValue: <T = StorageElementType>(value: any, props: StepLabelPropsType = {}): T | undefined => {
-            if (getLogichValueParam) {
-                return (getLogichValueParam(getValueFromConditionalStatements(value, props), (value) =>
-                    getLogichValue(value, props),
-                ) ?? undefined) as T | undefined;
+            const baseNext = (v: any): T | undefined => (getLogichValue(v, props) ?? undefined) as T | undefined;
+            const processedValue = getValueFromConditionalStatements(value, props);
+            if (_getLogichValueHandlers.length === 0) {
+                return baseNext(processedValue);
             }
-            return (getLogichValue(value, props) ?? undefined) as T | undefined;
+            let chain = baseNext;
+            for (let i = _getLogichValueHandlers.length - 1; i >= 0; i--) {
+                const handler = _getLogichValueHandlers[i];
+                const nextChain = chain;
+                chain = (v: any) => (handler(v, nextChain) ?? undefined) as T | undefined;
+            }
+            return chain(processedValue);
         },
         getConditionalStep: getConditionalStep,
     });
