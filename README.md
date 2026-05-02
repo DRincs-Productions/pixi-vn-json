@@ -49,34 +49,38 @@ bun add @drincs/pixi-vn-json
 
 All you need to do to use this integration is create a object using the <DynamicLink href="/json/PixiVNJson">`PixiVNJson` Model</DynamicLink> and use the `importPixiVNJson()` function to import the object.
 
-```ts title="main.ts"
-import { PixiVNJson, importPixiVNJson} from '@drincs/pixi-vn-json';
-
-let obj: PixiVNJson = {
-    labels: {
-        back_in_london: [
+```ts title="labels.json"
+{
+    "$schema": "https://pixi-vn.web.app/schemas/latest/schema.json",
+    "labels": {
+        "back_in_london": [
             {
-                dialogue: "We arrived into London at 9.45pm exactly.",
+                "dialogue": "We arrived into London at 9.45pm exactly.",
             },
             {
-                labelToOpen: {
-                    label: "hurry_home",
-                    type: "jump",
+                "labelToOpen": {
+                    "label": "hurry_home",
+                    "type": "jump",
                 },
             },
         ],
-        hurry_home: [
+        "hurry_home": [
             {
-                dialogue: "We hurried home to Savile Row as fast as we could.",
+                "dialogue": "We hurried home to Savile Row as fast as we could.",
             },
             {
-                end: "label_end",
+                "end": "label_end",
             },
         ]
     }
 }
+```
 
-importPixiVNJson(obj);
+```ts title="main.ts"
+import { PixiVNJson, importPixiVNJson} from '@drincs/pixi-vn-json';
+import json from "./labels.json";
+
+importPixiVNJson(json);
 ```
 
 After that you can run the `back_in_london` label with <DynamicLink href="/start/labels#run-a-label">Pixi’VN functions</DynamicLink>.
