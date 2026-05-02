@@ -1,10 +1,16 @@
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/importer";
+export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";
-export { PIXIVNJSON_PARAM_ID, PixiVNJsonComparationOperators } from "./constants";
-export * from "./interface";
+export {
+    PIXIVNJSON_PARAM_ID,
+    PIXIVNJSON_SCHEMA_URL,
+} from "./constants";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
-import { applyGetLogichValueHandlers, getLogichValueHandlers } from "./handlers/getLogichValueHandlers";
+import {
+    applyGetLogichValueHandlers,
+    getLogichValueHandlers,
+} from "./handlers/getLogichValueHandlers";
 import { loadAssets } from "./utils/assets";
 import {
     animateOperation,

@@ -1,3 +1,19 @@
+import type {
+    PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasEffect,
+    PixiVNJsonCanvasImageContainerShow,
+    PixiVNJsonCanvasImageVideoShow,
+    PixiVNJsonCanvasRemove,
+    PixiVNJsonCanvasShow,
+    PixiVNJsonCanvasTextShow,
+    PixiVNJsonImageContainerEdit,
+    PixiVNJsonImageEdit,
+    PixiVNJsonMediaTransiotions,
+    PixiVNJsonTextEdit,
+    PixiVNJsonUnknownEdit,
+    PixiVNJsonVideoEdit,
+    PixiVNJsonVideoPauseResume,
+} from "@drincs/pixi-vn-json/schema";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     canvas,
@@ -25,24 +41,6 @@ import {
     zoomIn,
     zoomOut,
 } from "@drincs/pixi-vn/canvas";
-import type {
-    PixiVNJsonCanvasAnimate,
-    PixiVNJsonCanvasEffect,
-    PixiVNJsonCanvasRemove,
-    PixiVNJsonCanvasShow,
-    PixiVNJsonMediaTransiotions,
-} from "../interface";
-import type {
-    PixiVNJsonCanvasImageContainerShow,
-    PixiVNJsonCanvasImageVideoShow,
-    PixiVNJsonCanvasTextShow,
-    PixiVNJsonImageContainerEdit,
-    PixiVNJsonImageEdit,
-    PixiVNJsonTextEdit,
-    PixiVNJsonUnknownEdit,
-    PixiVNJsonVideoEdit,
-    PixiVNJsonVideoPauseResume,
-} from "../interface/PixiVNJsonCanvas";
 import { logger } from "./log-utility";
 
 async function showCanvasElemet(

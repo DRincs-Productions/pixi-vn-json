@@ -1,5 +1,15 @@
 import { createExportableElement } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
+import type {
+    PixiVNJsonChoice,
+    PixiVNJsonChoices,
+    PixiVNJsonConditionalStatements,
+    PixiVNJsonDialog,
+    PixiVNJsonDialogText,
+    PixiVNJsonLabelStep,
+    PixiVNJsonLabelToOpen,
+    PixiVNJsonOperation,
+} from "@drincs/pixi-vn-json/schema";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     LabelAbstract,
@@ -12,15 +22,6 @@ import {
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 import sha1 from "crypto-js/sha1";
 import { PIXIVNJSON_PARAM_ID } from "../constants";
-import type { PixiVNJsonLabelStep, PixiVNJsonOperation } from "../interface";
-import type PixiVNJsonConditionalStatements from "../interface/PixiVNJsonConditionalStatements";
-import type {
-    PixiVNJsonChoice,
-    PixiVNJsonChoices,
-    PixiVNJsonDialog,
-    PixiVNJsonDialogText,
-    PixiVNJsonLabelToOpen,
-} from "../interface/PixiVNJsonLabelStep";
 import { logger } from "../utils/log-utility";
 import { runOperation } from "./operation-utility";
 

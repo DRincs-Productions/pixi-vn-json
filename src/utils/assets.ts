@@ -1,7 +1,10 @@
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
+import type {
+    PixiVNJsonIfElse,
+    PixiVNJsonOperation,
+    PixiVNJsonOperationString,
+} from "@drincs/pixi-vn-json/schema";
 import { Assets } from "@drincs/pixi-vn/canvas";
-import type { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
-import type { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
 
 export async function loadAssets(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,

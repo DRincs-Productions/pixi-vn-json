@@ -1,5 +1,5 @@
-import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
-import type { PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
+import type PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditionalStatements";
+import type { PixiVNJsonValueGet } from "@/schema/PixiVNJsonValue";
 import type { StorageElementType } from "@drincs/pixi-vn";
 
 export interface PixiVNJsonArithmeticOperationsArithmetic {

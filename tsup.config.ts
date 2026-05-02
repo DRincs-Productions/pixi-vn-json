@@ -12,6 +12,7 @@ export default defineConfig((options) => {
             target: "es2020",
             entry: {
                 core: "src/core/index.ts",
+                schema: "src/schema/index.ts",
             },
             format: ["cjs", "esm"],
             dts: true,

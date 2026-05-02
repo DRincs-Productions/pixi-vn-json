@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --config tsup.config.ts",
+    "generate-schema": "node scripts/generate-schema.mjs",
     "lint": "biome lint",
     "check": "biome check",
     "format": "biome format --write",
@@ -42,6 +43,12 @@
       "import": "./dist/translator.mjs",
       "require": "./dist/translator.cjs",
       "default": "./dist/translator.mjs"
+    },
+    "./schema": {
+      "types": "./dist/schema.d.ts",
+      "import": "./dist/schema.mjs",
+      "require": "./dist/schema.cjs",
+      "default": "./dist/schema.mjs"
     }
   },
   "typesVersions": {
@@ -54,6 +61,9 @@
       ],
       "translator": [
         "./dist/translator.d.ts"
+      ],
+      "schema": [
+        "./dist/schema.d.ts"
       ]
     }
   },
@@ -74,6 +84,7 @@
     "crypto-js": "^4.2.0",
     "jsdom": "^29.1.0",
     "pixi.js": "^8.18.1",
+    "ts-json-schema-generator": "^2.3.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typedoc": "^0.28.19",

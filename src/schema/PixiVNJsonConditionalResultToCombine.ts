@@ -1,5 +1,5 @@
-import PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
-import type { PixiVNJsonStepSwitchElementType } from "@/interface/PixiVNJsonStepSwitch";
+import PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditionalStatements";
+import type { PixiVNJsonStepSwitchElementType } from "@/schema/PixiVNJsonStepSwitch";
 
 /**
  * This element is used in case a {@link PixiVNJsonConditionalStatements} gives a result that must be combined with another calculated through other {@link PixiVNJsonConditionalStatements}.

@@ -1,6 +1,6 @@
-import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
-import type PixiVNJsonConditionalOperation from "@/interface/PixiVNJsonOperations";
-import type { PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
+import type PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditionalStatements";
+import type PixiVNJsonConditionalOperation from "@/schema/PixiVNJsonOperations";
+import type { PixiVNJsonValueGet } from "@/schema/PixiVNJsonValue";
 import type {
     LabelRunModeType,
     narration,

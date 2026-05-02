@@ -1,5 +1,5 @@
+import type { PixiVNJsonNarration } from "@drincs/pixi-vn-json/schema";
 import { narration } from "@drincs/pixi-vn/narration";
-import type { PixiVNJsonNarration } from "../interface";
 
 export function narrationOperation(operation: PixiVNJsonNarration) {
     switch (operation.type) {

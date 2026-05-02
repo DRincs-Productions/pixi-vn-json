@@ -1,13 +1,13 @@
-import type PixiVNJsonCanvas from "@/interface/PixiVNJsonCanvas";
-import type PixiVNJsonConditionalStatements from "@/interface/PixiVNJsonConditionalStatements";
-import type PixiVNJsonIfElse from "@/interface/PixiVNJsonIfElse";
-import type PixiVNJsonNarration from "@/interface/PixiVNJsonNarration";
-import type PixiVNJsonSound from "@/interface/PixiVNJsonSound";
+import type PixiVNJsonCanvas from "@/schema/PixiVNJsonCanvas";
+import type PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditionalStatements";
+import type PixiVNJsonIfElse from "@/schema/PixiVNJsonIfElse";
+import type PixiVNJsonNarration from "@/schema/PixiVNJsonNarration";
+import type PixiVNJsonSound from "@/schema/PixiVNJsonSound";
 import type {
     PixiVNJsonFunction,
     PixiVNJsonValueGet,
     PixiVNJsonValueSet,
-} from "@/interface/PixiVNJsonValue";
+} from "@/schema/PixiVNJsonValue";
 
 export type PixiVNJsonOperationString = {
     type: "operationtoconvert";
