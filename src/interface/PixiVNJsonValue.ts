@@ -62,7 +62,18 @@ export type PixiVNJsonValueGet =
     | PixiVNJsonParamGet
     | PixiVNJsonLabelGet
     | PixiVNJsonChoiceGet
-    | PixiVNJsonLogicGet;
+    | PixiVNJsonLogicGet
+    | PixiVNJsonFunction;
+export type PixiVNJsonFunction = {
+    type: "function";
+    functionName: string;
+    args: (
+        | PixiVNJsonConditions
+        | StorageElementType
+        | PixiVNJsonValueGet
+        | PixiVNJsonArithmeticOperations
+    )[];
+};
 
 export type PixiVNJsonOnlyStorageSet = {
     type: "value";

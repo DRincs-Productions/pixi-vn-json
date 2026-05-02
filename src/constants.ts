@@ -1,3 +1,4 @@
+import type { PixiVNJsonComparationOperatorsType } from "@/interface/PixiVNJsonConditions";
 import pkg from "../package.json";
 
 export const PIXIVNJSON_PARAM_ID = "___param___";
@@ -16,3 +17,13 @@ export const PIXIVNJSON_PARAM_ID = "___param___";
  * ```
  */
 export const PIXIVNJSON_SCHEMA_URL = `https://pixi-vn.web.app/schemas/${pkg.version}/schema.json`;
+
+export const PixiVNJsonComparationOperators: PixiVNJsonComparationOperatorsType[] = [
+    "==",
+    "!=",
+    "<",
+    "<=",
+    ">",
+    ">=",
+    "CONTAINS",
+];

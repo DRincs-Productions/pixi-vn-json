@@ -1,10 +1,16 @@
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/importer";
 export * from "@drincs/pixi-vn-json/translator";
-export { PIXIVNJSON_PARAM_ID, PIXIVNJSON_SCHEMA_URL } from "./constants";
+export {
+    PIXIVNJSON_PARAM_ID,
+    PIXIVNJSON_SCHEMA_URL,
+} from "./constants";
 export * from "./interface";
-import type { StorageElementType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
+import {
+    applyGetLogichValueHandlers,
+    getLogichValueHandlers,
+} from "./handlers/getLogichValueHandlers";
 import { loadAssets } from "./utils/assets";
 import {
     animateOperation,
@@ -17,22 +23,11 @@ import {
 } from "./utils/canvas";
 import { narrationOperation } from "./utils/narration";
 import { soundOperation } from "./utils/sound";
-import {
-    getConditionalStep,
-    getLogichValue,
-    getValueFromConditionalStatements,
-    setInitialStorageValue,
-    setStorageValue,
-} from "./utils/storage";
+import { getConditionalStep, setInitialStorageValue, setStorageValue } from "./utils/storage";
 
-export function init({
-    getLogichValue: getLogichValueParam = getLogichValue,
-}: {
-    getLogichValue?: <T = StorageElementType>(
-        value: T,
-        next: (value: T) => T | undefined,
-    ) => T | undefined;
-}) {
+export { getLogichValueHandlers };
+
+export function init() {
     JsonUnifier.init({
         animateOperation: animateOperation,
         canvasElementOperation: canvasElementOperation,
@@ -46,15 +41,7 @@ export function init({
         videoOperation: videoOperation,
         setStorageValue: setStorageValue,
         setInitialStorageValue: setInitialStorageValue,
-        getLogichValue: (value) => {
-            if (getLogichValueParam) {
-                return getLogichValueParam(
-                    getValueFromConditionalStatements(value),
-                    getLogichValue,
-                ) as any;
-            }
-            return getLogichValue(value);
-        },
+        getLogichValue: applyGetLogichValueHandlers,
         getConditionalStep: getConditionalStep,
     });
 }

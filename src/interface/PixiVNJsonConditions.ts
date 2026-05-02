@@ -3,6 +3,8 @@ import type PixiVNJsonUnionCondition from "@/interface/PixiVNJsonUnionCondition"
 import type { PixiVNJsonValueGet } from "@/interface/PixiVNJsonValue";
 import type { StorageElementType } from "@drincs/pixi-vn";
 
+export type PixiVNJsonComparationOperatorsType = "==" | "!=" | "<" | "<=" | ">" | ">=" | "CONTAINS";
+
 /**
  * Comparation for PixiVNJson.
  * In this comparation, the values to be converted to string and compared.
@@ -20,7 +22,7 @@ export type PixiVNJsonComparation = {
     /**
      * Operator of the comparation
      */
-    operator: "==" | "!=" | "<" | "<=" | ">" | ">=" | "CONTAINS";
+    operator: PixiVNJsonComparationOperatorsType;
 };
 
 type PixiVNJsonValueCondition = StorageElementType | PixiVNJsonValueGet;

@@ -20,6 +20,7 @@ export type { default as PixiVNJsonConditionalResultToCombine } from "@/interfac
 export type { default as PixiVNJsonConditionalStatements } from "@/interface/PixiVNJsonConditionalStatements";
 export type {
     PixiVNJsonComparation,
+    PixiVNJsonComparationOperatorsType,
     default as PixiVNJsonConditions,
 } from "@/interface/PixiVNJsonConditions";
 export type { default as PixiVNJsonIfElse } from "@/interface/PixiVNJsonIfElse";
@@ -48,6 +49,7 @@ export type {
 export type { default as PixiVNJsonUnionCondition } from "@/interface/PixiVNJsonUnionCondition";
 export type {
     PixiVNJsonChoiceGet,
+    PixiVNJsonFunction,
     PixiVNJsonLabelGet,
     PixiVNJsonLogicGet,
     PixiVNJsonParamGet,

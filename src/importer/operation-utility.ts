@@ -1,3 +1,5 @@
+import { functionOperation } from "@/utils/function-utility";
+import type { StepLabelPropsType } from "@drincs/pixi-vn";
 import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 import type { PixiVNJsonIfElse, PixiVNJsonOperation } from "../interface";
 import type { PixiVNJsonOperationString } from "../interface/PixiVNJsonOperations";
@@ -5,10 +7,12 @@ import { operationStringToString } from "../utils/operationtoconvert";
 
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
+    props: StepLabelPropsType,
     operationStringConvert?: (value: string) => Promise<PixiVNJsonOperation | undefined>,
 ) {
     const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
+        props,
     );
     if (!operation) {
         return;
@@ -37,14 +41,14 @@ export async function runOperation(
             await JsonUnifier.canvasElementOperation(operation);
             break;
         case "value":
-            JsonUnifier.setStorageValue(operation);
+            JsonUnifier.setStorageValue(operation, props);
             break;
         case "operationtoconvert":
             if (operationStringConvert) {
-                const stringOperation = operationStringToString(operation);
+                const stringOperation = operationStringToString(operation, props);
                 const op = await operationStringConvert(stringOperation);
                 if (op) {
-                    await runOperation(op, operationStringConvert);
+                    await runOperation(op, props, operationStringConvert);
                 }
             }
             break;
@@ -59,6 +63,9 @@ export async function runOperation(
         case "animate-sequence":
             JsonUnifier.animateOperation(operation);
             break;
+        case "function":
+            await functionOperation(operation, props);
+            break;
     }
 }
 
@@ -67,6 +74,7 @@ export function runInitialOperation(
 ) {
     const operation = JsonUnifier.getLogichValue<PixiVNJsonOperation | PixiVNJsonOperationString>(
         origin,
+        {},
     );
     if (!operation) {
         return;
