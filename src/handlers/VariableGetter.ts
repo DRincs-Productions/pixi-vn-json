@@ -1,5 +1,5 @@
 import type { StepLabelPropsType, StorageElementType } from "@drincs/pixi-vn";
-import { getValueFromConditionalStatements } from "@drincs/pixi-vn-json/actions";
+import { getLogichValue as storageGetLogichValue, getValueFromConditionalStatements } from "@drincs/pixi-vn-json/actions";
 
 export type VariableGetterHandler = <T = StorageElementType>(
     value: T,
@@ -22,7 +22,7 @@ export namespace VariableGetter {
         props: StepLabelPropsType = {},
     ): T | undefined {
         const baseNext = (v: any): T | undefined =>
-            (getLogichValue(v, props) ?? undefined) as T | undefined;
+            (storageGetLogichValue(v, props) ?? undefined) as T | undefined;
         const processedValue = getValueFromConditionalStatements(value, props);
         if (_handlers.size === 0) {
             return baseNext(processedValue);
