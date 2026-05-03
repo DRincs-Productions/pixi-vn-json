@@ -41,6 +41,15 @@ export type LabelJsonOptions = {
     skipEmptyDialogs?: boolean;
 };
 
+/**
+ * A label whose steps are defined by a plain JSON structure ({@link PixiVNJsonLabelStep}[]).
+ *
+ * `LabelJson` bridges pixi-vn's label system and the JSON script format: each step is
+ * lazily converted to a {@link StepLabelType} closure that resolves dialogues, choices,
+ * operations, and conditional overrides at runtime via {@link JsonUnifier}.
+ *
+ * @template T - The type of the props object passed between steps.
+ */
 export default class LabelJson<T extends {} = object> extends LabelAbstract<LabelJson<T>, T> {
     /**
      * @param id is the id of the label
@@ -112,6 +121,13 @@ export default class LabelJson<T extends {} = object> extends LabelAbstract<Labe
     ) => Promise<PixiVNJsonOperation | undefined>;
     private skipEmptyDialogs: boolean = false;
 
+    /**
+     * Returns the SHA-1 hash of the raw step at the given index.
+     * Can be used to detect step changes across label reloads.
+     *
+     * @param index - Zero-based index of the step.
+     * @returns The hex SHA-1 string, or `undefined` if the index is out of range.
+     */
     public getStepSha(index: number): string | undefined {
         if (index < 0 || index >= this.steps.length) {
             return undefined;

@@ -6,6 +6,13 @@ import type {
 } from "@drincs/pixi-vn-json/schema";
 import { Assets } from "@drincs/pixi-vn/canvas";
 
+/**
+ * Loads or lazily-loads asset bundles/aliases described by a JSON operation.
+ * Supports both individual asset aliases (`type: "assets"`) and named bundles
+ * (`type: "bundle"`), each with `"load"` (blocking) or `"lazyload"` (background) variants.
+ *
+ * @param origin - The operation or conditional expression that describes what to load.
+ */
 export async function loadAssets(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {

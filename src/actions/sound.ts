@@ -1,6 +1,12 @@
 import type { PixiVNJsonSound } from "@drincs/pixi-vn-json/schema";
 import { sound } from "@drincs/pixi-vn/sound";
 
+/**
+ * Handles all sound operations: play, stop, pause, resume, and property editing.
+ * Supports targeting individual sounds, channels, or all sounds at once.
+ *
+ * @param operation - The sound operation descriptor.
+ */
 export function soundOperation(operation: PixiVNJsonSound) {
     switch (operation.operationType) {
         case "play":

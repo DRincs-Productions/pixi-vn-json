@@ -1,6 +1,14 @@
 import type { StepLabelPropsType, StorageElementType } from "@drincs/pixi-vn";
 import { getLogichValue as storageGetLogichValue, getValueFromConditionalStatements } from "@drincs/pixi-vn-json/actions";
 
+/**
+ * A middleware handler that can intercept and transform a logic value before it is
+ * returned by {@link VariableGetter.getLogichValue}.
+ *
+ * Handlers are called in registration order, each receiving the current value and a
+ * `next` function to invoke the rest of the chain (including the built-in resolver).
+ * Return `undefined` to fall through to `next`.
+ */
 export type VariableGetterHandler = <T = StorageElementType>(
     value: T,
     next: (value: T) => T | undefined,
@@ -9,14 +17,31 @@ export type VariableGetterHandler = <T = StorageElementType>(
 export namespace VariableGetter {
     const _handlers: Set<VariableGetterHandler> = new Set();
 
+    /**
+     * Registers a new middleware handler into the resolution chain.
+     * Handlers are invoked in the order they were added.
+     *
+     * @param handler - The middleware handler to register.
+     */
     export function add(handler: VariableGetterHandler) {
         _handlers.add(handler);
     }
 
+    /**
+     * Removes all registered middleware handlers, restoring the default resolution behaviour.
+     */
     export function clear() {
         _handlers.clear();
     }
 
+    /**
+     * Resolves a JSON logic value, running it through all registered middleware handlers
+     * before falling back to the built-in storage/arithmetic/condition evaluator.
+     *
+     * @param value - The value or logic expression to resolve.
+     * @param props - The current step label props passed to each handler.
+     * @returns The resolved value, or `undefined`.
+     */
     export function getLogichValue<T = StorageElementType>(
         value: any,
         props: StepLabelPropsType = {},

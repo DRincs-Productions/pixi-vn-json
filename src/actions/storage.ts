@@ -31,14 +31,31 @@ import {
 } from "@drincs/pixi-vn/narration";
 import { storage, type StorageElementType } from "@drincs/pixi-vn/storage";
 
-export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelPropsType = {}) {
-    const v = JsonUnifier.getLogichValue<StorageElementType>(value.value, props);
-    let valueToSet: StorageElementType;
+/**
+ * Resolves a storage value that may itself be a nested logic expression.
+ * If the first resolution returns an object with a `type` field (i.e. another logic expression),
+ * it is resolved a second time.
+ */
+function resolveStorageValue(
+    rawValue: PixiVNJsonValueSet["value"] | PixiVNJsonOnlyStorageSet["value"],
+    props: StepLabelPropsType,
+): StorageElementType {
+    const v = JsonUnifier.getLogichValue<StorageElementType>(rawValue, props);
     if (v && typeof v === "object" && "type" in v) {
-        valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v, props);
-    } else {
-        valueToSet = v;
+        return JsonUnifier.getLogichValue<StorageElementType>(v, props);
     }
+    return v;
+}
+
+/**
+ * Sets a value in the appropriate storage layer (flag storage, persistent storage,
+ * temporary storage, or label parameters) as described by the operation.
+ *
+ * @param value - The storage-set operation descriptor.
+ * @param props - The current step label props (used to resolve dynamic values).
+ */
+export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelPropsType = {}) {
+    const valueToSet = resolveStorageValue(value.value, props);
     switch (value.storageType) {
         case "flagStorage":
             storage.setFlag(value.key, value.value);
@@ -50,9 +67,11 @@ export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelProps
             storage.setTempVariable(value.key, valueToSet);
             break;
         case "params": {
-            const params: any[] =
-                storage.get(`${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`) || [];
-            if (params && params.length - 1 >= (value.key as number)) {
+            const params: StorageElementType[] =
+                (storage.get(
+                    `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`,
+                ) as StorageElementType[]) || [];
+            if (params.length > (value.key as number)) {
                 params[value.key as number] = valueToSet;
             }
             storage.setTempVariable(
@@ -64,17 +83,19 @@ export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelProps
     }
 }
 
+/**
+ * Sets a default (initial) value in persistent or temporary storage.
+ * Unlike {@link setStorageValue}, this only applies to `"storage"` and `"tempstorage"` types
+ * and writes to `storage.default` so the value is used as a fallback.
+ *
+ * @param value - The initial storage-set operation descriptor.
+ * @param props - The current step label props (used to resolve dynamic values).
+ */
 export function setInitialStorageValue(
     value: PixiVNJsonOnlyStorageSet,
     props: StepLabelPropsType = {},
 ) {
-    const v = JsonUnifier.getLogichValue<StorageElementType>(value.value, props);
-    let valueToSet: StorageElementType;
-    if (v && typeof v === "object" && "type" in v) {
-        valueToSet = JsonUnifier.getLogichValue<StorageElementType>(v, props);
-    } else {
-        valueToSet = v;
-    }
+    const valueToSet = resolveStorageValue(value.value, props);
     switch (value.storageType) {
         case "storage":
         case "tempstorage":
@@ -85,6 +106,17 @@ export function setInitialStorageValue(
     }
 }
 
+/**
+ * Resolves a JSON logic value (storage get, arithmetic, condition, function, conditional statement)
+ * down to a plain TypeScript value of type `T`.
+ *
+ * This is the main evaluation entry-point: conditional statements are unwrapped first,
+ * then the remaining expression type is dispatched to the appropriate handler.
+ *
+ * @param value - The value or expression to resolve.
+ * @param props - The current step label props passed down through the call chain.
+ * @returns The resolved value, or `undefined` if the expression cannot be evaluated.
+ */
 export function getLogichValue<T = StorageElementType>(
     value:
         | T
@@ -221,10 +253,7 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
         return false;
     }
     if (typeof condition !== "object" || !("type" in condition)) {
-        if (condition) {
-            return true;
-        }
-        return false;
+        return !!condition;
     }
     switch (condition.type) {
         case "compare": {
@@ -249,14 +278,11 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
             break;
         }
         case "valueCondition":
-            return JsonUnifier.getLogichValue(condition.value, props) ? true : false;
+            return !!JsonUnifier.getLogichValue(condition.value, props);
         case "union":
             return getUnionConditionResult(condition as PixiVNJsonUnionCondition, props);
     }
-    if (condition) {
-        return true;
-    }
-    return false;
+    return !!condition;
 }
 
 /**
@@ -271,20 +297,12 @@ function getUnionConditionResult(
     if (condition.unionType === "not") {
         return !getLogichValue<boolean>(condition.condition, props);
     }
-    let result: boolean = condition.unionType === "and" ? true : false;
-    for (let i = 0; i < condition.conditions.length; i++) {
-        result = JsonUnifier.getLogichValue<boolean>(condition.conditions[i], props) || false;
-        if (condition.unionType === "and") {
-            if (!result) {
-                return false;
-            }
-        } else {
-            if (result) {
-                return true;
-            }
-        }
+    const resolve = (c: PixiVNJsonUnionCondition["conditions"][number]) =>
+        JsonUnifier.getLogichValue<boolean>(c, props) || false;
+    if (condition.unionType === "and") {
+        return condition.conditions.every(resolve);
     }
-    return result;
+    return condition.conditions.some(resolve);
 }
 
 function randomIntFromInterval(min: number, max: number) {
@@ -414,6 +432,17 @@ export function getValueFromConditionalStatements<T>(
     return statement;
 }
 
+/**
+ * Resolves the `conditionalStep` field of a label step and merges the result back
+ * into the step, recursively, until no more conditional overrides remain.
+ *
+ * Undefined properties on the resolved conditional step are deleted so they do not
+ * overwrite existing values on the base step.
+ *
+ * @param originalStep - The label step that may contain a `conditionalStep` expression.
+ * @param props - The current step label props used to evaluate the condition.
+ * @returns The fully resolved label step.
+ */
 export function getConditionalStep(
     originalStep: PixiVNJsonLabelStep,
     props: StepLabelPropsType = {},
@@ -465,17 +494,11 @@ function combinateResult<T>(
     props: StepLabelPropsType,
 ): undefined | T {
     const first = value.firstItem;
-    const second: T[] = [];
-    value.secondConditionalItem?.forEach((item) => {
+    const second = (value.secondConditionalItem ?? []).flatMap((item) => {
         if (!Array.isArray(item)) {
-            const i = JsonUnifier.getLogichValue<T>(item as any, props);
-            second.push(i as any);
-        } else {
-            item.forEach((i) => {
-                const j = JsonUnifier.getLogichValue<T>(i, props);
-                second.push(j as any);
-            });
+            return [JsonUnifier.getLogichValue<T>(item as any, props) as T];
         }
+        return item.map((i) => JsonUnifier.getLogichValue<T>(i, props) as T);
     });
     const toCheck = first ? [first, ...second] : second;
     if (toCheck.length === 0) {
