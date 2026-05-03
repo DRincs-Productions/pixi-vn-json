@@ -43,7 +43,7 @@ interface PixiVNJsonSequentialRandom<Then> {
      */
     end: undefined | "lastItem";
     /**
-     * The subId is used for manager nested switches
+     * The subId is used for managing nested switches
      */
     nestedId?: string;
 }
@@ -63,7 +63,7 @@ interface PixiVNJsonSequential<Then> {
      */
     end: undefined | "lastItem";
     /**
-     * The subId is used for manager nested switches
+     * The subId is used for managing nested switches
      */
     nestedId?: string;
 }
@@ -78,7 +78,7 @@ interface PixiVNJsonLoop<Then> {
      */
     elements: PixiVNJsonStepSwitchElementsType<Then>;
     /**
-     * The subId is used for manager nested switches
+     * The subId is used for managing nested switches
      */
     nestedId?: string;
 }
