@@ -297,7 +297,7 @@ function getUnionConditionResult(
     if (condition.unionType === "not") {
         return !getLogichValue<boolean>(condition.condition, props);
     }
-    const resolve = (c: PixiVNJsonUnionCondition["conditions"][number]) =>
+    const resolve = (c: PixiVNJsonConditions) =>
         JsonUnifier.getLogichValue<boolean>(c, props) || false;
     if (condition.unionType === "and") {
         return condition.conditions.every(resolve);
