@@ -2,6 +2,9 @@ import type PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditional
 import type { PixiVNJsonValueGet } from "@/schema/PixiVNJsonValue";
 import type { StorageElementType } from "@drincs/pixi-vn";
 
+/**
+ * Binary arithmetic operation between two values (left OP right).
+ */
 export interface PixiVNJsonArithmeticOperationsArithmetic {
     type: "arithmetic";
     /**
@@ -25,11 +28,21 @@ export interface PixiVNJsonArithmeticOperationsArithmetic {
               StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations
           >;
     /**
-     * Operator of the arithmetic operation
+     * Operator of the arithmetic operation:
+     * - `"*"` multiplication
+     * - `"/"` division
+     * - `"+"` addition
+     * - `"-"` subtraction
+     * - `"%"` modulo
+     * - `"POW"` exponentiation
+     * - `"RANDOM"` random integer between leftValue and rightValue (inclusive)
      */
     operator: "*" | "/" | "+" | "-" | "%" | "POW" | "RANDOM";
 }
 
+/**
+ * Unary arithmetic operation applied to a single value (e.g. INT, FLOOR, FLOAT).
+ */
 export interface PixiVNJsonArithmeticOperationsArithmeticSingle {
     type: "arithmeticsingle";
     /**
@@ -43,7 +56,10 @@ export interface PixiVNJsonArithmeticOperationsArithmeticSingle {
               StorageElementType | PixiVNJsonValueGet | PixiVNJsonArithmeticOperations
           >;
     /**
-     * Operator of the arithmetic operation
+     * Operator of the arithmetic operation:
+     * - `"INT"` truncates the value to an integer (removes the decimal part)
+     * - `"FLOOR"` rounds down to the nearest integer
+     * - `"FLOAT"` converts the value to a floating-point number
      */
     operator: "INT" | "FLOOR" | "FLOAT";
 }

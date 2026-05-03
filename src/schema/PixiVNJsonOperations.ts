@@ -9,8 +9,15 @@ import type {
     PixiVNJsonValueSet,
 } from "@/schema/PixiVNJsonValue";
 
+/**
+ * An operation string that holds a list of string/value fragments to be concatenated at runtime.
+ * Used internally to represent string interpolation expressions before they are fully resolved.
+ */
 export type PixiVNJsonOperationString = {
     type: "operationtoconvert";
+    /**
+     * The ordered list of string fragments and/or value-get expressions to concatenate.
+     */
     values: (
         | string
         | PixiVNJsonValueGet
@@ -18,6 +25,10 @@ export type PixiVNJsonOperationString = {
     )[];
 };
 
+/**
+ * A single resolved operation — a value set, canvas operation, sound operation,
+ * narration operation, or function call — optionally annotated with an origin string.
+ */
 export type PixiVNJsonOperation = (
     | PixiVNJsonValueSet
     | PixiVNJsonCanvas
@@ -31,6 +42,10 @@ export type PixiVNJsonOperation = (
     $origin?: string;
 };
 
+/**
+ * A conditional operation — either a plain operation, an if-else that resolves to one,
+ * or an operation-string (string interpolation expression).
+ */
 type PixiVNJsonConditionalOperation =
     | PixiVNJsonOperation
     | PixiVNJsonIfElse<PixiVNJsonOperation>

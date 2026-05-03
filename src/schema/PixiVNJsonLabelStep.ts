@@ -8,6 +8,9 @@ import type {
     StorageObjectType,
 } from "@drincs/pixi-vn";
 
+/**
+ * A player-presentable choice in a menu.
+ */
 export type PixiVNJsonChoice = {
     /**
      * The text to be displayed.
@@ -38,11 +41,19 @@ export type PixiVNJsonChoice = {
      */
     autoSelect?: boolean;
 };
+/**
+ * A list of choices (possibly conditional) that are shown to the player as a menu.
+ */
 export type PixiVNJsonChoices = (
     | PixiVNJsonChoice
     | PixiVNJsonConditionalStatements<PixiVNJsonChoice>
 )[];
 
+/**
+ * The text content of a dialogue line.
+ * Can be a plain string, a dynamic value-get, a conditional expression, or an array of any of these
+ * (which will be concatenated into a single string at runtime).
+ */
 export type PixiVNJsonDialogText =
     | string
     | PixiVNJsonValueGet
@@ -53,6 +64,10 @@ export type PixiVNJsonDialogText =
           | PixiVNJsonConditionalStatements<string | PixiVNJsonValueGet | string[]>
       )[];
 
+/**
+ * A dialogue line, optionally attributed to a character.
+ * When a plain `Text` value is used, no character attribution is included.
+ */
 export type PixiVNJsonDialog<Text = string> =
     | {
           /**
@@ -66,6 +81,9 @@ export type PixiVNJsonDialog<Text = string> =
       }
     | Text;
 
+/**
+ * Describes a label that should be opened (called or jumped to) during a step.
+ */
 export type PixiVNJsonLabelToOpen<T extends {} = object> = {
     /**
      * The id of the label to open.
@@ -96,6 +114,9 @@ export type PixiVNJsonLabelToOpen<T extends {} = object> = {
  * 5. end the label if {@link PixiVNJsonLabelStep.end} is "label_end"
  */
 type PixiVNJsonLabelStep = {
+    /**
+     * Operations to execute at the start of this step (storage writes, canvas updates, sound, etc.).
+     */
     operations?: PixiVNJsonConditionalOperation[];
     /**
      * Variable used to display a choice menu.
@@ -129,6 +150,10 @@ type PixiVNJsonLabelStep = {
      * - label_end: ends the label
      */
     end?: "game_end" | "label_end" | PixiVNJsonConditionalStatements<"game_end" | "label_end">;
+    /**
+     * If set, this step is replaced by the result of evaluating the given conditional statement.
+     * Allows an entire step to be chosen at runtime based on a condition or step-switch strategy.
+     */
     conditionalStep?: PixiVNJsonConditionalStatements<PixiVNJsonLabelStep | PixiVNJsonLabelStep[]>;
 };
 

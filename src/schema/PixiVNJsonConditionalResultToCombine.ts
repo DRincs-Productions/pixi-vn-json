@@ -8,10 +8,18 @@ import type { PixiVNJsonStepSwitchElementType } from "@/schema/PixiVNJsonStepSwi
 type PixiVNJsonConditionalResultToCombine<T> = {
     type: "resulttocombine";
     /**
-     * This variable is interpreted differently by Pixi'VN depending on the value
+     * Defines how the two results are combined:
+     * - `"cross"` — cartesian product / pairwise combination of both results
+     * - `"union"` — concatenation / merge of both results into a single collection
      */
     combine: "cross" | "union";
+    /**
+     * The first (primary) result item, used as a fallback if the second conditional produces no result.
+     */
     firstItem?: T;
+    /**
+     * The second conditional item(s) whose result will be combined with {@link firstItem}.
+     */
     secondConditionalItem?: PixiVNJsonStepSwitchElementType<T>[];
 };
 export default PixiVNJsonConditionalResultToCombine;
