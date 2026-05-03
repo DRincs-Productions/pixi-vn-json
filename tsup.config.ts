@@ -20,7 +20,6 @@ export default defineConfig((options) => {
             splitting: false,
             clean: true,
             minify: true,
-            bundle: true,
             skipNodeModulesBundle: false,
             outExtension({ format }) {
                 return {
@@ -39,7 +38,6 @@ export default defineConfig((options) => {
             splitting: false,
             clean: false,
             minify: true,
-            bundle: true,
             skipNodeModulesBundle: false,
             external: ["@drincs/pixi-vn-json/core"],
             outExtension({ format }) {
@@ -60,7 +58,6 @@ export default defineConfig((options) => {
             splitting: false,
             clean: false,
             minify: true,
-            bundle: true,
             skipNodeModulesBundle: false,
             external: ["@drincs/pixi-vn-json/core", "@drincs/pixi-vn-json/translator"],
             outExtension({ format }) {
@@ -79,7 +76,6 @@ export default defineConfig((options) => {
             treeshake: true,
             clean: false,
             minify: true,
-            bundle: true,
             skipNodeModulesBundle: false, // Skip bundling of node_modules
             external: [
                 "@drincs/pixi-vn-json/core",
