@@ -36,6 +36,13 @@ import type {
 import { logger } from "../utils/log-utility";
 
 export default class JsonUnifier {
+    /**
+     * Registers the operation handlers that pixi-vn-json will delegate to at runtime.
+     * Call this once at application startup (e.g. via {@link init}) before importing any labels.
+     *
+     * All parameters are optional except `setInitialStorageValue`, which is required because
+     * it must be available for initial-operation processing during label import.
+     */
     static init(options: {
         loadAssets?: (
             origin:
@@ -123,6 +130,7 @@ export default class JsonUnifier {
             | PixiVNJsonIfElse<PixiVNJsonOperation>
             | PixiVNJsonOperationString,
     ) => Promise<void> | void = () => {};
+    /** Registered handler for loading/lazy-loading assets. */
     static get loadAssets() {
         return JsonUnifier._loadAssets;
     }
@@ -135,6 +143,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for sound play/stop/pause/resume/edit operations. */
     static get soundOperation() {
         return JsonUnifier._soundOperation;
     }
@@ -149,6 +158,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for {@link ImageSprite} show/edit/remove operations. */
     static get imageOperation() {
         return JsonUnifier._imageOperation;
     }
@@ -167,6 +177,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for {@link VideoSprite} show/edit/remove/pause/resume operations. */
     static get videoOperation() {
         return JsonUnifier._videoOperation;
     }
@@ -184,8 +195,8 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
-    static get textOperation() {
-        return JsonUnifier._textOperation;
+    static get imageContainerOperation() {
+        return JsonUnifier._imageContainerOperation;
     }
     private static _textOperation: (
         operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
@@ -198,8 +209,9 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
-    static get imageContainerOperation() {
-        return JsonUnifier._imageContainerOperation;
+    /** Registered handler for {@link Text} show/edit/remove operations. */
+    static get textOperation() {
+        return JsonUnifier._textOperation;
     }
     private static _canvasElementOperation: (
         operation:
@@ -216,6 +228,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for generic canvas-element edit/remove operations. */
     static get canvasElementOperation() {
         return JsonUnifier._canvasElementOperation;
     }
@@ -231,6 +244,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for setting a storage value during label execution. */
     static get setStorageValue() {
         return JsonUnifier._setStorageValue;
     }
@@ -246,6 +260,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for setting a default (initial) storage value at import time. */
     static get setInitialStorageValue() {
         return JsonUnifier._setInitialStorageValue;
     }
@@ -258,6 +273,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for narration operations (input requests, dialogue resets). */
     static get narrationOperation() {
         return JsonUnifier._narrationOperation;
     }
@@ -270,6 +286,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for canvas visual effects (e.g. shake). */
     static get effectOperation() {
         return JsonUnifier._effectOperation;
     }
@@ -282,6 +299,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler for keyframe animation operations. */
     static get animateOperation() {
         return JsonUnifier._animateOperation;
     }
@@ -304,6 +322,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler that evaluates a JSON logic expression to a plain value. */
     static get getLogichValue() {
         return JsonUnifier._getLogichValue;
     }
@@ -319,6 +338,7 @@ export default class JsonUnifier {
             "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
         );
     };
+    /** Registered handler that resolves a label step's `conditionalStep` field. */
     static get getConditionalStep() {
         return JsonUnifier._getConditionalStep;
     }

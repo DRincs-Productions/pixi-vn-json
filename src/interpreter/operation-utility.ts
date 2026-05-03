@@ -8,6 +8,17 @@ import type {
     PixiVNJsonOperationString,
 } from "@drincs/pixi-vn-json/schema";
 
+/**
+ * Executes a single JSON operation (canvas, sound, storage, narration, etc.) during label
+ * step execution.
+ *
+ * Conditional/if-else operations are first unwrapped via {@link JsonUnifier.getLogichValue}
+ * before the appropriate handler is dispatched.
+ *
+ * @param origin - The operation or conditional expression to execute.
+ * @param props - The current step label props.
+ * @param operationStringConvert - Optional converter for `operationtoconvert` string operations.
+ */
 export async function runOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
     props: StepLabelPropsType,
@@ -72,6 +83,13 @@ export async function runOperation(
     }
 }
 
+/**
+ * Processes a single initial operation at import time.
+ * Only `"value"` operations targeting `"storage"` or `"tempstorage"` are handled here
+ * (i.e. they set default storage values via {@link JsonUnifier.setInitialStorageValue}).
+ *
+ * @param origin - The operation or conditional expression to process.
+ */
 export function runInitialOperation(
     origin: PixiVNJsonOperation | PixiVNJsonIfElse<PixiVNJsonOperation> | PixiVNJsonOperationString,
 ) {

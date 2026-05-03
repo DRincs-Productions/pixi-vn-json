@@ -24,21 +24,19 @@ export async function importPixiVNJson(
         }
     }
 
-    const jsonsPromises: Promise<PixiVNJson>[] = values.map(async (data) => {
+    const jsons: PixiVNJson[] = values.map((data) => {
         if (typeof data === "string") {
             try {
-                data = JSON.parse(data) as PixiVNJson;
+                return JSON.parse(data) as PixiVNJson;
             } catch (e) {
                 logger.error("Error parsing imported Pixi'VN JSON", e);
-                data = {};
+                return {} as PixiVNJson;
             }
         }
         return data;
     });
-    const jsons = await Promise.all(jsonsPromises);
 
     const promises = jsons.map(async (data) => {
-        const promises: Promise<void>[] = [];
         if (data.initialOperations) {
             for (const operation of data.initialOperations) {
                 runInitialOperation(operation);
@@ -56,7 +54,6 @@ export async function importPixiVNJson(
                 }
             }
         }
-        return Promise.all(promises);
     });
 
     await Promise.all(promises);

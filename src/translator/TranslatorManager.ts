@@ -11,22 +11,53 @@ import type {
     PixiVNJsonOperation,
 } from "@drincs/pixi-vn-json/schema";
 
+/**
+ * Manages the translation pipeline for all text displayed by pixi-vn-json.
+ *
+ * The pipeline applies three optional hooks in order:
+ * 1. `beforeToTranslate` – pre-processes the key before translation.
+ * 2. `translate` – the main translation function (identity by default).
+ * 3. `afterToTranslate` – post-processes the translated string.
+ *
+ * Use {@link TranslatorManager.t} to translate a key or array of keys.
+ */
 export default class TranslatorManager {
     private static _beforeToTranslate: ((key: string) => string) | undefined = undefined;
     private static _translate: (key: string) => string = (key: string) => key;
     private static _afterToTranslate: ((key: string) => string) | undefined = undefined;
+    /**
+     * Translates a single key or an array of keys using the registered pipeline.
+     * Returns the same type (`string` or `string[]`) as the input.
+     *
+     * @param key - The string key or array of string keys to translate.
+     * @returns The translated string(s).
+     */
     static t<T = string | string[]>(key: T): T {
         if (Array.isArray(key)) {
             return key.map((k?: string) => TranslatorManager.translate(`${k}`)) as T;
         }
         return TranslatorManager.translate(`${key}`) as T;
     }
+    /**
+     * Sets a hook that runs **before** the main translation function.
+     * Useful for key normalization (e.g. trimming, lowercasing).
+     */
     static set beforeToTranslate(value: (key: string) => string) {
         TranslatorManager._beforeToTranslate = value;
     }
+    /**
+     * Sets the main translation function.
+     * Defaults to an identity function (returns the key unchanged).
+     *
+     * @example
+     * ```ts
+     * translator.translate = (key) => i18n.t(key);
+     * ```
+     */
     static set translate(value: (key: string) => string) {
         TranslatorManager._translate = value;
     }
+    /** Returns the composed translation pipeline (before → translate → after). */
     static get translate(): (key: string) => string {
         return (key: string) => {
             let text = key;
@@ -40,6 +71,10 @@ export default class TranslatorManager {
             return text;
         };
     }
+    /**
+     * Sets a hook that runs **after** the main translation function.
+     * Useful for post-processing translated strings (e.g. replacing placeholders).
+     */
     static set afterToTranslate(value: (key: string) => string) {
         TranslatorManager._afterToTranslate = value;
     }

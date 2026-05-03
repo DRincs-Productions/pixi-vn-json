@@ -43,7 +43,7 @@ import {
     zoomOut,
 } from "@drincs/pixi-vn/canvas";
 
-async function showCanvasElemet(
+async function showCanvasElement(
     element: ImageSprite | VideoSprite | ImageContainer | Text,
     operation: PixiVNJsonCanvasShow,
     transition: PixiVNJsonMediaTransiotions,
@@ -105,6 +105,11 @@ function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
     }
 }
 
+/**
+ * Handles show, edit, and remove operations for {@link ImageSprite} canvas elements.
+ *
+ * @param operation - The image operation descriptor.
+ */
 export async function imageOperation(
     operation: PixiVNJsonCanvasImageVideoShow | PixiVNJsonImageEdit | PixiVNJsonCanvasRemove,
 ) {
@@ -115,7 +120,7 @@ export async function imageOperation(
                     operation.props,
                     operation.url || operation.alias,
                 );
-                await showCanvasElemet(imageToShow, operation, operation.transition);
+                await showCanvasElement(imageToShow, operation, operation.transition);
             } else {
                 await showImage(operation.alias, operation.url, operation.props);
             }
@@ -140,6 +145,11 @@ export async function imageOperation(
     }
 }
 
+/**
+ * Handles show, edit, remove, pause, and resume operations for {@link VideoSprite} canvas elements.
+ *
+ * @param operation - The video operation descriptor.
+ */
 export async function videoOperation(
     operation:
         | PixiVNJsonCanvasRemove
@@ -154,7 +164,7 @@ export async function videoOperation(
                     operation.props,
                     operation.url || operation.alias,
                 );
-                await showCanvasElemet(videoToShow, operation, operation.transition);
+                await showCanvasElement(videoToShow, operation, operation.transition);
             } else {
                 await showVideo(operation.alias, operation.url, operation.props);
             }
@@ -176,19 +186,11 @@ export async function videoOperation(
         case "remove":
             removeCanvasElement(operation);
             break;
-        case "pause": {
-            const videoPause = canvas.find<VideoSprite>(operation.alias);
-            if (videoPause) {
-                videoPause.paused = true;
-            } else {
-                logger.error(`Video with alias ${operation.alias} not found.`);
-            }
-            break;
-        }
+        case "pause":
         case "resume": {
-            const videoResume = canvas.find<VideoSprite>(operation.alias);
-            if (videoResume) {
-                videoResume.paused = false;
+            const video = canvas.find<VideoSprite>(operation.alias);
+            if (video) {
+                video.paused = operation.operationType === "pause";
             } else {
                 logger.error(`Video with alias ${operation.alias} not found.`);
             }
@@ -197,6 +199,11 @@ export async function videoOperation(
     }
 }
 
+/**
+ * Handles show, edit, and remove operations for {@link ImageContainer} canvas elements.
+ *
+ * @param operation - The image-container operation descriptor.
+ */
 export async function imageContainerOperation(
     operation:
         | PixiVNJsonCanvasRemove
@@ -207,7 +214,7 @@ export async function imageContainerOperation(
         case "show":
             if (operation.transition) {
                 const imageContainerToShow = new ImageContainer(operation.props, operation.urls);
-                await showCanvasElemet(imageContainerToShow, operation, operation.transition);
+                await showCanvasElement(imageContainerToShow, operation, operation.transition);
             } else {
                 await showImageContainer(operation.alias, operation.urls, operation.props);
             }
@@ -232,6 +239,12 @@ export async function imageContainerOperation(
     }
 }
 
+/**
+ * Handles show, edit, and remove operations for {@link Text} canvas elements.
+ * On show, the text content is run through the active {@link translator} before display.
+ *
+ * @param operation - The text operation descriptor.
+ */
 export async function textOperation(
     operation: PixiVNJsonCanvasRemove | PixiVNJsonCanvasTextShow | PixiVNJsonTextEdit,
 ) {
@@ -241,7 +254,7 @@ export async function textOperation(
             operation.props.text = translator.t(operation.text);
             if (operation.transition) {
                 const imageContainerToShow = new Text(operation.props);
-                await showCanvasElemet(imageContainerToShow, operation, operation.transition);
+                await showCanvasElement(imageContainerToShow, operation, operation.transition);
             } else {
                 showText(operation.alias, operation.text, operation.props);
             }
@@ -266,6 +279,12 @@ export async function textOperation(
     }
 }
 
+/**
+ * Handles edit and remove operations for any canvas element whose specific type is unknown.
+ * Useful as a generic fallback when the element type is not determined at the call site.
+ *
+ * @param operation - The generic canvas-element operation descriptor.
+ */
 export async function canvasElementOperation(
     operation:
         | PixiVNJsonUnknownEdit<
@@ -299,6 +318,11 @@ export async function canvasElementOperation(
             break;
     }
 }
+/**
+ * Applies a visual effect (e.g. shake) to a canvas element.
+ *
+ * @param operation - The canvas effect descriptor.
+ */
 export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
     switch (operation.type) {
         case "shake":
@@ -307,6 +331,11 @@ export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
     }
 }
 
+/**
+ * Starts a keyframe animation or animation sequence on a canvas element.
+ *
+ * @param operation - The animate operation descriptor.
+ */
 export function animateOperation(operation: PixiVNJsonCanvasAnimate) {
     switch (operation.type) {
         case "animate":

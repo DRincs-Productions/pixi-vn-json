@@ -1,6 +1,12 @@
 import type { PixiVNJsonComparationOperatorsType } from "@drincs/pixi-vn-json/schema";
 import pkg from "../package.json";
 
+/**
+ * Internal storage key prefix used to pass positional parameters to a called label.
+ * The full key is `PIXIVNJSON_PARAM_ID + <label-depth-index>`.
+ *
+ * @internal
+ */
 export const PIXIVNJSON_PARAM_ID = "___param___";
 
 /**
@@ -18,6 +24,9 @@ export const PIXIVNJSON_PARAM_ID = "___param___";
  */
 export const PIXIVNJSON_SCHEMA_URL = `https://pixi-vn.web.app/schemas/${pkg.version}/schema.json`;
 
+/**
+ * All comparison operators supported by {@link PixiVNJsonConditions} expressions.
+ */
 export const PixiVNJsonComparationOperators: PixiVNJsonComparationOperatorsType[] = [
     "==",
     "!=",
