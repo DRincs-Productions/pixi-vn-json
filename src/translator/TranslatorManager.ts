@@ -40,7 +40,7 @@ export default class TranslatorManager {
     }
     /**
      * Sets a hook that runs **before** the main translation function.
-     * Useful for key normalisation (e.g. trimming, lowercasing).
+     * Useful for key normalization (e.g. trimming, lowercasing).
      */
     static set beforeToTranslate(value: (key: string) => string) {
         TranslatorManager._beforeToTranslate = value;
