@@ -168,8 +168,30 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
                 case "/":
                     return ((leftValue as any) / (rightValue as any)) as T;
                 case "+":
+                    if (typeof leftValue === "string" || typeof rightValue === "string") {
+                        return `${leftValue}${rightValue}` as unknown as T;
+                    }
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return [...leftValue, ...rightValue] as unknown as T;
+                    } else if (Array.isArray(leftValue)) {
+                        return [...leftValue, rightValue] as unknown as T;
+                    } else if (Array.isArray(rightValue)) {
+                        return [leftValue, ...rightValue] as unknown as T;
+                    }
                     return ((leftValue as any) + (rightValue as any)) as T;
                 case "-":
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.filter(
+                            (v) => !rightValue.includes(v as any),
+                        ) as unknown as T;
+                    } else if (Array.isArray(leftValue)) {
+                        return leftValue.filter((v) => v !== rightValue) as unknown as T;
+                    } else if (Array.isArray(rightValue)) {
+                        logger.warn(
+                            "getValueFromArithmeticOperations cannot subtract array from non-array",
+                        );
+                        return undefined;
+                    }
                     return ((leftValue as any) - (rightValue as any)) as T;
                 case "%":
                     return ((leftValue as any) % (rightValue as any)) as T;
@@ -177,6 +199,9 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
                     return ((leftValue as any) ** (rightValue as any)) as T;
                 case "RANDOM":
                     return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
+                default:
+                    logger.warn(`getValueFromArithmeticOperations unknown operator`, operation);
+                    return undefined;
             }
         }
         case "arithmeticsingle":
@@ -261,18 +286,57 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
             const rightValue = JsonUnifier.getLogichValue<any>(condition.rightValue, props);
             switch (condition.operator) {
                 case "==":
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return (
+                            leftValue.length === rightValue.length &&
+                            leftValue.every((v) => rightValue.includes(v))
+                        );
+                    }
                     return leftValue === rightValue;
                 case "!=":
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return (
+                            leftValue.length !== rightValue.length ||
+                            !leftValue.every((v) => rightValue.includes(v))
+                        );
+                    }
                     return leftValue !== rightValue;
                 case "<":
+                    if (typeof leftValue === "string" && typeof rightValue === "string") {
+                        return leftValue.localeCompare(rightValue) < 0;
+                    }
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.length < rightValue.length;
+                    }
                     return leftValue < rightValue;
                 case "<=":
+                    if (typeof leftValue === "string" && typeof rightValue === "string") {
+                        return leftValue.localeCompare(rightValue) <= 0;
+                    }
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.length <= rightValue.length;
+                    }
                     return leftValue <= rightValue;
                 case ">":
+                    if (typeof leftValue === "string" && typeof rightValue === "string") {
+                        return leftValue.localeCompare(rightValue) > 0;
+                    }
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.length > rightValue.length;
+                    }
                     return leftValue > rightValue;
                 case ">=":
+                    if (typeof leftValue === "string" && typeof rightValue === "string") {
+                        return leftValue.localeCompare(rightValue) >= 0;
+                    }
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.length >= rightValue.length;
+                    }
                     return leftValue >= rightValue;
                 case "CONTAINS":
+                    if (Array.isArray(leftValue)) {
+                        return leftValue.includes(rightValue);
+                    }
                     return leftValue.toString().includes(rightValue.toString());
             }
             break;

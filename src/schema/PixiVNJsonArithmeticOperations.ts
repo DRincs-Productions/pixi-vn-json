@@ -31,8 +31,8 @@ export interface PixiVNJsonArithmeticOperationsArithmetic {
      * Operator of the arithmetic operation:
      * - `"*"` multiplication
      * - `"/"` division
-     * - `"+"` addition
-     * - `"-"` subtraction
+     * - `"+"` addition (concatenation for strings and arrays)
+     * - `"-"` subtraction (removal of elements for arrays)
      * - `"%"` modulo
      * - `"POW"` exponentiation
      * - `"RANDOM"` random integer between leftValue and rightValue (inclusive)
