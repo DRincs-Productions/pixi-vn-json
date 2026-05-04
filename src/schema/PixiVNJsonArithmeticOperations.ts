@@ -36,8 +36,9 @@ export interface PixiVNJsonArithmeticOperationsArithmetic {
      * - `"%"` modulo
      * - `"POW"` exponentiation
      * - `"RANDOM"` random integer between leftValue and rightValue (inclusive)
+     * - `"INTERSECTION"` intersection of two arrays (only elements present in both arrays are included in the result)
      */
-    operator: "*" | "/" | "+" | "-" | "%" | "POW" | "RANDOM";
+    operator: "*" | "/" | "+" | "-" | "%" | "POW" | "RANDOM" | "INTERSECTION";
 }
 
 /**

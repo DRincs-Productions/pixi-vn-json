@@ -199,6 +199,17 @@ function getValueFromArithmeticOperations<T = StorageElementType>(
                     return ((leftValue as any) ** (rightValue as any)) as T;
                 case "RANDOM":
                     return narration.getRandomNumber(leftValue as any, rightValue as any) as T;
+                case "INTERSECTION":
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return leftValue.filter((v) =>
+                            rightValue.includes(v as any),
+                        ) as unknown as T;
+                    } else {
+                        logger.warn(
+                            "getValueFromArithmeticOperations cannot intersect non-array values",
+                        );
+                        return undefined;
+                    }
                 default:
                     logger.warn(`getValueFromArithmeticOperations unknown operator`, operation);
                     return undefined;

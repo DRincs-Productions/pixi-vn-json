@@ -1,4 +1,13 @@
 {
+  "files.watcherExclude": {
+    "**/schemas/**": true
+  },
+  "search.exclude": {
+    "**/schemas/**": true
+  },
+  "files.readonlyInclude": {
+    "**/schemas/**": true
+  },
   "extensions.ignoreRecommendations": false,
   // formatter
   "[javascript]": {
