@@ -36,10 +36,36 @@ export async function importPixiVNJson(
         return data;
     });
 
-    const promises = jsons.map(async (data) => {
+    const promises1 = jsons.map(async (data) => {
         if (data.initialOperations) {
             for (const operation of data.initialOperations) {
-                runInitialOperation(operation);
+                if (
+                    operation.type === "value" &&
+                    (typeof operation.value !== "object" ||
+                        !operation.value ||
+                        !("type" in operation.value))
+                ) {
+                    runInitialOperation(operation);
+                }
+            }
+        }
+        return Promise.resolve();
+    });
+
+    await Promise.all(promises1);
+
+    const promises2 = jsons.map(async (data) => {
+        if (data.initialOperations) {
+            for (const operation of data.initialOperations) {
+                if (
+                    operation.type !== "value" ||
+                    (operation.type === "value" &&
+                        typeof operation.value === "object" &&
+                        operation.value &&
+                        "type" in operation.value)
+                ) {
+                    runInitialOperation(operation);
+                }
             }
         }
         if (data.labels) {
@@ -54,7 +80,8 @@ export async function importPixiVNJson(
                 }
             }
         }
+        return Promise.resolve();
     });
 
-    await Promise.all(promises);
+    await Promise.all(promises2);
 }
