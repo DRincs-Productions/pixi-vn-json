@@ -344,6 +344,10 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
                     }
                     return leftValue >= rightValue;
                 case "CONTAINS":
+                    // If all rightValue items are included in leftValue, return true. If leftValue is string, check if it includes rightValue as substring
+                    if (Array.isArray(leftValue) && Array.isArray(rightValue)) {
+                        return rightValue.every((v) => leftValue.includes(v));
+                    }
                     if (Array.isArray(leftValue)) {
                         return leftValue.includes(rightValue);
                     }
@@ -377,7 +381,14 @@ function getUnionConditionResult(
     props: StepLabelPropsType,
 ): boolean {
     if (condition.unionType === "not") {
-        return !getLogichValue<boolean>(condition.condition, props);
+        const res = getLogichValue<boolean>(condition.condition, props);
+        if (Array.isArray(res)) {
+            return res.length === 0;
+        }
+        if (res && typeof res === "object") {
+            return Object.keys(res).length === 0;
+        }
+        return !res;
     }
     const resolve = (c: PixiVNJsonConditions) =>
         JsonUnifier.getLogichValue<boolean>(c, props) || false;

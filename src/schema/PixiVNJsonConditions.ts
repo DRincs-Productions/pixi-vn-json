@@ -11,7 +11,7 @@ import type { StorageElementType } from "@drincs/pixi-vn";
  * - `"<="` less than or equal
  * - `">"` greater than
  * - `">="` greater than or equal
- * - `"CONTAINS"` checks whether the left string/array contains the right value
+ * - `"CONTAINS"` checks whether the left string/array contains the right value, if left and right are arrays, checks if all items in right are included in left
  */
 export type PixiVNJsonComparationOperatorsType = "==" | "!=" | "<" | "<=" | ">" | ">=" | "CONTAINS";
 
