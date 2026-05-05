@@ -144,7 +144,6 @@ export function getLogichValue<T = StorageElementType>(
             case "arithmeticsingle":
                 return getValueFromArithmeticOperations(v as PixiVNJsonArithmeticOperations, props);
             case "compare":
-            case "valueCondition":
             case "union":
                 return getConditionResult(v, props) as T;
             case "function":
@@ -352,8 +351,16 @@ function getConditionResult(condition: PixiVNJsonConditions, props: StepLabelPro
             }
             break;
         }
-        case "valueCondition":
-            return !!JsonUnifier.getLogichValue(condition.value, props);
+        case "value": {
+            const res = JsonUnifier.getLogichValue(condition, props);
+            if (Array.isArray(res)) {
+                return res.length > 0;
+            }
+            if (res && typeof res === "object") {
+                return Object.keys(res).length > 0;
+            }
+            return !!res;
+        }
         case "union":
             return getUnionConditionResult(condition as PixiVNJsonUnionCondition, props);
     }
