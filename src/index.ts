@@ -21,11 +21,11 @@ export {
     PIXIVNJSON_SCHEMA_URL,
     PixiVNJsonComparationOperators,
 } from "@/constants";
+export * from "@/handlers/VariableGetter";
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";
-export { VariableGetter };
 
 /**
  * Initialises the pixi-vn-json system by registering all default operation handlers
