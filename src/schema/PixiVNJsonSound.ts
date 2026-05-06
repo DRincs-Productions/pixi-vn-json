@@ -3,7 +3,7 @@ import type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-v
 /**
  * Starts playback of a sound asset.
  */
-type PixiVNJsonSoundPlay = {
+export type PixiVNJsonSoundPlay = {
     type: "sound";
     operationType: "play";
     /**
@@ -22,7 +22,7 @@ type PixiVNJsonSoundPlay = {
 /**
  * Stops a playing sound and removes it from the audio context.
  */
-type PixiVNJsonSoundRemove = {
+export type PixiVNJsonSoundRemove = {
     type: "sound";
     operationType: "stop";
     /**
@@ -33,7 +33,7 @@ type PixiVNJsonSoundRemove = {
 /**
  * Pauses or resumes a sound, a channel, or all audio.
  */
-type PixiVNJsonSoundPauseResume =
+export type PixiVNJsonSoundPauseResume =
     | {
           type: "sound" | "channel";
           operationType: "pause" | "resume";
@@ -68,9 +68,8 @@ export type PixiVNJsonSoundEdit = {
 /**
  * Union of all sound operations — play, stop, pause/resume, and edit.
  */
-type PixiVNJsonSound =
+export type PixiVNJsonSound =
     | PixiVNJsonSoundPlay
     | PixiVNJsonSoundRemove
     | PixiVNJsonSoundPauseResume
     | PixiVNJsonSoundEdit;
-export default PixiVNJsonSound;

@@ -53,7 +53,13 @@ export type {
     PixiVNJsonOperation,
     PixiVNJsonOperationString,
 } from "@/schema/PixiVNJsonOperations";
-export type { default as PixiVNJsonSound } from "@/schema/PixiVNJsonSound";
+export type {
+    PixiVNJsonSound,
+    PixiVNJsonSoundEdit,
+    PixiVNJsonSoundPauseResume,
+    PixiVNJsonSoundPlay,
+    PixiVNJsonSoundRemove,
+} from "@/schema/PixiVNJsonSound";
 export type {
     default as PixiVNJsonStepSwitch,
     PixiVNJsonStepSwitchElementsType,
