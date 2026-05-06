@@ -2,7 +2,7 @@
  * Requests user input during the narrative.
  * When this operation is encountered, the engine pauses and waits for the player to provide a value.
  */
-type PixiVNJsonInputRequest = {
+export type PixiVNJsonInputRequest = {
     type: "input";
     operationType: "request";
     /**
@@ -20,7 +20,7 @@ type PixiVNJsonInputRequest = {
  * Clears (resets) the current dialogue state.
  * This is typically used to wipe any displayed text before showing new content.
  */
-type PixiVNJsonDialogue = {
+export type PixiVNJsonDialogue = {
     type: "dialogue";
     operationType: "clean";
 };
@@ -28,5 +28,4 @@ type PixiVNJsonDialogue = {
 /**
  * Narration operation — either a dialogue clear or a user-input request.
  */
-type PixiVNJsonNarration = PixiVNJsonDialogue | PixiVNJsonInputRequest;
-export default PixiVNJsonNarration;
+export type PixiVNJsonNarration = PixiVNJsonDialogue | PixiVNJsonInputRequest;

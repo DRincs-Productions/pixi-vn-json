@@ -43,7 +43,11 @@ export type {
     PixiVNJsonLabelToOpen,
 } from "@/schema/PixiVNJsonLabelStep";
 export type { default as PixiVNJsonMediaTransiotions } from "@/schema/PixiVNJsonMediaTransiotions";
-export type { default as PixiVNJsonNarration } from "@/schema/PixiVNJsonNarration";
+export type {
+    PixiVNJsonDialogue,
+    PixiVNJsonInputRequest,
+    PixiVNJsonNarration,
+} from "@/schema/PixiVNJsonNarration";
 export type {
     default as PixiVNJsonConditionalOperation,
     PixiVNJsonOperation,
