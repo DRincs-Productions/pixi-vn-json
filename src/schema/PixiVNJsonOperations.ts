@@ -1,8 +1,8 @@
 import type PixiVNJsonCanvas from "@/schema/PixiVNJsonCanvas";
 import type PixiVNJsonConditionalStatements from "@/schema/PixiVNJsonConditionalStatements";
 import type PixiVNJsonIfElse from "@/schema/PixiVNJsonIfElse";
-import type PixiVNJsonNarration from "@/schema/PixiVNJsonNarration";
-import type PixiVNJsonSound from "@/schema/PixiVNJsonSound";
+import type { PixiVNJsonNarration } from "@/schema/PixiVNJsonNarration";
+import type { PixiVNJsonSound } from "@/schema/PixiVNJsonSound";
 import type {
     PixiVNJsonFunction,
     PixiVNJsonValueGet,
