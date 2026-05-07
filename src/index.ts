@@ -21,7 +21,7 @@ export {
     PIXIVNJSON_SCHEMA_URL,
     PixiVNJsonComparationOperators,
 } from "@/constants";
-export * from "@/handlers/VariableGetter";
+export * from "@/handlers";
 export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";

@@ -112,7 +112,8 @@
     "vite-tsconfig-paths": "^6.1.1"
   },
   "peerDependencies": {
-    "@drincs/pixi-vn": ">=1.8.0"
+    "@drincs/pixi-vn": ">=1.8.0",
+    "zod": ">=4.4.0"
   },
   "keywords": [
     "game",
@@ -125,6 +126,7 @@
     "visual-novel"
   ],
   "dependencies": {
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "zod": "^4.4.3"
   }
 }
