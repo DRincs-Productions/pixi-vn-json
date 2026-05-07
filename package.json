@@ -1,6 +1,6 @@
 {
   "name": "@drincs/pixi-vn-json",
-  "version": "1.13.1",
+  "version": "1.13.2",
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
@@ -108,7 +108,7 @@
     "typedoc": "^0.28.19",
     "typedoc-plugin-markdown": "^4.11.0",
     "typescript": "^6.0.3",
-    "typescript-json-schema": "^0.67.1",
+    "typescript-json-schema": "^0.67.2",
     "vite-tsconfig-paths": "^6.1.1"
   },
   "peerDependencies": {
