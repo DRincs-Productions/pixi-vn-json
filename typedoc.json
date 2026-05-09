@@ -2,10 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
   "plugin": ["typedoc-plugin-markdown"],
   "entryPoints": [
-    "./src/index.ts",
-    "./src/vite/index.ts",
-    "./src/vite-listener/index.ts",
-    "./src/pixi-js/index.ts"
+    "./src/index.ts"
   ],
   "out": "doc",
   "exclude": ["*.md"],
