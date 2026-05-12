@@ -14,6 +14,7 @@ import {
     textOperation,
     videoOperation,
 } from "@drincs/pixi-vn-json/actions";
+import { JsonUnifier } from "@drincs/pixi-vn-json/core";
 
 export {
     PIXIVNJSON_PARAM_ID,
@@ -21,7 +22,6 @@ export {
     PixiVNJsonComparationOperators,
 } from "@/constants";
 export * from "@/handlers";
-export * from "@drincs/pixi-vn-json/core";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";
