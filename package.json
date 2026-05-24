@@ -94,7 +94,7 @@
   "bugs": {
     "url": "https://github.com/DRincs-Productions/pixi-vn-json/issues"
   },
-  "homepage": "hthttps://pixi-vn.web.app/other-topics/pixi-vn-json",
+  "homepage": "https://pixi-vn.web.app/jsdoc/pixi-vn-json",
   "funding": "https://github.com/DRincs-Productions/pixi-vn?sponsor=1",
   "devDependencies": {
     "@biomejs/biome": "^2.4.14",
