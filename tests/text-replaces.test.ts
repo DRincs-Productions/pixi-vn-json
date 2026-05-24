@@ -31,6 +31,33 @@ test("TextReplaces applies Zod validation", () => {
     TextReplaces.remove(handler);
 });
 
+test("TextReplaces executes most recently added handler first", () => {
+    const executionOrder: string[] = [];
+
+    const handlerA = (key: string) => {
+        if (key !== "token") return undefined;
+        executionOrder.push("A");
+        return "from-A";
+    };
+    const handlerB = (key: string) => {
+        if (key !== "token") return undefined;
+        executionOrder.push("B");
+        return "from-B";
+    };
+
+    TextReplaces.add(handlerA, { name: "order-handler-A", validation: /^token$/ });
+    TextReplaces.add(handlerB, { name: "order-handler-B", validation: /^token$/ });
+
+    const result = TextReplaces.replace("[token]", { type: "before-translation" });
+
+    // B was added last, so it runs first and its replacement wins
+    expect(executionOrder[0]).toBe("B");
+    expect(result).toBe("from-B");
+
+    TextReplaces.remove(handlerA);
+    TextReplaces.remove(handlerB);
+});
+
 test("TextReplaces applies characterId validation", () => {
     const characterId = `test_character_${Date.now()}`;
     RegisteredCharacters.add(

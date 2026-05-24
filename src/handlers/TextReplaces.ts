@@ -86,7 +86,7 @@ export namespace TextReplaces {
      * ```
      */
     export function add(fn: ReplaceHandler, handlerOptions: ReplaceHandlerOptions): void {
-        _handlers.push({ fn, opts: handlerOptions });
+        _handlers.unshift({ fn, opts: handlerOptions });
 
         const type = handlerOptions.type ?? "before-translation";
         if (type === "before-translation" && !_beforeHookInitialised) {
