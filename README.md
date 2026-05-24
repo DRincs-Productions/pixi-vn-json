@@ -31,20 +31,8 @@ flowchart LR;
 
 First of all you need to install the following library:
 
-```sh tab="npm"
+```npm
 npm install @drincs/pixi-vn-json
-```
-
-```sh tab="yarn"
-yarn add @drincs/pixi-vn-json
-```
-
-```sh tab="pnpm"
-pnpm add @drincs/pixi-vn-json
-```
-
-```sh tab="bun"
-bun add @drincs/pixi-vn-json
 ```
 
 All you need to do to use this integration is create a object using the <DynamicLink href="/json/PixiVNJson">`PixiVNJson` Model</DynamicLink> and use the `importPixiVNJson()` function to import the object.
