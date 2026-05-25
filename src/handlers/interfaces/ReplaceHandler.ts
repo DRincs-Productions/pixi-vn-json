@@ -62,4 +62,18 @@ export type ReplaceHandlerOptions = {
      * @default "before-translation"
      */
     type?: "after-translation" | "before-translation";
+    /**
+     * When `true`, the **first** occurrence of a matched `[key]` token is converted to the i18n
+     * double-brace format `{{[key]}}` (exactly once). Any subsequent occurrences of `[key]` in
+     * the same text are then replaced with the handler's return value as usual.
+     *
+     * The transformation sequence for a matched key is:
+     * - first occurrence: `[key]` → `{{[key]}}`
+     * - remaining occurrences: `[key]` → handler return value
+     *
+     * When `false` or omitted, the handler's return value directly replaces all occurrences of `[key]`.
+     *
+     * @default false
+     */
+    i18nInterpolation?: boolean;
 };

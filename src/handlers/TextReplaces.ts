@@ -150,12 +150,63 @@ export namespace TextReplaces {
             type: "after-translation" | "before-translation";
         },
     ): string {
+        // Pre-step: convert first [key] → {{[key]}} for every handler that has
+        // i18nInterpolation enabled. This runs before the type-based handler filter
+        // so that the i18n tokens are in place before either translation phase begins.
+        for (const handler of _handlers.filter((h) => h.opts.i18nInterpolation)) {
+            text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
+        }
+
         const activeHandlers = _handlers.filter(
             (h) => (h.opts.type ?? "before-translation") === replaceOptions.type,
         );
 
         for (const handler of activeHandlers) {
             text = applyHandler(text, handler.fn, handler.opts.validation);
+        }
+
+        return text;
+    }
+
+    /**
+     * Pre-step for handlers with `i18nInterpolation: true`.
+     *
+     * Scans the text for `[key]` tokens that match the handler's validation and for which
+     * `fn` returns a non-`undefined` value, then converts the **first** occurrence of each
+     * such key to `{{[key]}}`. Subsequent occurrences are left as `[key]` so that the normal
+     * {@link applyHandler} pass can replace them with the handler's return value.
+     */
+    function applyI18nPreStep(
+        text: string,
+        fn: ReplaceHandler,
+        validation: RegExp | "characterId" | "all" | ZodType<string>,
+    ): string {
+        const globalRegex = new RegExp(options.replaceRegex.source, "g");
+        const allMatches = [...text.matchAll(globalRegex)];
+        const seenKeys = new Set<string>();
+        const uniqueKeys: string[] = [];
+        for (const m of allMatches) {
+            if (!seenKeys.has(m[1])) {
+                seenKeys.add(m[1]);
+                uniqueKeys.push(m[1]);
+            }
+        }
+
+        for (const key of uniqueKeys) {
+            if (validation === "characterId") {
+                if (!RegisteredCharacters.has(key)) continue;
+            } else if (validation !== "all") {
+                if (validation instanceof RegExp) {
+                    if (!validation.test(key)) continue;
+                } else if (validation instanceof ZodType) {
+                    const result = validation.safeParse(key);
+                    if (!result.success) continue;
+                }
+            }
+            if (fn(key) !== undefined) {
+                // Replace only the first occurrence with the i18n interpolation format.
+                text = text.replace(`[${key}]`, `{{[${key}]}}`);
+            }
         }
 
         return text;
