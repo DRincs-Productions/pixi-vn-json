@@ -12,8 +12,8 @@
 
 Pixi’VN can be integrated with JSON files to create a visual novel. This method is useful for:
 
-* Add a new narrative to Pixi’VN (It was used to create the integration with <DynamicLink href="/ink">***ink***</DynamicLink> and <DynamicLink href="/renpy">Ren'Py</DynamicLink>)
-* Create a external tool to create visual novels with Pixi’VN
+- Add a new narrative to Pixi’VN (It was used to create the integration with <DynamicLink href="/ink">**_ink_**</DynamicLink> and <DynamicLink href="/renpy">Ren'Py</DynamicLink>)
+- Create a external tool to create visual novels with Pixi’VN
 
 ( In both these cases it is advisable to notify the developers of Pixi’VN to add the new feature to be helped )
 
@@ -39,7 +39,7 @@ All you need to do to use this integration is create a object using the <Dynamic
 
 ```ts title="labels.json"
 {
-    "$schema": "https://pixi-vn.web.app/schemas/latest/schema.json",
+    "$schema": "https://pixi-vn.com/schemas/latest/schema.json",
     "labels": {
         "back_in_london": [
             {
@@ -65,7 +65,7 @@ All you need to do to use this integration is create a object using the <Dynamic
 ```
 
 ```ts title="main.ts"
-import { PixiVNJson, importPixiVNJson} from '@drincs/pixi-vn-json';
+import { PixiVNJson, importPixiVNJson } from "@drincs/pixi-vn-json";
 import json from "./labels.json";
 
 importPixiVNJson(json);
@@ -74,8 +74,7 @@ importPixiVNJson(json);
 After that you can run the `back_in_london` label with <DynamicLink href="/start/labels#run-a-label">Pixi’VN functions</DynamicLink>.
 
 ```ts title="main.ts"
-import { narration } from '@drincs/pixi-vn'
+import { narration } from "@drincs/pixi-vn";
 
-narration.call(`back_in_london`, {})
+narration.call(`back_in_london`, {});
 ```
-

@@ -18,11 +18,11 @@ export const PIXIVNJSON_PARAM_ID = "___param___";
  * Example:
  * ```json
  * {
- *   "$schema": "https://pixi-vn.web.app/schemas/1.13.0/schema.json"
+ *   "$schema": "https://pixi-vn.com/schemas/1.13.0/schema.json"
  * }
  * ```
  */
-export const PIXIVNJSON_SCHEMA_URL = `https://pixi-vn.web.app/schemas/${pkg.version}/schema.json`;
+export const PIXIVNJSON_SCHEMA_URL = `https://pixi-vn.com/schemas/${pkg.version}/schema.json`;
 
 /**
  * All comparison operators supported by {@link PixiVNJsonConditions} expressions.

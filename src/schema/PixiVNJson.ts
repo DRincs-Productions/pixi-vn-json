@@ -10,8 +10,8 @@ export default interface PixiVNJson {
      * The URI of the JSON Schema that describes and validates this document.
      *
      * You can point to a specific version of the schema, for example:
-     * - `"https://pixi-vn.web.app/schemas/1.13.0/schema.json"` — pin to a specific version
-     * - `"https://pixi-vn.web.app/schemas/latest/schema.json"` — always use the latest version
+     * - `"https://pixi-vn.com/schemas/1.13.0/schema.json"` — pin to a specific version
+     * - `"https://pixi-vn.com/schemas/latest/schema.json"` — always use the latest version
      *
      * Most editors (VS Code, WebStorm, etc.) use this field to provide
      * auto-completion, hover documentation, and validation for the document.
