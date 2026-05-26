@@ -12,7 +12,7 @@ import { ZodType } from "zod";
  * on the updated text.
  *
  * Each handler specifies whether it runs before or after translation via the `type` field in its
- * options (defaults to `"before-translation"`).
+ * options (defaults to `"after-translation"`).
  *
  * @example
  * ```ts title="content/text-replaces.ts"
@@ -130,17 +130,41 @@ export namespace TextReplaces {
         replaceOptions: {
             /** Which phase of handlers to execute. */
             type: "after-translation" | "before-translation";
+            /**
+             * When `true`, skips the i18n interpolation pre-step that converts
+             * `[key]` → `{{[key]}}` for handlers with `i18nInterpolation: true`.
+             *
+             * Use this when computing the i18n lookup key (where the pre-step must
+             * not alter the key) vs. the translated value (where the pre-step is needed).
+             */
+            skipI18nPreStep?: boolean;
+            /**
+             * When `true`, applies the i18n interpolation pre-step to **all** registered
+             * handlers, not only those with `i18nInterpolation: true`.
+             *
+             * Used by `generateJsonTranslation` when building the translation file VALUE:
+             * a before-translation handler that maps `[sly]` → `"Sly"` should produce
+             * `"{{Sly}}"` in the value (i18n interpolation variable), which is achieved by
+             * first wrapping `[sly]` → `{{[sly]}}` and then letting the handler replace the
+             * inner `[sly]` with `Sly`.
+             */
+            applyI18nPreStepToAll?: boolean;
         },
     ): string {
         // Pre-step: convert first [key] → {{[key]}} for every handler that has
         // i18nInterpolation enabled. This runs before the type-based handler filter
         // so that the i18n tokens are in place before either translation phase begins.
-        for (const handler of _handlers.filter((h) => h.opts.i18nInterpolation)) {
-            text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
+        if (!replaceOptions.skipI18nPreStep) {
+            const preStepHandlers = replaceOptions.applyI18nPreStepToAll
+                ? _handlers
+                : _handlers.filter((h) => h.opts.i18nInterpolation);
+            for (const handler of preStepHandlers) {
+                text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
+            }
         }
 
         const activeHandlers = _handlers.filter(
-            (h) => (h.opts.type ?? "before-translation") === replaceOptions.type,
+            (h) => (h.opts.type ?? "after-translation") === replaceOptions.type,
         );
 
         for (const handler of activeHandlers) {

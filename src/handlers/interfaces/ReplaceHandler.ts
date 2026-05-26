@@ -59,7 +59,7 @@ export type ReplaceHandlerOptions = {
      * - `"after-translation"` – the handler runs **after** {@link onInkTranslate} is called.
      *   Useful for substituting values that depend on the translated text.
      *
-     * @default "before-translation"
+     * @default "after-translation"
      */
     type?: "after-translation" | "before-translation";
     /**

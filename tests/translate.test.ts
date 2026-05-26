@@ -77,6 +77,46 @@ test("generateJsonTranslation applies i18n pre-step when handler is after-transl
     TextReplaces.remove(handler);
 });
 
+test("generateJsonTranslation uses after-before-translation text as i18n key (before-translation handler)", async () => {
+    const characterId = `sly_before_${Date.now()}`;
+    RegisteredCharacters.add(new CharacterBaseModel(characterId, { name: "Sly" }));
+
+    const handler = (key: string) => RegisteredCharacters.get(key)?.name;
+    TextReplaces.add(handler, {
+        name: "character name",
+        validation: "characterId",
+        type: "before-translation",
+        description: "Replaces a character ID with the character's name before i18n lookup.",
+    });
+
+    const input: PixiVNJson = {
+        labels: {
+            test_label: [
+                {
+                    dialogue: `[${characterId}] thrusts her hand out to shake mine.`,
+                },
+            ],
+        },
+    };
+
+    // KEY: text after before-translation ("Sly thrusts...") — the actual i18n lookup key.
+    // VALUE: replacement wrapped in {{}} for i18n interpolation ("{{Sly}} thrusts..."),
+    //        produced by the i18n pre-step ([sly]→{{[sly]}}) followed by before-translation
+    //        ({{[sly]}}→{{Sly}}).
+    const expected = {
+        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+    };
+
+    const res = {};
+    for (const value of Object.values(input.labels!)) {
+        await translator.generateJsonTranslation(value, res);
+    }
+
+    expect(res).toEqual(expected);
+
+    TextReplaces.remove(handler);
+});
+
 test("Translate test 2", async () => {
     let input: PixiVNJson = {
         labels: {

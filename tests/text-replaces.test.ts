@@ -10,7 +10,7 @@ test("TextReplaces applies RegExp validation", () => {
         validation: /^name$/,
     });
 
-    const result = TextReplaces.replace("Hello [name] [surname]", { type: "before-translation" });
+    const result = TextReplaces.replace("Hello [name] [surname]", { type: "after-translation" });
     expect(result).toBe("Hello Mario [surname]");
 
     TextReplaces.remove(handler);
@@ -24,7 +24,7 @@ test("TextReplaces applies Zod validation", () => {
     });
 
     const result = TextReplaces.replace("A [player] B [npc] C [enemy]", {
-        type: "before-translation",
+        type: "after-translation",
     });
     expect(result).toBe("A PLAYER B NPC C [enemy]");
 
@@ -48,7 +48,7 @@ test("TextReplaces executes most recently added handler first", () => {
     TextReplaces.add(handlerA, { name: "order-handler-A", validation: /^token$/ });
     TextReplaces.add(handlerB, { name: "order-handler-B", validation: /^token$/ });
 
-    const result = TextReplaces.replace("[token]", { type: "before-translation" });
+    const result = TextReplaces.replace("[token]", { type: "after-translation" });
 
     // B was added last, so it runs first and its replacement wins
     expect(executionOrder[0]).toBe("B");
@@ -68,7 +68,7 @@ test("TextReplaces i18nInterpolation: single occurrence becomes {{value}}", () =
 
     // Pre-step: [name] → {{[name]}}
     // applyHandler: replaceAll [name] → "Mario" (also inside {{...}}) → {{Mario}}
-    const result = TextReplaces.replace("Hello [name]!", { type: "before-translation" });
+    const result = TextReplaces.replace("Hello [name]!", { type: "after-translation" });
     expect(result).toBe("Hello {{Mario}}!");
 
     TextReplaces.remove(handler);
@@ -85,7 +85,7 @@ test("TextReplaces i18nInterpolation: first occurrence becomes {{value}}, rest r
     // Pre-step: {{[player]}} met [player] and [player] again
     // applyHandler replaceAll [player] → "Luigi": {{Luigi}} met Luigi and Luigi again
     const result = TextReplaces.replace("[player] met [player] and [player] again", {
-        type: "before-translation",
+        type: "after-translation",
     });
     expect(result).toBe("{{Luigi}} met Luigi and Luigi again");
 
@@ -102,7 +102,7 @@ test("TextReplaces i18nInterpolation: skips key when handler returns undefined",
 
     // Pre-step: [known] → {{[known]}} ; [unknown] skipped (fn returns undefined)
     // applyHandler: [known] → "value" inside {{...}} → {{value}} ; [unknown] untouched
-    const result = TextReplaces.replace("[known] and [unknown]", { type: "before-translation" });
+    const result = TextReplaces.replace("[known] and [unknown]", { type: "after-translation" });
     expect(result).toBe("{{value}} and [unknown]");
 
     TextReplaces.remove(handler);
@@ -122,7 +122,7 @@ test("TextReplaces i18nInterpolation: fn is called once per unique key per step 
 
     // Pre-step: {{[item]}} [item] [item]
     // applyHandler replaceAll [item] → "sword": {{sword}} sword sword
-    const result = TextReplaces.replace("[item] [item] [item]", { type: "before-translation" });
+    const result = TextReplaces.replace("[item] [item] [item]", { type: "after-translation" });
     expect(result).toBe("{{sword}} sword sword");
     // fn is called once per unique key in the pre-step + once in the normal handler = 2 total,
     // not once per occurrence (which would be 3).
@@ -140,7 +140,7 @@ test("TextReplaces i18nInterpolation false behaves like default", () => {
     });
 
     // No pre-step (i18nInterpolation: false), plain replaceAll
-    const result = TextReplaces.replace("Hello [name] [name]!", { type: "before-translation" });
+    const result = TextReplaces.replace("Hello [name] [name]!", { type: "after-translation" });
     expect(result).toBe("Hello Mario Mario!");
 
     TextReplaces.remove(handler);
@@ -161,7 +161,7 @@ test("TextReplaces applies characterId validation", () => {
     });
 
     const result = TextReplaces.replace(`Hi [${characterId}] [unknown]`, {
-        type: "before-translation",
+        type: "after-translation",
     });
     expect(result).toBe(`Hi <${characterId}> [unknown]`);
 

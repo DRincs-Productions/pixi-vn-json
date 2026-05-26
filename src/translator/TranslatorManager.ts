@@ -103,21 +103,39 @@ namespace TranslatorManager {
             defaultValue: "empty_string" | "copy_key";
         },
     ) {
-        const defaultValue = options.defaultValue || "empty_string";
+        const { defaultValue = "empty_string" } = options;
         if (typeof key === "string") {
             key = [key];
         }
         if (Array.isArray(key)) {
             key.forEach((k) => {
-                if (json[k] === undefined) {
+                // The i18n key is the text after before-translation handlers run, but
+                // WITHOUT the i18n pre-step (which wraps [key] → {{[key]}} and belongs
+                // only in the value side of the translation file).
+                let actualKey = k;
+                if (_beforeToTranslate) {
+                    actualKey = _beforeToTranslate(actualKey);
+                }
+                actualKey = TextReplaces.replace(actualKey, {
+                    type: "before-translation",
+                    skipI18nPreStep: true,
+                });
+
+                if (json[actualKey] === undefined) {
                     if (defaultValue === "empty_string") {
-                        json[k] = "";
+                        json[actualKey] = "";
                     } else if (defaultValue === "copy_key") {
                         let value = k;
                         if (_beforeToTranslate) {
                             value = _beforeToTranslate(value);
                         }
-                        json[k] = TextReplaces.replace(value, { type: "before-translation" });
+                        json[actualKey] = TextReplaces.replace(value, {
+                            type: "before-translation",
+                            // Apply i18n pre-step to ALL handlers so that before-translation
+                            // replacements appear as {{replacement}} in the value, e.g.
+                            // [sly] → {{[sly]}} → (before-translation) → {{Sly}}.
+                            applyI18nPreStepToAll: true,
+                        });
                     }
                 }
             });
