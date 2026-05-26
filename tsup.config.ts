@@ -85,8 +85,6 @@ export default defineConfig((options) => {
                 };
             },
         }),
-        // Single DTS pass at the end — avoids race conditions when multiple
-        // configs generate declarations in parallel and one silently loses.
         createConfig({
             target: "es2020",
             entry: {
