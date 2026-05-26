@@ -1,3 +1,4 @@
+import { TextReplaces } from "@/handlers";
 import { operationStringToString } from "@/utils/operationtoconvert";
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
 import type {
@@ -39,8 +40,10 @@ export default class TranslatorManager {
         return TranslatorManager.translate(`${key}`) as T;
     }
     /**
-     * Sets a hook that runs **before** the main translation function.
-     * Useful for key normalization (e.g. trimming, lowercasing).
+     * Optional hook that runs **before** the built-in {@link TextReplaces} before-translation
+     * replace pass. Useful for key normalization (e.g. trimming, lowercasing).
+     *
+     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
      */
     static set beforeToTranslate(value: (key: string) => string) {
         TranslatorManager._beforeToTranslate = value;
@@ -57,23 +60,34 @@ export default class TranslatorManager {
     static set translate(value: (key: string) => string) {
         TranslatorManager._translate = value;
     }
-    /** Returns the composed translation pipeline (before → translate → after). */
+    /**
+     * Returns the composed translation pipeline:
+     * 1. optional `beforeToTranslate` hook (deprecated)
+     * 2. {@link TextReplaces.replace} – before-translation phase
+     * 3. main `translate` function
+     * 4. optional `afterToTranslate` hook (deprecated)
+     * 5. {@link TextReplaces.replace} – after-translation phase
+     */
     static get translate(): (key: string) => string {
         return (key: string) => {
             let text = key;
             if (TranslatorManager._beforeToTranslate) {
                 text = TranslatorManager._beforeToTranslate(text);
             }
+            text = TextReplaces.replace(text, { type: "before-translation" });
             text = TranslatorManager._translate(text);
             if (TranslatorManager._afterToTranslate) {
                 text = TranslatorManager._afterToTranslate(text);
             }
+            text = TextReplaces.replace(text, { type: "after-translation" });
             return text;
         };
     }
     /**
-     * Sets a hook that runs **after** the main translation function.
-     * Useful for post-processing translated strings (e.g. replacing placeholders).
+     * Optional hook that runs **before** the built-in {@link TextReplaces} after-translation
+     * replace pass. Useful for post-processing translated strings.
+     *
+     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
      */
     static set afterToTranslate(value: (key: string) => string) {
         TranslatorManager._afterToTranslate = value;
@@ -96,11 +110,11 @@ export default class TranslatorManager {
                     if (defaultValue === "empty_string") {
                         json[k] = "";
                     } else if (defaultValue === "copy_key") {
+                        let value = k;
                         if (TranslatorManager._beforeToTranslate) {
-                            json[k] = TranslatorManager._beforeToTranslate(k);
-                        } else {
-                            json[k] = k;
+                            value = TranslatorManager._beforeToTranslate(value);
                         }
+                        json[k] = TextReplaces.replace(value, { type: "before-translation" });
                     }
                 }
             });

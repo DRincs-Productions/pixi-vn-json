@@ -1,5 +1,4 @@
 import type { ReplaceHandler, ReplaceHandlerOptions } from "@/handlers/interfaces/ReplaceHandler";
-import { translator } from "@drincs/pixi-vn-json/translator";
 import { RegisteredCharacters } from "@drincs/pixi-vn/characters";
 import { ZodType } from "zod";
 
@@ -51,22 +50,14 @@ export namespace TextReplaces {
     /** Internal registry of handlers in insertion order. */
     const _handlers: { fn: ReplaceHandler; opts: ReplaceHandlerOptions }[] = [];
 
-    /** Whether the before-translation translator hook has been initialised. */
-    let _beforeHookInitialised = false;
-    /** Whether the after-translation translator hook has been initialised. */
-    let _afterHookInitialised = false;
-
     /**
      * Registers a new replacement handler.
      *
      * Handlers are executed in the order they are added. The first handler added runs first.
      *
-     * When the first handler of a given type (`"before-translation"` or `"after-translation"`)
-     * is registered, the corresponding translator hook (`translator.beforeToTranslate` or
-     * `translator.afterToTranslate`) is automatically set so that `TextReplaces` takes exclusive
-     * ownership of that hook. Do **not** mix `TextReplaces` with the deprecated
-     * {@link onReplaceTextBeforeTranslation} / {@link onReplaceTextAfterTranslation} functions
-     * for the same phase, as they will overwrite each other's hook.
+     * The {@link TranslatorManager} translation pipeline automatically calls
+     * {@link TextReplaces.replace} for both phases (`"before-translation"` and
+     * `"after-translation"`), so no additional setup is required after calling `add`.
      *
      * @param fn The handler function. Receives the key found inside `[...]` and should return
      *   the replacement string, or `undefined` to leave that token unchanged.
@@ -87,15 +78,6 @@ export namespace TextReplaces {
      */
     export function add(fn: ReplaceHandler, handlerOptions: ReplaceHandlerOptions): void {
         _handlers.unshift({ fn, opts: handlerOptions });
-
-        const type = handlerOptions.type ?? "before-translation";
-        if (type === "before-translation" && !_beforeHookInitialised) {
-            translator.beforeToTranslate = (text) => replace(text, { type: "before-translation" });
-            _beforeHookInitialised = true;
-        } else if (type === "after-translation" && !_afterHookInitialised) {
-            translator.afterToTranslate = (text) => replace(text, { type: "after-translation" });
-            _afterHookInitialised = true;
-        }
     }
 
     /**
