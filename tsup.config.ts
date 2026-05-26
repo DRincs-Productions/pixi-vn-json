@@ -23,7 +23,7 @@ export default defineConfig((options) => {
             skipNodeModulesBundle: false,
             outExtension({ format }) {
                 return {
-                    js: format === "esm" ? ".js" : ".cjs",
+                    js: format === "esm" ? ".mjs" : ".cjs",
                 };
             },
         }),
@@ -42,7 +42,7 @@ export default defineConfig((options) => {
             external: ["@drincs/pixi-vn-json/core"],
             outExtension({ format }) {
                 return {
-                    js: format === "esm" ? ".js" : ".cjs",
+                    js: format === "esm" ? ".mjs" : ".cjs",
                 };
             },
         }),
@@ -62,7 +62,7 @@ export default defineConfig((options) => {
             external: ["@drincs/pixi-vn-json/core", "@drincs/pixi-vn-json/translator"],
             outExtension({ format }) {
                 return {
-                    js: format === "esm" ? ".js" : ".cjs",
+                    js: format === "esm" ? ".mjs" : ".cjs",
                 };
             },
         }),
@@ -85,7 +85,7 @@ export default defineConfig((options) => {
             ],
             outExtension({ format }) {
                 return {
-                    js: format === "esm" ? ".js" : ".cjs",
+                    js: format === "esm" ? ".mjs" : ".cjs",
                 };
             },
         }),
