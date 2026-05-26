@@ -16,7 +16,7 @@ import { ZodType } from "zod";
  * options (defaults to `"before-translation"`).
  *
  * @example
- * ```ts
+ * ```ts title="content/text-replaces.ts"
  * import { TextReplaces } from 'pixi-vn-ink'
  * import { getCharacterById } from "@drincs/pixi-vn";
  *
@@ -73,7 +73,7 @@ export namespace TextReplaces {
      * @param handlerOptions Configuration for this handler, including its name, optional
      *   description, validation regex, and execution phase.
      * @example
-     * ```ts
+     * ```ts title="content/text-replaces.ts"
      * import { TextReplaces } from 'pixi-vn-ink'
      *
      * TextReplaces.add(
@@ -137,7 +137,7 @@ export namespace TextReplaces {
      * @param replaceOptions Specifies which phase of handlers to run.
      * @returns The text after all matching handlers have been applied.
      * @example
-     * ```ts
+     * ```ts title="content/text-replaces.ts"
      * // Given handlers that replace [name] -> "Mario" and [surname] -> "Rossi":
      * TextReplaces.replace("Ciao [name] [surname]. [name] vai pure", { type: "before-translation" })
      * // => "Ciao Mario Rossi. Mario vai pure"
