@@ -125,8 +125,5 @@
     "pixi-js",
     "visual",
     "visual-novel"
-  ],
-  "dependencies": {
-    "zod": "^4.4.3"
-  }
+  ]
 }
