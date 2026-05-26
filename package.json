@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Pixi'VN can be integrated with JSON files to create a visual novel.",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -22,45 +22,45 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "default": "./dist/index.mjs"
     },
     "./core": {
       "types": "./dist/core.d.ts",
-      "import": "./dist/core.js",
+      "import": "./dist/core.mjs",
       "require": "./dist/core.cjs",
-      "default": "./dist/core.js"
+      "default": "./dist/core.mjs"
     },
     "./importer": {
       "types": "./dist/importer.d.ts",
-      "import": "./dist/importer.js",
+      "import": "./dist/importer.mjs",
       "require": "./dist/importer.cjs",
-      "default": "./dist/importer.js"
+      "default": "./dist/importer.mjs"
     },
     "./translator": {
       "types": "./dist/translator.d.ts",
-      "import": "./dist/translator.js",
+      "import": "./dist/translator.mjs",
       "require": "./dist/translator.cjs",
-      "default": "./dist/translator.js"
+      "default": "./dist/translator.mjs"
     },
     "./interpreter": {
       "types": "./dist/interpreter.d.ts",
-      "import": "./dist/interpreter.js",
+      "import": "./dist/interpreter.mjs",
       "require": "./dist/interpreter.cjs",
-      "default": "./dist/interpreter.js"
+      "default": "./dist/interpreter.mjs"
     },
     "./actions": {
       "types": "./dist/actions.d.ts",
-      "import": "./dist/actions.js",
+      "import": "./dist/actions.mjs",
       "require": "./dist/actions.cjs",
-      "default": "./dist/actions.js"
+      "default": "./dist/actions.mjs"
     },
     "./schema": {
       "types": "./dist/schema.d.ts",
-      "import": "./dist/schema.js",
+      "import": "./dist/schema.mjs",
       "require": "./dist/schema.cjs",
-      "default": "./dist/schema.js"
+      "default": "./dist/schema.mjs"
     }
   },
   "typesVersions": {
