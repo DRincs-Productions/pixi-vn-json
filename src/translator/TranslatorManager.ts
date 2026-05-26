@@ -1,4 +1,4 @@
-import { TextReplaces } from "@/handlers";
+import { TextReplaces } from "@/translator/TextReplaces";
 import { operationStringToString } from "@/utils/operationtoconvert";
 import type { StepLabelPropsType } from "@drincs/pixi-vn";
 import type {

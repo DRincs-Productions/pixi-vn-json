@@ -1,5 +1,5 @@
-import { VariableGetter } from "@/handlers/VariableGetter";
 import {
+    VariableGetter,
     animateOperation,
     canvasElementOperation,
     effectOperation,
@@ -21,7 +21,8 @@ export {
     PIXIVNJSON_SCHEMA_URL,
     PixiVNJsonComparationOperators,
 } from "@/constants";
-export * from "@/handlers";
+export * from "@/actions/VariableGetter";
+export type * from "@/actions/interfaces/VariableGetterHandler";
 export * from "@drincs/pixi-vn-json/interpreter";
 export * from "@drincs/pixi-vn-json/schema";
 export * from "@drincs/pixi-vn-json/translator";

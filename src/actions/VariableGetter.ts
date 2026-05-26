@@ -1,9 +1,9 @@
-import type { VariableGetterHandler } from "@/handlers/interfaces/VariableGetterHandler";
+import type { VariableGetterHandler } from "@/actions/interfaces/VariableGetterHandler";
 import type { StepLabelPropsType, StorageElementType } from "@drincs/pixi-vn";
 import {
     getValueFromConditionalStatements,
     getLogichValue as storageGetLogichValue,
-} from "@drincs/pixi-vn-json/actions";
+} from "@/actions/storage";
 
 export namespace VariableGetter {
     const _handlers: Set<VariableGetterHandler> = new Set();

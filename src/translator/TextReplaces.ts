@@ -1,4 +1,4 @@
-import type { ReplaceHandler, ReplaceHandlerOptions } from "@/handlers/interfaces/ReplaceHandler";
+import type { ReplaceHandler, ReplaceHandlerOptions } from "@/translator/interfaces/ReplaceHandler";
 import { RegisteredCharacters } from "@drincs/pixi-vn/characters";
 import { ZodType } from "zod";
 

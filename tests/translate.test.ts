@@ -1,4 +1,4 @@
-import { TextReplaces } from "@/handlers";
+import { TextReplaces } from "@/translator";
 import { CharacterBaseModel, RegisteredCharacters } from "@drincs/pixi-vn";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import { expect, test } from "vitest";
