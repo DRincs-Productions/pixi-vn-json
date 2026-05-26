@@ -23,9 +23,25 @@ import type {
  * Use {@link TranslatorManager.t} to translate a key or array of keys.
  */
 namespace TranslatorManager {
-    let _beforeToTranslate: ((key: string) => string) | undefined;
     let _translate: (key: string) => string = (key: string) => key;
-    let _afterToTranslate: ((key: string) => string) | undefined;
+
+    /**
+     * @deprecated
+     * Optional hook that runs **before** the built-in {@link TextReplaces} before-translation
+     * replace pass. Useful for key normalization (e.g. trimming, lowercasing).
+     *
+     * Prefer {@link TextReplaces.add} with `type: "before-translation"` instead.
+     */
+    export let beforeToTranslate: ((key: string) => string) | undefined;
+
+    /**
+     * @deprecated
+     * Optional hook that runs **after** the built-in {@link TextReplaces} after-translation
+     * replace pass. Useful for post-processing translated strings.
+     *
+     * Prefer {@link TextReplaces.add} with `type: "after-translation"` instead.
+     */
+    export let afterToTranslate: ((key: string) => string) | undefined;
 
     /**
      * Translates a single key or an array of keys using the registered pipeline.
@@ -51,13 +67,13 @@ namespace TranslatorManager {
      */
     export function translate(key: string): string {
         let text = key;
-        if (_beforeToTranslate) {
-            text = _beforeToTranslate(text);
+        if (beforeToTranslate) {
+            text = beforeToTranslate(text);
         }
         text = TextReplaces.replace(text, { type: "before-translation" });
         text = _translate(text);
-        if (_afterToTranslate) {
-            text = _afterToTranslate(text);
+        if (afterToTranslate) {
+            text = afterToTranslate(text);
         }
         text = TextReplaces.replace(text, { type: "after-translation" });
         return text;
@@ -74,26 +90,6 @@ namespace TranslatorManager {
      */
     export function setTranslate(value: (key: string) => string) {
         _translate = value;
-    }
-
-    /**
-     * Optional hook that runs **before** the built-in {@link TextReplaces} before-translation
-     * replace pass. Useful for key normalization (e.g. trimming, lowercasing).
-     *
-     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
-     */
-    export function setBeforeToTranslate(value: (key: string) => string) {
-        _beforeToTranslate = value;
-    }
-
-    /**
-     * Optional hook that runs **before** the built-in {@link TextReplaces} after-translation
-     * replace pass. Useful for post-processing translated strings.
-     *
-     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
-     */
-    export function setAfterToTranslate(value: (key: string) => string) {
-        _afterToTranslate = value;
     }
 
     function addKey(
@@ -113,8 +109,8 @@ namespace TranslatorManager {
                 // WITHOUT the i18n pre-step (which wraps [key] → {{[key]}} and belongs
                 // only in the value side of the translation file).
                 let actualKey = k;
-                if (_beforeToTranslate) {
-                    actualKey = _beforeToTranslate(actualKey);
+                if (beforeToTranslate) {
+                    actualKey = beforeToTranslate(actualKey);
                 }
                 actualKey = TextReplaces.replace(actualKey, {
                     type: "before-translation",
@@ -126,8 +122,8 @@ namespace TranslatorManager {
                         json[actualKey] = "";
                     } else if (defaultValue === "copy_key") {
                         let value = k;
-                        if (_beforeToTranslate) {
-                            value = _beforeToTranslate(value);
+                        if (beforeToTranslate) {
+                            value = beforeToTranslate(value);
                         }
                         json[actualKey] = TextReplaces.replace(value, {
                             type: "before-translation",
