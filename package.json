@@ -22,45 +22,45 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "default": "./dist/index.mjs"
+      "default": "./dist/index.js"
     },
     "./core": {
       "types": "./dist/core.d.ts",
-      "import": "./dist/core.mjs",
+      "import": "./dist/core.js",
       "require": "./dist/core.cjs",
-      "default": "./dist/core.mjs"
+      "default": "./dist/core.js"
     },
     "./importer": {
       "types": "./dist/importer.d.ts",
-      "import": "./dist/importer.mjs",
+      "import": "./dist/importer.js",
       "require": "./dist/importer.cjs",
-      "default": "./dist/importer.mjs"
+      "default": "./dist/importer.js"
     },
     "./translator": {
       "types": "./dist/translator.d.ts",
-      "import": "./dist/translator.mjs",
+      "import": "./dist/translator.js",
       "require": "./dist/translator.cjs",
-      "default": "./dist/translator.mjs"
+      "default": "./dist/translator.js"
     },
     "./interpreter": {
       "types": "./dist/interpreter.d.ts",
-      "import": "./dist/interpreter.mjs",
+      "import": "./dist/interpreter.js",
       "require": "./dist/interpreter.cjs",
-      "default": "./dist/interpreter.mjs"
+      "default": "./dist/interpreter.js"
     },
     "./actions": {
       "types": "./dist/actions.d.ts",
-      "import": "./dist/actions.mjs",
+      "import": "./dist/actions.js",
       "require": "./dist/actions.cjs",
-      "default": "./dist/actions.mjs"
+      "default": "./dist/actions.js"
     },
     "./schema": {
       "types": "./dist/schema.d.ts",
-      "import": "./dist/schema.mjs",
+      "import": "./dist/schema.js",
       "require": "./dist/schema.cjs",
-      "default": "./dist/schema.mjs"
+      "default": "./dist/schema.js"
     }
   },
   "typesVersions": {
