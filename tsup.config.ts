@@ -15,7 +15,6 @@ export default defineConfig((options) => {
                 schema: "src/schema/index.ts",
             },
             format: ["cjs", "esm"],
-            dts: true,
             treeshake: true,
             splitting: false,
             clean: true,
@@ -33,7 +32,6 @@ export default defineConfig((options) => {
                 translator: "src/translator/index.ts",
             },
             format: ["cjs", "esm"],
-            dts: true,
             treeshake: true,
             splitting: false,
             clean: false,
@@ -53,7 +51,6 @@ export default defineConfig((options) => {
                 actions: "src/actions/index.ts",
             },
             format: ["cjs", "esm"],
-            dts: true,
             treeshake: true,
             splitting: false,
             clean: false,
@@ -71,12 +68,11 @@ export default defineConfig((options) => {
             entry: {
                 index: "src/index.ts",
             },
-            format: ["cjs", "esm"], // Build for commonJS and ESmodules
-            dts: true, // Generate declaration file (.d.ts)
+            format: ["cjs", "esm"],
             treeshake: true,
             clean: false,
             minify: true,
-            skipNodeModulesBundle: false, // Skip bundling of node_modules
+            skipNodeModulesBundle: false,
             external: [
                 "@drincs/pixi-vn-json/core",
                 "@drincs/pixi-vn-json/interpreter",
@@ -88,6 +84,22 @@ export default defineConfig((options) => {
                     js: format === "esm" ? ".mjs" : ".cjs",
                 };
             },
+        }),
+        // Single DTS pass at the end — avoids race conditions when multiple
+        // configs generate declarations in parallel and one silently loses.
+        createConfig({
+            target: "es2020",
+            entry: {
+                core: "src/core/index.ts",
+                schema: "src/schema/index.ts",
+                translator: "src/translator/index.ts",
+                interpreter: "src/interpreter/index.ts",
+                actions: "src/actions/index.ts",
+                index: "src/index.ts",
+            },
+            format: ["cjs", "esm"],
+            dts: { only: true },
+            clean: false,
         }),
     ];
 });
