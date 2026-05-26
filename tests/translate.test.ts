@@ -139,3 +139,126 @@ test("Translate test 2", async () => {
     });
     expect(res).toEqual(expected);
 });
+
+test("generateJsonTranslation: two before-translation handlers with same key produce single {{value}}", async () => {
+    const characterId = `sly_before2_${Date.now()}`;
+    RegisteredCharacters.add(new CharacterBaseModel(characterId, { name: "Sly" }));
+
+    const fn1 = (key: string) => RegisteredCharacters.get(key)?.name;
+    const fn2 = (key: string) => RegisteredCharacters.get(key)?.name;
+    TextReplaces.add(fn1, {
+        name: "character name",
+        validation: "characterId",
+        type: "before-translation",
+    });
+    TextReplaces.add(fn2, {
+        name: "character name",
+        validation: "characterId",
+        type: "before-translation",
+    });
+
+    const input: PixiVNJson = {
+        labels: {
+            test_label: [{ dialogue: `[${characterId}] thrusts her hand out to shake mine.` }],
+        },
+    };
+
+    // KEY: text after before-translation (characterId replaced by name).
+    // VALUE: single {{Sly}}, not {{{{Sly}}}}, even with two handlers.
+    const expected = {
+        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+    };
+
+    const res = {};
+    for (const value of Object.values(input.labels!)) {
+        await translator.generateJsonTranslation(value, res);
+    }
+    expect(res).toEqual(expected);
+
+    TextReplaces.remove(fn1);
+    TextReplaces.remove(fn2);
+});
+
+test("generateJsonTranslation: two after-translation i18nInterpolation handlers with same key produce single {{value}}", async () => {
+    const characterId = `sly_after2_${Date.now()}`;
+    RegisteredCharacters.add(new CharacterBaseModel(characterId, { name: "Sly" }));
+
+    const fn1 = (key: string) => RegisteredCharacters.get(key)?.name;
+    const fn2 = (key: string) => RegisteredCharacters.get(key)?.name;
+    TextReplaces.add(fn1, {
+        name: "character name",
+        validation: "characterId",
+        type: "after-translation",
+        i18nInterpolation: true,
+    });
+    TextReplaces.add(fn2, {
+        name: "character name",
+        validation: "characterId",
+        type: "after-translation",
+        i18nInterpolation: true,
+    });
+
+    const input: PixiVNJson = {
+        labels: {
+            test_label: [{ dialogue: `[${characterId}] thrusts her hand out to shake mine.` }],
+        },
+    };
+
+    // KEY: original text (no before-translation).
+    // VALUE: {{Sly}} — the second handler's pre-step else-branch resolves [charId] → Sly
+    // inside the already-wrapped {{[charId]}}, giving {{Sly}} instead of {{{{Sly}}}}.
+    const expected = {
+        [`[${characterId}] thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+    };
+
+    const res = {};
+    for (const value of Object.values(input.labels!)) {
+        await translator.generateJsonTranslation(value, res);
+    }
+    expect(res).toEqual(expected);
+
+    TextReplaces.remove(fn1);
+    TextReplaces.remove(fn2);
+});
+
+test("generateJsonTranslation: one before-translation + one after-translation i18nInterpolation handler with same key", async () => {
+    const characterId = `sly_mixed_${Date.now()}`;
+    RegisteredCharacters.add(new CharacterBaseModel(characterId, { name: "Sly" }));
+
+    const fnBefore = (key: string) => RegisteredCharacters.get(key)?.name;
+    const fnAfter = (key: string) => RegisteredCharacters.get(key)?.name;
+    TextReplaces.add(fnBefore, {
+        name: "character name before",
+        validation: "characterId",
+        type: "before-translation",
+    });
+    TextReplaces.add(fnAfter, {
+        name: "character name after",
+        validation: "characterId",
+        type: "after-translation",
+        i18nInterpolation: true,
+    });
+
+    const input: PixiVNJson = {
+        labels: {
+            test_label: [{ dialogue: `[${characterId}] thrusts her hand out to shake mine.` }],
+        },
+    };
+
+    // KEY: after before-translation (characterId → name), single occurrence.
+    // VALUE: {{Sly}} — before-translation wraps and replaces; after-translation pre-step
+    //        skips because {{[characterId]}} is already present from the before-translation
+    //        pre-step.
+    const expected = {
+        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+    };
+
+    const res = {};
+    for (const value of Object.values(input.labels!)) {
+        await translator.generateJsonTranslation(value, res);
+    }
+    expect(res).toEqual(expected);
+
+    TextReplaces.remove(fnBefore);
+    TextReplaces.remove(fnAfter);
+});

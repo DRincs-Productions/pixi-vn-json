@@ -167,3 +167,74 @@ test("TextReplaces applies characterId validation", () => {
 
     TextReplaces.remove(handler);
 });
+
+test("TextReplaces i18nInterpolation: two after-translation handlers with same key produce single {{value}}", () => {
+    const handler1 = (key: string) => (key === "player" ? "Luigi" : undefined);
+    const handler2 = (key: string) => (key === "player" ? "Luigi" : undefined);
+    TextReplaces.add(handler1, {
+        name: "i18n-dup-after-1",
+        validation: /^player$/,
+        i18nInterpolation: true,
+    });
+    TextReplaces.add(handler2, {
+        name: "i18n-dup-after-2",
+        validation: /^player$/,
+        i18nInterpolation: true,
+    });
+
+    const result = TextReplaces.replace("[player] met [player]", { type: "after-translation" });
+    expect(result).toBe("{{Luigi}} met Luigi");
+
+    TextReplaces.remove(handler1);
+    TextReplaces.remove(handler2);
+});
+
+test("TextReplaces i18nInterpolation: applyI18nPreStepToAll with two before-translation handlers same key produces single {{value}}", () => {
+    const handler1 = (key: string) => (key === "hero" ? "Mario" : undefined);
+    const handler2 = (key: string) => (key === "hero" ? "Mario" : undefined);
+    TextReplaces.add(handler1, {
+        name: "i18n-prestep-dup-1",
+        validation: /^hero$/,
+        type: "before-translation",
+    });
+    TextReplaces.add(handler2, {
+        name: "i18n-prestep-dup-2",
+        validation: /^hero$/,
+        type: "before-translation",
+    });
+
+    const result = TextReplaces.replace("[hero] saves [hero]", {
+        type: "before-translation",
+        applyI18nPreStepToAll: true,
+    });
+    expect(result).toBe("{{Mario}} saves Mario");
+
+    TextReplaces.remove(handler1);
+    TextReplaces.remove(handler2);
+});
+
+test("TextReplaces: before-translation + after-translation handlers on same text work independently", () => {
+    const beforeHandler = (key: string) => (key === "greeting" ? "Hello" : undefined);
+    const afterHandler = (key: string) => (key === "name" ? "World" : undefined);
+    TextReplaces.add(beforeHandler, {
+        name: "before-greeting",
+        validation: /^greeting$/,
+        type: "before-translation",
+    });
+    TextReplaces.add(afterHandler, {
+        name: "after-name",
+        validation: /^name$/,
+        type: "after-translation",
+    });
+
+    // before-translation: replaces [greeting] → Hello, leaves [name] untouched
+    const beforeResult = TextReplaces.replace("[greeting] [name]!", { type: "before-translation" });
+    expect(beforeResult).toBe("Hello [name]!");
+
+    // after-translation: replaces [name] → World, leaves [greeting] untouched
+    const afterResult = TextReplaces.replace("[greeting] [name]!", { type: "after-translation" });
+    expect(afterResult).toBe("[greeting] World!");
+
+    TextReplaces.remove(beforeHandler);
+    TextReplaces.remove(afterHandler);
+});

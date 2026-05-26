@@ -209,9 +209,17 @@ export namespace TextReplaces {
                     if (!result.success) continue;
                 }
             }
-            if (fn(key) !== undefined) {
-                // Replace only the first occurrence with the i18n interpolation format.
-                text = text.replace(`[${key}]`, `{{[${key}]}}`);
+            const replacement = fn(key);
+            if (replacement !== undefined) {
+                if (!text.includes(`{{[${key}]}}`)) {
+                    // First handler to see this key: wrap the first occurrence for i18n interpolation.
+                    text = text.replace(`[${key}]`, `{{[${key}]}}`);
+                } else {
+                    // {{[key]}} already present from a previous handler's pre-step.
+                    // Replace [key] directly so {{[key]}} → {{replacement}} and any
+                    // remaining plain [key] → replacement, without double-wrapping.
+                    text = text.replaceAll(`[${key}]`, replacement);
+                }
             }
         }
 
