@@ -22,10 +22,11 @@ import type {
  *
  * Use {@link TranslatorManager.t} to translate a key or array of keys.
  */
-export default class TranslatorManager {
-    private static _beforeToTranslate: ((key: string) => string) | undefined = undefined;
-    private static _translate: (key: string) => string = (key: string) => key;
-    private static _afterToTranslate: ((key: string) => string) | undefined = undefined;
+namespace TranslatorManager {
+    let _beforeToTranslate: ((key: string) => string) | undefined;
+    let _translate: (key: string) => string = (key: string) => key;
+    let _afterToTranslate: ((key: string) => string) | undefined;
+
     /**
      * Translates a single key or an array of keys using the registered pipeline.
      * Returns the same type (`string` or `string[]`) as the input.
@@ -33,67 +34,69 @@ export default class TranslatorManager {
      * @param key - The string key or array of string keys to translate.
      * @returns The translated string(s).
      */
-    static t<T = string | string[]>(key: T): T {
+    export function t<T = string | string[]>(key: T): T {
         if (Array.isArray(key)) {
-            return key.map((k?: string) => TranslatorManager.translate(`${k}`)) as T;
+            return key.map((k?: string) => translate(`${k}`)) as T;
         }
-        return TranslatorManager.translate(`${key}`) as T;
+        return translate(`${key}`) as T;
     }
+
     /**
-     * Optional hook that runs **before** the built-in {@link TextReplaces} before-translation
-     * replace pass. Useful for key normalization (e.g. trimming, lowercasing).
-     *
-     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
-     */
-    static set beforeToTranslate(value: (key: string) => string) {
-        TranslatorManager._beforeToTranslate = value;
-    }
-    /**
-     * Sets the main translation function.
-     * Defaults to an identity function (returns the key unchanged).
-     *
-     * @example
-     * ```ts
-     * translator.translate = (key) => i18n.t(key);
-     * ```
-     */
-    static set translate(value: (key: string) => string) {
-        TranslatorManager._translate = value;
-    }
-    /**
-     * Returns the composed translation pipeline:
+     * Runs the composed translation pipeline:
      * 1. optional `beforeToTranslate` hook (deprecated)
      * 2. {@link TextReplaces.replace} – before-translation phase
      * 3. main `translate` function
      * 4. optional `afterToTranslate` hook (deprecated)
      * 5. {@link TextReplaces.replace} – after-translation phase
      */
-    static get translate(): (key: string) => string {
-        return (key: string) => {
-            let text = key;
-            if (TranslatorManager._beforeToTranslate) {
-                text = TranslatorManager._beforeToTranslate(text);
-            }
-            text = TextReplaces.replace(text, { type: "before-translation" });
-            text = TranslatorManager._translate(text);
-            if (TranslatorManager._afterToTranslate) {
-                text = TranslatorManager._afterToTranslate(text);
-            }
-            text = TextReplaces.replace(text, { type: "after-translation" });
-            return text;
-        };
+    export function translate(key: string): string {
+        let text = key;
+        if (_beforeToTranslate) {
+            text = _beforeToTranslate(text);
+        }
+        text = TextReplaces.replace(text, { type: "before-translation" });
+        text = _translate(text);
+        if (_afterToTranslate) {
+            text = _afterToTranslate(text);
+        }
+        text = TextReplaces.replace(text, { type: "after-translation" });
+        return text;
     }
+
+    /**
+     * Sets the main translation function.
+     * Defaults to an identity function (returns the key unchanged).
+     *
+     * @example
+     * ```ts
+     * setTranslate((key) => i18n.t(key));
+     * ```
+     */
+    export function setTranslate(value: (key: string) => string) {
+        _translate = value;
+    }
+
+    /**
+     * Optional hook that runs **before** the built-in {@link TextReplaces} before-translation
+     * replace pass. Useful for key normalization (e.g. trimming, lowercasing).
+     *
+     * @deprecated Configure replacements through {@link TextReplaces.add} instead.
+     */
+    export function setBeforeToTranslate(value: (key: string) => string) {
+        _beforeToTranslate = value;
+    }
+
     /**
      * Optional hook that runs **before** the built-in {@link TextReplaces} after-translation
      * replace pass. Useful for post-processing translated strings.
      *
      * @deprecated Configure replacements through {@link TextReplaces.add} instead.
      */
-    static set afterToTranslate(value: (key: string) => string) {
-        TranslatorManager._afterToTranslate = value;
+    export function setAfterToTranslate(value: (key: string) => string) {
+        _afterToTranslate = value;
     }
 
-    private static addKey(
+    function addKey(
         json: any,
         key: string[] | string,
         options: {
@@ -111,8 +114,8 @@ export default class TranslatorManager {
                         json[k] = "";
                     } else if (defaultValue === "copy_key") {
                         let value = k;
-                        if (TranslatorManager._beforeToTranslate) {
-                            value = TranslatorManager._beforeToTranslate(value);
+                        if (_beforeToTranslate) {
+                            value = _beforeToTranslate(value);
                         }
                         json[k] = TextReplaces.replace(value, { type: "before-translation" });
                     }
@@ -120,49 +123,50 @@ export default class TranslatorManager {
             });
         }
     }
-    private static getConditionalsThenElse<T>(
+
+    function getConditionalsThenElse<T>(
         data: PixiVNJsonConditionalStatements<T> | PixiVNJsonConditionalResultToCombine<T> | T,
         res: T[] = [],
     ): T[] {
         if (typeof data === "object" && data && "type" in data) {
             if (data.type === "ifelse") {
                 if (data.then) {
-                    TranslatorManager.getConditionalsThenElse(data.then, res);
+                    getConditionalsThenElse(data.then, res);
                 }
                 if (data.else) {
-                    TranslatorManager.getConditionalsThenElse(data.else, res);
+                    getConditionalsThenElse(data.else, res);
                 }
             } else if (data.type === "stepswitch") {
                 if (data.elements) {
                     if (Array.isArray(data.elements)) {
                         data.elements.forEach((element) => {
-                            TranslatorManager.getConditionalsThenElse(element, res);
+                            getConditionalsThenElse(element, res);
                         });
                     } else {
                         if (data.elements.type === "ifelse") {
                             const tempRes: T[][] = [];
-                            TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
+                            getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item);
                             });
                         } else if (data.elements.type === "stepswitch") {
                             const tempRes: T[][] = [];
-                            TranslatorManager.getConditionalsThenElse(data.elements, tempRes);
+                            getConditionalsThenElse(data.elements, tempRes);
                             tempRes.forEach((item) => {
                                 res.push(...item);
                             });
                         } else {
-                            TranslatorManager.getConditionalsThenElse(data.elements, res);
+                            getConditionalsThenElse(data.elements, res);
                         }
                     }
                 }
             } else if (data.type === "resulttocombine") {
                 if (data.firstItem) {
-                    TranslatorManager.getConditionalsThenElse(data.firstItem, res);
+                    getConditionalsThenElse(data.firstItem, res);
                 }
                 if (data.secondConditionalItem) {
                     data.secondConditionalItem.forEach((item) => {
-                        TranslatorManager.getConditionalsThenElse(item, res);
+                        getConditionalsThenElse(item, res);
                     });
                 }
             } else {
@@ -181,7 +185,7 @@ export default class TranslatorManager {
      * @param options Options for translation, including default value handling.
      * @returns The populated JSON object with translations.
      */
-    static async generateJsonTranslation(
+    export async function generateJsonTranslation(
         labels: PixiVNJsonLabelStep[],
         json: object = {},
         options: {
@@ -204,49 +208,41 @@ export default class TranslatorManager {
             if (label.choices) {
                 let multichoices: PixiVNJsonChoices[] = [];
                 if (!Array.isArray(label.choices)) {
-                    multichoices = TranslatorManager.getConditionalsThenElse(label.choices);
+                    multichoices = getConditionalsThenElse(label.choices);
                 } else {
                     multichoices = [label.choices];
                 }
-                multichoices.forEach((c) =>
+                multichoices.forEach((c) => {
                     c.forEach((choice) => {
                         if ("type" in choice) {
                             let res: PixiVNJsonChoice[] = [];
                             if (choice.type === "ifelse" || choice.type === "stepswitch") {
-                                TranslatorManager.getConditionalsThenElse(choice, res);
+                                getConditionalsThenElse(choice, res);
                             } else {
                                 res = [choice];
                             }
-                            const texts = res.map((item) =>
-                                TranslatorManager.getConditionalsThenElse(item.text),
-                            );
+                            const texts = res.map((item) => getConditionalsThenElse(item.text));
                             texts.forEach((text) => {
                                 if (Array.isArray(text)) {
                                     text.forEach((t) => {
                                         if (Array.isArray(t)) {
                                             t.forEach((tt) => {
                                                 if (typeof tt === "string") {
-                                                    TranslatorManager.addKey(json, tt, {
+                                                    addKey(json, tt, {
                                                         defaultValue,
                                                     });
                                                 } else {
-                                                    TranslatorManager.getConditionalsThenElse(
-                                                        tt,
-                                                    ).forEach((t) => {
+                                                    getConditionalsThenElse(tt).forEach((t) => {
                                                         if (Array.isArray(t)) {
                                                             t.forEach((tt) => {
                                                                 if (typeof tt === "string") {
-                                                                    TranslatorManager.addKey(
-                                                                        json,
-                                                                        tt,
-                                                                        {
-                                                                            defaultValue,
-                                                                        },
-                                                                    );
+                                                                    addKey(json, tt, {
+                                                                        defaultValue,
+                                                                    });
                                                                 }
                                                             });
                                                         } else if (typeof t === "string") {
-                                                            TranslatorManager.addKey(json, t, {
+                                                            addKey(json, t, {
                                                                 defaultValue,
                                                             });
                                                         }
@@ -254,50 +250,48 @@ export default class TranslatorManager {
                                                 }
                                             });
                                         } else if (typeof t === "string") {
-                                            TranslatorManager.addKey(json, t, { defaultValue });
+                                            addKey(json, t, { defaultValue });
                                         }
                                     });
                                 }
                             });
                         }
-                    }),
-                );
+                    });
+                });
             }
             if (label.dialogue) {
                 let dialogues: PixiVNJsonDialog<PixiVNJsonDialogText>[] = [];
                 if (!Array.isArray(label.dialogue)) {
-                    dialogues = TranslatorManager.getConditionalsThenElse(label.dialogue);
+                    dialogues = getConditionalsThenElse(label.dialogue);
                 } else {
                     dialogues = [label.dialogue];
                 }
                 dialogues.forEach((dialogue) => {
                     if (typeof dialogue === "string") {
-                        TranslatorManager.addKey(json, dialogue, { defaultValue });
+                        addKey(json, dialogue, { defaultValue });
                     } else if ("text" in dialogue) {
-                        let text = TranslatorManager.getConditionalsThenElse(dialogue.text);
+                        let text = getConditionalsThenElse(dialogue.text);
                         if (typeof text === "string") {
                             text = [text];
                         }
                         text.forEach((text) => {
                             if (typeof text === "string") {
-                                TranslatorManager.addKey(json, text, { defaultValue });
+                                addKey(json, text, { defaultValue });
                             } else {
-                                const t = TranslatorManager.getConditionalsThenElse(text);
+                                const t = getConditionalsThenElse(text);
                                 t.forEach((tt) => {
                                     if (typeof tt === "string") {
-                                        TranslatorManager.addKey(json, tt, { defaultValue });
+                                        addKey(json, tt, { defaultValue });
                                     } else if (Array.isArray(tt)) {
                                         tt.forEach((ttt) => {
                                             if (typeof ttt === "string") {
-                                                TranslatorManager.addKey(json, ttt, {
+                                                addKey(json, ttt, {
                                                     defaultValue,
                                                 });
                                             } else {
-                                                TranslatorManager.getConditionalsThenElse(
-                                                    ttt,
-                                                ).forEach((t) => {
+                                                getConditionalsThenElse(ttt).forEach((t) => {
                                                     if (typeof t === "string") {
-                                                        TranslatorManager.addKey(json, t, {
+                                                        addKey(json, t, {
                                                             defaultValue,
                                                         });
                                                     }
@@ -325,7 +319,7 @@ export default class TranslatorManager {
                         case "text":
                             switch (operation.operationType) {
                                 case "show":
-                                    TranslatorManager.addKey(json, operation.text, {
+                                    addKey(json, operation.text, {
                                         defaultValue,
                                     });
                                     break;
@@ -335,12 +329,12 @@ export default class TranslatorManager {
                 }
             }
             if (label.conditionalStep) {
-                const l = TranslatorManager.getConditionalsThenElse(label.conditionalStep);
+                const l = getConditionalsThenElse(label.conditionalStep);
                 l.forEach((item) => {
                     if (Array.isArray(item)) {
-                        TranslatorManager.generateJsonTranslation(item, json, options);
+                        generateJsonTranslation(item, json, options);
                     } else {
-                        TranslatorManager.generateJsonTranslation([item], json, options);
+                        generateJsonTranslation([item], json, options);
                     }
                 });
             }
@@ -349,3 +343,5 @@ export default class TranslatorManager {
         return json;
     }
 }
+
+export default TranslatorManager;
