@@ -73,6 +73,19 @@ export type ReplaceHandlerOptions = {
      *
      * When `false` or omitted, the handler's return value directly replaces all occurrences of `[key]`.
      *
+     * **Recommended i18n configuration:** when this option is enabled, configure
+     * `missingInterpolationHandler` in your i18n instance so that keys with no matching
+     * translation are left intact rather than replaced with an empty string:
+     *
+     * ```ts title="lib/i18n.ts"
+     * i18n.init({
+     *     // ...
+     *     missingInterpolationHandler(_text, value, _options) {
+     *         return value[1];
+     *     },
+     * });
+     * ```
+     *
      * @default false
      */
     i18nInterpolation?: boolean;
