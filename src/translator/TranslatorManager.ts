@@ -105,7 +105,6 @@ namespace TranslatorManager {
         }
         if (Array.isArray(key)) {
             key.forEach((k) => {
-                console.log(`Adding key to translation JSON: ${k}`);
                 // The i18n key è il testo dopo i before-translation handler, SENZA la pre-elaborazione i18n.
                 let actualKey = k;
                 if (beforeToTranslate) {
@@ -121,10 +120,8 @@ namespace TranslatorManager {
                     if (beforeToTranslate) {
                         value = beforeToTranslate(value);
                     }
-                    console.log(`Setting default value for key "${actualKey}" to "${value}"`);
                     // Per la value, applica la pre-elaborazione i18n a tutti gli handler, poi i replace handler
                     let processedValue = TextReplaces.runI18nPreStep(value);
-                    console.log(`Value after i18n pre-step: "${processedValue}"`);
                     processedValue = TextReplaces.replace(processedValue, {
                         type: "before-translation",
                     });
