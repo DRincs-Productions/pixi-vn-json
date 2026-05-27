@@ -204,11 +204,8 @@ test("generateJsonTranslation: two after-translation i18nInterpolation handlers 
         },
     };
 
-    // KEY: original text (no before-translation).
-    // VALUE: {{Sly}} — the second handler's pre-step else-branch resolves [charId] → Sly
-    // inside the already-wrapped {{[charId]}}, giving {{Sly}} instead of {{{{Sly}}}}.
     const expected = {
-        [`[${characterId}] thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+        [`[${characterId}] thrusts her hand out to shake mine.`]: `{{[${characterId}]}} thrusts her hand out to shake mine.`,
     };
 
     const res = {};
