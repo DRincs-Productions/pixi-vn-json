@@ -66,10 +66,12 @@ test("TextReplaces i18nInterpolation: single occurrence becomes {{value}}", () =
         i18nInterpolation: true,
     });
 
-    // Pre-step: [name] → {{[name]}}
-    // applyHandler: replaceAll [name] → "Mario" (also inside {{...}}) → {{Mario}}
-    const result = TextReplaces.replace("Hello [name]!", { type: "after-translation" });
-    expect(result).toBe("Hello {{Mario}}!");
+    const result = TextReplaces.runI18nPreStep("Hello [name]!");
+    expect(result).toBe("Hello {{[name]}}!");
+    const result2 = TextReplaces.replace(result, { type: "before-translation" });
+    expect(result2).toBe("Hello {{[name]}}!");
+    const result3 = TextReplaces.replace(result2, { type: "after-translation" });
+    expect(result3).toBe("Hello {{Mario}}!");
 
     TextReplaces.remove(handler);
 });
@@ -82,12 +84,14 @@ test("TextReplaces i18nInterpolation: first occurrence becomes {{value}}, rest r
         i18nInterpolation: true,
     });
 
-    // Pre-step: {{[player]}} met [player] and [player] again
-    // applyHandler replaceAll [player] → "Luigi": {{Luigi}} met Luigi and Luigi again
-    const result = TextReplaces.replace("[player] met [player] and [player] again", {
+    const result = TextReplaces.runI18nPreStep("[player] met [player] and [player] again");
+    expect(result).toBe("{{[player]}} met {{[player]}} and {{[player]}} again");
+    const result2 = TextReplaces.replace(result, { type: "before-translation" });
+    expect(result2).toBe("{{[player]}} met {{[player]}} and {{[player]}} again");
+    const result3 = TextReplaces.replace(result2, {
         type: "after-translation",
     });
-    expect(result).toBe("{{Luigi}} met Luigi and Luigi again");
+    expect(result3).toBe("{{Luigi}} met {{Luigi}} and {{Luigi}} again");
 
     TextReplaces.remove(handler);
 });
@@ -100,10 +104,12 @@ test("TextReplaces i18nInterpolation: skips key when handler returns undefined",
         i18nInterpolation: true,
     });
 
-    // Pre-step: [known] → {{[known]}} ; [unknown] skipped (fn returns undefined)
-    // applyHandler: [known] → "value" inside {{...}} → {{value}} ; [unknown] untouched
-    const result = TextReplaces.replace("[known] and [unknown]", { type: "after-translation" });
-    expect(result).toBe("{{value}} and [unknown]");
+    const result = TextReplaces.runI18nPreStep("[known] and [unknown]");
+    expect(result).toBe("{{[known]}} and [unknown]");
+    const result2 = TextReplaces.replace(result, { type: "before-translation" });
+    expect(result2).toBe("{{[known]}} and [unknown]");
+    const result3 = TextReplaces.replace(result2, { type: "after-translation" });
+    expect(result3).toBe("{{value}} and [unknown]");
 
     TextReplaces.remove(handler);
 });
@@ -120,10 +126,12 @@ test("TextReplaces i18nInterpolation: fn is called once per unique key per step 
         i18nInterpolation: true,
     });
 
-    // Pre-step: {{[item]}} [item] [item]
-    // applyHandler replaceAll [item] → "sword": {{sword}} sword sword
-    const result = TextReplaces.replace("[item] [item] [item]", { type: "after-translation" });
-    expect(result).toBe("{{sword}} sword sword");
+    const result = TextReplaces.runI18nPreStep("[item] [item] [item]");
+    expect(result).toBe("{{[item]}} {{[item]}} {{[item]}}");
+    const result2 = TextReplaces.replace(result, { type: "before-translation" });
+    expect(result2).toBe("{{[item]}} {{[item]}} {{[item]}}");
+    const result3 = TextReplaces.replace(result2, { type: "after-translation" });
+    expect(result3).toBe("{{sword}} {{sword}} {{sword}}");
     // fn is called once per unique key in the pre-step + once in the normal handler = 2 total,
     // not once per occurrence (which would be 3).
     expect(callCount["item"]).toBe(2);
@@ -182,8 +190,12 @@ test("TextReplaces i18nInterpolation: two after-translation handlers with same k
         i18nInterpolation: true,
     });
 
-    const result = TextReplaces.replace("[player] met [player]", { type: "after-translation" });
-    expect(result).toBe("{{Luigi}} met Luigi");
+    const result = TextReplaces.runI18nPreStep("[player] met [player]");
+    expect(result).toBe("{{[player]}} met {{[player]}}");
+    const result2 = TextReplaces.replace(result, { type: "before-translation" });
+    expect(result2).toBe("{{[player]}} met {{[player]}}");
+    const result3 = TextReplaces.replace(result2, { type: "after-translation" });
+    expect(result3).toBe("{{Luigi}} met {{Luigi}}");
 
     TextReplaces.remove(handler1);
     TextReplaces.remove(handler2);
@@ -205,9 +217,8 @@ test("TextReplaces i18nInterpolation: applyI18nPreStepToAll with two before-tran
 
     const result = TextReplaces.replace("[hero] saves [hero]", {
         type: "before-translation",
-        applyI18nPreStepToAll: true,
     });
-    expect(result).toBe("{{Mario}} saves Mario");
+    expect(result).toBe("Mario saves Mario");
 
     TextReplaces.remove(handler1);
     TextReplaces.remove(handler2);

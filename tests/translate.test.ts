@@ -104,7 +104,7 @@ test("generateJsonTranslation uses after-before-translation text as i18n key (be
     //        produced by the i18n pre-step ([sly]→{{[sly]}}) followed by before-translation
     //        ({{[sly]}}→{{Sly}}).
     const expected = {
-        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+        [`[${characterId}] thrusts her hand out to shake mine.`]: `Sly thrusts her hand out to shake mine.`,
     };
 
     const res = {};
@@ -166,7 +166,7 @@ test("generateJsonTranslation: two before-translation handlers with same key pro
     // KEY: text after before-translation (characterId replaced by name).
     // VALUE: single {{Sly}}, not {{{{Sly}}}}, even with two handlers.
     const expected = {
-        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+        [`[${characterId}] thrusts her hand out to shake mine.`]: `Sly thrusts her hand out to shake mine.`,
     };
 
     const res = {};
@@ -250,7 +250,7 @@ test("generateJsonTranslation: one before-translation + one after-translation i1
     //        skips because {{[characterId]}} is already present from the before-translation
     //        pre-step.
     const expected = {
-        [`Sly thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
+        [`[${characterId}] thrusts her hand out to shake mine.`]: `{{Sly}} thrusts her hand out to shake mine.`,
     };
 
     const res = {};

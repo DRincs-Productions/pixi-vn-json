@@ -111,10 +111,6 @@ namespace TranslatorManager {
                 if (beforeToTranslate) {
                     actualKey = beforeToTranslate(actualKey);
                 }
-                // Salta la pre-elaborazione i18n: chiama direttamente i replace handler
-                actualKey = TextReplaces.replace(actualKey, {
-                    type: "before-translation",
-                });
 
                 if (defaultValue === "empty_string") {
                     if (json[actualKey] === undefined) {
@@ -127,7 +123,7 @@ namespace TranslatorManager {
                     }
                     console.log(`Setting default value for key "${actualKey}" to "${value}"`);
                     // Per la value, applica la pre-elaborazione i18n a tutti gli handler, poi i replace handler
-                    let processedValue = TextReplaces.runI18nPreStep(value, { applyToAll: true });
+                    let processedValue = TextReplaces.runI18nPreStep(value);
                     console.log(`Value after i18n pre-step: "${processedValue}"`);
                     processedValue = TextReplaces.replace(processedValue, {
                         type: "before-translation",

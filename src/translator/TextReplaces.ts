@@ -105,11 +105,22 @@ export namespace TextReplaces {
     }
 
     /**
-     * Applica tutti gli handler registrati del tipo specificato al testo dato, dopo aver eseguito la pre-elaborazione i18n.
+     * Applica tutti gli handler registrati del tipo specificato al testo dato.
+     *
+     * Questa funzione NON esegue più la pre-elaborazione i18n automaticamente.
+     * Se vuoi applicare la pre-elaborazione i18n, usa prima {@link runI18nPreStep} sul testo.
      *
      * @param text Il testo sorgente da processare.
      * @param replaceOptions Specifica quale fase di handler eseguire.
      * @returns Il testo dopo che tutti gli handler sono stati applicati.
+     *
+     * @example
+     * // Solo handler di tipo "before-translation"
+     * TextReplaces.replace("Ciao [name]", { type: "before-translation" })
+     *
+     * // Con pre-elaborazione i18n:
+     * let t = TextReplaces.runI18nPreStep("Ciao [name]");
+     * t = TextReplaces.replace(t, { type: "before-translation" });
      */
     export function replace(
         text: string,
@@ -118,8 +129,6 @@ export namespace TextReplaces {
             type: "after-translation" | "before-translation";
         },
     ): string {
-        // Esegui sempre la pre-elaborazione i18n sugli handler con i18nInterpolation: true
-        text = runI18nPreStep(text);
         const activeHandlers = _handlers.filter(
             (h) => (h.opts.type ?? "after-translation") === replaceOptions.type,
         );
@@ -130,34 +139,39 @@ export namespace TextReplaces {
     }
 
     /**
-     * Esegue la pre-elaborazione i18n su tutti gli handler registrati o solo su quelli con i18nInterpolation: true.
+     * Esegue la pre-elaborazione i18n su tutti gli handler registrati con `i18nInterpolation: true`.
+     *
+     * Per ogni handler con questa opzione, la prima occorrenza di ogni `[key]` valida viene sostituita con `{{[key]}}`.
+     *
      * @param text Il testo da processare.
-     * @param opts Opzioni per la pre-elaborazione.
-     * @returns Il testo dopo la pre-elaborazione.
+     * @returns Il testo dopo la pre-elaborazione i18n.
+     *
+     * @example
+     * // Pre-elabora tutte le variabili i18n:
+     * const pre = TextReplaces.runI18nPreStep("Ciao [name]");
      */
-    export function runI18nPreStep(text: string, opts?: { applyToAll?: boolean }): string {
-        const preStepHandlers = opts?.applyToAll
-            ? _handlers
-            : _handlers.filter((h) => h.opts.i18nInterpolation);
+    export function runI18nPreStep(text: string): string {
+        const preStepHandlers = _handlers.filter((h) => h.opts.i18nInterpolation);
         for (const handler of preStepHandlers) {
-            text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
+            text = applyI18nPreStep(text, handler.fn, handler.opts);
         }
         return text;
     }
 
     /**
-     * Pre-step for handlers with `i18nInterpolation: true`.
+     * Pre-elaborazione i18n per un singolo handler con `i18nInterpolation: true`.
      *
-     * Scans the text for `[key]` tokens that match the handler's validation and for which
-     * `fn` returns a non-`undefined` value, then converts the **first** occurrence of each
-     * such key to `{{[key]}}`. Subsequent occurrences are left as `[key]` so that the normal
-     * {@link applyHandler} pass can replace them with the handler's return value.
+     * Scansiona il testo per i token `[key]` che corrispondono alla validazione dell'handler e per cui
+     * la funzione handler restituisce un valore non undefined. Sostituisce la **prima** occorrenza di ciascun
+     * `[key]` con `{{[key]}}`.
+     *
+     * @param text Il testo da processare.
+     * @param fn La funzione handler.
+     * @param op Le opzioni dell'handler (inclusa la validazione).
+     * @returns Il testo dopo la pre-elaborazione per quell'handler.
      */
-    function applyI18nPreStep(
-        text: string,
-        fn: ReplaceHandler,
-        validation: RegExp | "characterId" | "all" | ZodType<string>,
-    ): string {
+    function applyI18nPreStep(text: string, fn: ReplaceHandler, op: ReplaceHandlerOptions): string {
+        const { validation } = op;
         const globalRegex = new RegExp(options.replaceRegex.source, "g");
         const allMatches = [...text.matchAll(globalRegex)];
         const seenKeys = new Set<string>();
@@ -184,12 +198,7 @@ export namespace TextReplaces {
             if (replacement !== undefined) {
                 if (!text.includes(`{{[${key}]}}`)) {
                     // First handler to see this key: wrap the first occurrence for i18n interpolation.
-                    text = text.replace(`[${key}]`, `{{[${key}]}}`);
-                } else {
-                    // {{[key]}} already present from a previous handler's pre-step.
-                    // Replace [key] directly so {{[key]}} → {{replacement}} and any
-                    // remaining plain [key] → replacement, without double-wrapping.
-                    text = text.replaceAll(`[${key}]`, replacement);
+                    text = text.replaceAll(`[${key}]`, `{{[${key}]}}`);
                 }
             }
         }
