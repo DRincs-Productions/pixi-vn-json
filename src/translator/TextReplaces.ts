@@ -105,72 +105,43 @@ export namespace TextReplaces {
     }
 
     /**
-     * Applies all registered handlers of the specified type to the given text in order.
+     * Applica tutti gli handler registrati del tipo specificato al testo dato, dopo aver eseguito la pre-elaborazione i18n.
      *
-     * For each handler:
-     * 1. All `[key]` tokens currently present in the text are collected.
-     * 2. For each unique key, the handler's `validation` is tested against the key.
-     * 3. If validation passes, the handler is called with the key.
-     * 4. If the handler returns a string, **all** occurrences of `[key]` in the text are
-     *    replaced with that string.
-     * 5. After the handler has processed all tokens, the next handler starts on the updated text.
-     *
-     * @param text The source text to process.
-     * @param replaceOptions Specifies which phase of handlers to run.
-     * @returns The text after all matching handlers have been applied.
-     * @example
-     * ```ts title="content/text-replaces.ts"
-     * // Given handlers that replace [name] -> "Mario" and [surname] -> "Rossi":
-     * TextReplaces.replace("Ciao [name] [surname]. [name] vai pure", { type: "before-translation" })
-     * // => "Ciao Mario Rossi. Mario vai pure"
-     * ```
+     * @param text Il testo sorgente da processare.
+     * @param replaceOptions Specifica quale fase di handler eseguire.
+     * @returns Il testo dopo che tutti gli handler sono stati applicati.
      */
     export function replace(
         text: string,
         replaceOptions: {
-            /** Which phase of handlers to execute. */
+            /** Quale fase di handler eseguire. */
             type: "after-translation" | "before-translation";
-            /**
-             * When `true`, skips the i18n interpolation pre-step that converts
-             * `[key]` → `{{[key]}}` for handlers with `i18nInterpolation: true`.
-             *
-             * Use this when computing the i18n lookup key (where the pre-step must
-             * not alter the key) vs. the translated value (where the pre-step is needed).
-             */
-            skipI18nPreStep?: boolean;
-            /**
-             * When `true`, applies the i18n interpolation pre-step to **all** registered
-             * handlers, not only those with `i18nInterpolation: true`.
-             *
-             * Used by `generateJsonTranslation` when building the translation file VALUE:
-             * a before-translation handler that maps `[sly]` → `"Sly"` should produce
-             * `"{{Sly}}"` in the value (i18n interpolation variable), which is achieved by
-             * first wrapping `[sly]` → `{{[sly]}}` and then letting the handler replace the
-             * inner `[sly]` with `Sly`.
-             */
-            applyI18nPreStepToAll?: boolean;
         },
     ): string {
-        // Pre-step: convert first [key] → {{[key]}} for every handler that has
-        // i18nInterpolation enabled. This runs before the type-based handler filter
-        // so that the i18n tokens are in place before either translation phase begins.
-        if (!replaceOptions.skipI18nPreStep) {
-            const preStepHandlers = replaceOptions.applyI18nPreStepToAll
-                ? _handlers
-                : _handlers.filter((h) => h.opts.i18nInterpolation);
-            for (const handler of preStepHandlers) {
-                text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
-            }
-        }
-
+        // Esegui sempre la pre-elaborazione i18n sugli handler con i18nInterpolation: true
+        text = runI18nPreStep(text);
         const activeHandlers = _handlers.filter(
             (h) => (h.opts.type ?? "after-translation") === replaceOptions.type,
         );
-
         for (const handler of activeHandlers) {
             text = applyHandler(text, handler.fn, handler.opts.validation);
         }
+        return text;
+    }
 
+    /**
+     * Esegue la pre-elaborazione i18n su tutti gli handler registrati o solo su quelli con i18nInterpolation: true.
+     * @param text Il testo da processare.
+     * @param opts Opzioni per la pre-elaborazione.
+     * @returns Il testo dopo la pre-elaborazione.
+     */
+    export function runI18nPreStep(text: string, opts?: { applyToAll?: boolean }): string {
+        const preStepHandlers = opts?.applyToAll
+            ? _handlers
+            : _handlers.filter((h) => h.opts.i18nInterpolation);
+        for (const handler of preStepHandlers) {
+            text = applyI18nPreStep(text, handler.fn, handler.opts.validation);
+        }
         return text;
     }
 

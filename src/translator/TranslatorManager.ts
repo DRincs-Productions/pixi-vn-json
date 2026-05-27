@@ -105,34 +105,34 @@ namespace TranslatorManager {
         }
         if (Array.isArray(key)) {
             key.forEach((k) => {
-                // The i18n key is the text after before-translation handlers run, but
-                // WITHOUT the i18n pre-step (which wraps [key] → {{[key]}} and belongs
-                // only in the value side of the translation file).
+                console.log(`Adding key to translation JSON: ${k}`);
+                // The i18n key è il testo dopo i before-translation handler, SENZA la pre-elaborazione i18n.
                 let actualKey = k;
                 if (beforeToTranslate) {
                     actualKey = beforeToTranslate(actualKey);
                 }
+                // Salta la pre-elaborazione i18n: chiama direttamente i replace handler
                 actualKey = TextReplaces.replace(actualKey, {
                     type: "before-translation",
-                    skipI18nPreStep: true,
                 });
 
-                if (json[actualKey] === undefined) {
-                    if (defaultValue === "empty_string") {
+                if (defaultValue === "empty_string") {
+                    if (json[actualKey] === undefined) {
                         json[actualKey] = "";
-                    } else if (defaultValue === "copy_key") {
-                        let value = k;
-                        if (beforeToTranslate) {
-                            value = beforeToTranslate(value);
-                        }
-                        json[actualKey] = TextReplaces.replace(value, {
-                            type: "before-translation",
-                            // Apply i18n pre-step to ALL handlers so that before-translation
-                            // replacements appear as {{replacement}} in the value, e.g.
-                            // [sly] → {{[sly]}} → (before-translation) → {{Sly}}.
-                            applyI18nPreStepToAll: true,
-                        });
                     }
+                } else if (defaultValue === "copy_key") {
+                    let value = k;
+                    if (beforeToTranslate) {
+                        value = beforeToTranslate(value);
+                    }
+                    console.log(`Setting default value for key "${actualKey}" to "${value}"`);
+                    // Per la value, applica la pre-elaborazione i18n a tutti gli handler, poi i replace handler
+                    let processedValue = TextReplaces.runI18nPreStep(value, { applyToAll: true });
+                    console.log(`Value after i18n pre-step: "${processedValue}"`);
+                    processedValue = TextReplaces.replace(processedValue, {
+                        type: "before-translation",
+                    });
+                    json[actualKey] = processedValue;
                 }
             });
         }
