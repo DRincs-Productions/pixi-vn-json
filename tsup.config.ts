@@ -9,7 +9,7 @@ export default defineConfig((options) => {
 
     return [
         createConfig({
-            target: "es2020",
+            target: "es2022",
             entry: {
                 core: "src/core/index.ts",
                 schema: "src/schema/index.ts",
@@ -27,7 +27,7 @@ export default defineConfig((options) => {
             },
         }),
         createConfig({
-            target: "es2020",
+            target: "es2022",
             entry: {
                 translator: "src/translator/index.ts",
             },
@@ -45,7 +45,7 @@ export default defineConfig((options) => {
             },
         }),
         createConfig({
-            target: "es2020",
+            target: "es2022",
             entry: {
                 interpreter: "src/interpreter/index.ts",
                 actions: "src/actions/index.ts",
@@ -64,7 +64,7 @@ export default defineConfig((options) => {
             },
         }),
         createConfig({
-            target: "es2020",
+            target: "es2022",
             entry: {
                 index: "src/index.ts",
             },
@@ -86,7 +86,7 @@ export default defineConfig((options) => {
             },
         }),
         createConfig({
-            target: "es2020",
+            target: "es2022",
             entry: {
                 core: "src/core/index.ts",
                 schema: "src/schema/index.ts",
