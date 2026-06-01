@@ -12,7 +12,7 @@
 
 Pixi’VN can be integrated with JSON files to create a visual novel. This method is useful for:
 
-- Add a new narrative to Pixi’VN (It was used to create the integration with <DynamicLink href="/ink">**_ink_**</DynamicLink> and <DynamicLink href="/renpy">Ren'Py</DynamicLink>)
+- Add a new narrative to Pixi’VN (It was used to create the integration with **_ink_**
 - Create a external tool to create visual novels with Pixi’VN
 
 ( In both these cases it is advisable to notify the developers of Pixi’VN to add the new feature to be helped )
