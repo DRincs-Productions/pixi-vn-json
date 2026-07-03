@@ -262,6 +262,143 @@ function getMemberName(member) {
 }
 
 /**
+ * External types (from `@drincs/pixi-vn`, `pixi.js`, etc.) are resolved this many nested object
+ * levels deep before giving up and falling back to an unconstrained object. PixiJS option types
+ * like `SpriteOptions` pull in an enormous, deeply-inherited surface (filters, textures, event
+ * callbacks, ...) — fully resolving it isn't worth the schema size/complexity, but stopping at
+ * depth 0 (today's behavior) means a typo like `x: "asd"` on an image's `props` goes completely
+ * unchecked. Depth 0 is the external type's own top-level properties; each object-typed property
+ * value is one more level.
+ */
+const MAX_EXTERNAL_OBJECT_DEPTH = 2;
+
+/**
+ * `definitions` entry keys already used for external (named) types, so repeated uses of the same
+ * named type at the same depth (e.g. `ImageSpriteOptions` shows up under `image`'s `show`, `edit`,
+ * and inside `ImageContainerOptions<ImageSprite>` too) share one `$ref` instead of each inlining
+ * their own full copy. Keyed by `<declaring file>::<type name>::<depth>` — the depth is part of
+ * the key because the SAME named type expands to a shallower or deeper schema depending on how
+ * far from {@link MAX_EXTERNAL_OBJECT_DEPTH} it's first encountered.
+ */
+const externalTypeDefKeys = new Map();
+
+/**
+ * A stable cache/definition key for a named external type, or `null` for anonymous types (inline
+ * object literals, etc.) — those are usually small and aren't worth naming.
+ */
+function getExternalTypeCacheKey(type) {
+    const symbol = type.getSymbol?.() ?? type.aliasSymbol;
+    const name = symbol?.getName?.();
+    if (!name || name.startsWith("__")) {
+        return null;
+    }
+    const declaration = symbol.getDeclarations?.()?.[0];
+    const file = declaration ? declaration.getSourceFile().fileName : "";
+    return `${file}::${name}`;
+}
+
+/**
+ * Converts a resolved (semantic) `ts.Type` — not an AST node — to a JSON Schema fragment,
+ * capped at {@link MAX_EXTERNAL_OBJECT_DEPTH} nested object levels. Used only for types that
+ * live outside this package (nothing in `typeDecls` matched), so inherited members (e.g.
+ * `ImageSpriteOptions extends SpriteOptions`) must be read off the checker's fully-resolved
+ * type rather than re-walking `extends` clauses by hand.
+ *
+ * The depth cap doubles as cycle protection: PixiJS types can be circular (e.g. a container
+ * referencing its own parent/children), but since depth strictly increases on every recursive
+ * call and we bail out past {@link MAX_EXTERNAL_OBJECT_DEPTH}, recursion can never run away.
+ */
+function convertExternalType(type, depth) {
+    if (!type) return {};
+    const flags = type.flags;
+
+    if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) return {};
+    if (flags & ts.TypeFlags.String) return { type: "string" };
+    if (flags & ts.TypeFlags.Number) return { type: "number" };
+    if (flags & ts.TypeFlags.Boolean) return { type: "boolean" };
+    if (flags & ts.TypeFlags.Null) return { type: "null" };
+    if (flags & (ts.TypeFlags.Undefined | ts.TypeFlags.Void)) return {};
+    if (flags & ts.TypeFlags.Never) return { not: {} };
+    if (flags & ts.TypeFlags.StringLiteral) return { const: type.value };
+    if (flags & ts.TypeFlags.NumberLiteral) return { const: type.value };
+    if (flags & ts.TypeFlags.BooleanLiteral) {
+        return { const: checker.typeToString(type) === "true" };
+    }
+
+    // Object types (interfaces, named type-literal aliases) are the expensive, deeply-shared
+    // part of PixiJS's surface (the same `SpriteOptions`-derived shape shows up under `image`
+    // show/edit, inside `ImageContainerOptions<T>`, etc.) — dedupe those via a $ref. Unions,
+    // arrays, and primitives are cheap enough (and vary too much per call site) to just inline.
+    if (flags & ts.TypeFlags.Object && depth <= MAX_EXTERNAL_OBJECT_DEPTH) {
+        const cacheKey = getExternalTypeCacheKey(type);
+        if (cacheKey) {
+            const existingDefKey = externalTypeDefKeys.get(`${cacheKey}@${depth}`);
+            if (existingDefKey) {
+                return { $ref: `#/definitions/${existingDefKey}` };
+            }
+            const defKey = `External_${checker.typeToString(type)}_d${depth}`.replace(
+                /[^A-Za-z0-9_]/g,
+                "_",
+            );
+            externalTypeDefKeys.set(`${cacheKey}@${depth}`, defKey);
+            definitions[defKey] = {}; // placeholder for cycle-safety
+            Object.assign(definitions[defKey], buildExternalObjectSchema(type, depth));
+            return { $ref: `#/definitions/${defKey}` };
+        }
+        return buildExternalObjectSchema(type, depth);
+    }
+
+    if (type.isUnion()) {
+        return mergeUnion(type.types.map((t) => convertExternalType(t, depth)));
+    }
+    if (type.isIntersection()) {
+        return { allOf: type.types.map((t) => convertExternalType(t, depth)) };
+    }
+
+    if (checker.isArrayType(type)) {
+        const [elementType] = checker.getTypeArguments(type);
+        return { type: "array", items: convertExternalType(elementType, depth + 1) };
+    }
+    if (checker.isTupleType(type)) {
+        const elementTypes = checker.getTypeArguments(type);
+        return { type: "array", items: elementTypes.map((t) => convertExternalType(t, depth + 1)) };
+    }
+
+    // Functions/methods (event callbacks, etc.) aren't JSON-representable.
+    if (type.getCallSignatures().length > 0 || type.getConstructSignatures().length > 0) {
+        return {};
+    }
+
+    // Beyond the depth cap, or anything else not specifically modeled above (enums,
+    // unresolvable generics, ...): an unconstrained object/value.
+    return {};
+}
+
+/**
+ * Enumerates the own+inherited properties of an external object type into a JSON Schema object
+ * (the part of {@link convertExternalType} that's expensive enough to want de-duplicated via a
+ * `$ref` — see {@link externalTypeDefKeys}).
+ */
+function buildExternalObjectSchema(type, depth) {
+    const properties = {};
+    const required = [];
+    for (const prop of checker.getPropertiesOfType(type)) {
+        const declaration = prop.valueDeclaration ?? prop.declarations?.[0];
+        if (!declaration) continue;
+        const propType = checker.getTypeOfSymbolAtLocation(prop, declaration);
+        if (propType.getCallSignatures().length > 0) continue; // skip methods
+        properties[prop.name] = convertExternalType(propType, depth + 1);
+        if ((prop.flags & ts.SymbolFlags.Optional) === 0) {
+            required.push(prop.name);
+        }
+    }
+    const schema = { type: "object" };
+    if (Object.keys(properties).length > 0) schema.properties = properties;
+    if (required.length > 0) schema.required = required;
+    return schema;
+}
+
+/**
  * Convert a TypeReference AST node to a JSON Schema fragment.
  * This handles both plain type references and generic type applications.
  */
@@ -298,8 +435,14 @@ function convertTypeReference(node, ctx) {
         return { $ref: `#/definitions/${name}` };
     }
 
-    // External type (from @drincs/pixi-vn, pixi.js, etc.) → accept any value
-    return {};
+    // External type (from @drincs/pixi-vn, pixi.js, etc.): resolve its real shape via the type
+    // checker instead of giving up — see convertExternalType for the depth cap/rationale.
+    try {
+        const resolvedType = checker.getTypeFromTypeNode(node);
+        return convertExternalType(resolvedType, 0);
+    } catch {
+        return {};
+    }
 }
 
 /**
