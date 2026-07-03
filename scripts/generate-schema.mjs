@@ -571,6 +571,18 @@ function getBuiltinTypeSchema(name) {
             return { type: "string", format: "regex" };
         case "Function":
             return {};
+        // StorageElementType/StorageObjectType come from @drincs/pixi-vn, so they're
+        // external references with no declaration to inspect here — they'd otherwise
+        // fall through to the generic "external type" case below (`{}`, no schema keys).
+        // That's a problem specifically when they appear alongside other union members
+        // (e.g. `leftValue: StorageElementType | PixiVNJsonValueGet | ...`): mergeUnion
+        // filters out any branch with zero keys, so the `{}` branch silently vanishes
+        // and the field ends up looking object-only instead of "primitive or object".
+        // Giving it real keys here keeps it in the union.
+        case "StorageElementType":
+            return { type: ["string", "number", "boolean", "null", "array", "object"] };
+        case "StorageObjectType":
+            return { type: "object" };
         default:
             return null;
     }
