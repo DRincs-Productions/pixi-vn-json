@@ -37,6 +37,28 @@ describe("generate-schema script", () => {
         30_000,
     );
 
+    it("rejects unknown keys on external PixiJS option types (e.g. a typo'd prop name)", () => {
+        // Regression coverage: `buildExternalObjectSchema` enumerated the real property list of
+        // types like `ImageContainerOptions` (so `xAlign`/`yAlign` etc. were individually typed),
+        // but never set `additionalProperties: false` on the resulting object schema. A typo'd
+        // key — e.g. `# show imagecontainer james [...] xAlin 0.5` instead of `xAlign` — was
+        // therefore a perfectly valid "extra" property as far as JSON Schema/ajv were concerned,
+        // so it silently did nothing at runtime with no warning anywhere in the pipeline.
+        const schema = readGeneratedSchema();
+
+        const containerShow = schema.definitions.PixiVNJsonCanvasImageContainerShow;
+        expect(containerShow).toBeDefined();
+
+        const propsSchema = containerShow.properties.props;
+        const resolvedProps = propsSchema.$ref
+            ? schema.definitions[propsSchema.$ref.replace("#/definitions/", "")]
+            : propsSchema;
+
+        expect(resolvedProps.properties.xAlign).toBeDefined();
+        expect(resolvedProps.properties.xAlin).toBeUndefined();
+        expect(resolvedProps.additionalProperties).toBe(false);
+    });
+
     it("de-duplicates repeated external types via $ref instead of ballooning the schema", () => {
         // Regression guard: before de-duplicating identical named external types (the same
         // `SpriteOptions`-derived shape appears under image show/edit, inside

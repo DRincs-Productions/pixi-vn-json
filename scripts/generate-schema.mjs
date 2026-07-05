@@ -395,6 +395,18 @@ function buildExternalObjectSchema(type, depth) {
     const schema = { type: "object" };
     if (Object.keys(properties).length > 0) schema.properties = properties;
     if (required.length > 0) schema.required = required;
+    // Without this, a typo'd key (e.g. `xAlin` instead of `xAlign`) validates as a perfectly
+    // valid extra property and silently does nothing at runtime — see the index signature case
+    // below for the one legitimate escape hatch (a type that's explicitly a string/number-keyed
+    // bag, e.g. `Record<string, T>`, has no fixed property list to be strict about).
+    const indexInfo =
+        checker.getIndexInfoOfType(type, ts.IndexKind.String) ??
+        checker.getIndexInfoOfType(type, ts.IndexKind.Number);
+    if (indexInfo) {
+        schema.additionalProperties = convertExternalType(indexInfo.type, depth + 1);
+    } else {
+        schema.additionalProperties = false;
+    }
     return schema;
 }
 
