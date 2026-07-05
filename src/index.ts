@@ -2,6 +2,7 @@ import {
     VariableGetter,
     animateOperation,
     canvasElementOperation,
+    canvasOperation,
     effectOperation,
     getConditionalStep,
     imageContainerOperation,
@@ -37,6 +38,7 @@ export function init() {
     JsonUnifier.init({
         animateOperation,
         canvasElementOperation,
+        canvasOperation,
         effectOperation,
         imageContainerOperation,
         imageOperation,

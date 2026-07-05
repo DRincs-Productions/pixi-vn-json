@@ -6,6 +6,7 @@ export type {
 } from "@/schema/PixiVNJsonArithmeticOperations";
 export type {
     default as PixiVNJsonCanvas,
+    PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEdit,
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,

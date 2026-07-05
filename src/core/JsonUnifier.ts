@@ -10,6 +10,7 @@ import {
 import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
@@ -88,6 +89,7 @@ export default class JsonUnifier {
         narrationOperation?: (operation: PixiVNJsonNarration) => void;
         effectOperation?: (operation: PixiVNJsonCanvasEffect) => Promise<void>;
         animateOperation?: (operation: PixiVNJsonCanvasAnimate) => void;
+        canvasOperation?: (operation: PixiVNJsonCanvasClear) => void;
         getLogichValue?: <T = StorageElementType>(
             value:
                 | T
@@ -120,6 +122,7 @@ export default class JsonUnifier {
             JsonUnifier._narrationOperation = options.narrationOperation;
         if (options.effectOperation) JsonUnifier._effectOperation = options.effectOperation;
         if (options.animateOperation) JsonUnifier._animateOperation = options.animateOperation;
+        if (options.canvasOperation) JsonUnifier._canvasOperation = options.canvasOperation;
         if (options.getLogichValue) JsonUnifier._getLogichValue = options.getLogichValue;
         if (options.getConditionalStep)
             JsonUnifier._getConditionalStep = options.getConditionalStep;
@@ -302,6 +305,19 @@ export default class JsonUnifier {
     /** Registered handler for keyframe animation operations. */
     static get animateOperation() {
         return JsonUnifier._animateOperation;
+    }
+    private static _canvasOperation: (operation: PixiVNJsonCanvasClear) => void = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+        throw new PixiError(
+            "invalid_usage",
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+    };
+    /** Registered handler for generic canvas-wide operations (e.g. clear). */
+    static get canvasOperation() {
+        return JsonUnifier._canvasOperation;
     }
     private static _getLogichValue: <T = StorageElementType>(
         value:

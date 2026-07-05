@@ -176,6 +176,13 @@ export type PixiVNJsonCanvasRemove = {
     transition?: PixiVNJsonMediaTransiotions;
 };
 /**
+ * Removes every element currently on the canvas.
+ */
+export type PixiVNJsonCanvasClear = {
+    type: "canvas";
+    operationType: "clear";
+};
+/**
  * Pauses or resumes playback of a video sprite on the canvas.
  */
 export type PixiVNJsonVideoPauseResume = {
@@ -213,12 +220,14 @@ export type PixiVNJsonCanvasEdit =
     | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory | TextMemory>;
 
 /**
- * Union of all canvas operations — show, edit, remove, animate, apply effects, and asset loading.
+ * Union of all canvas operations — show, edit, remove, clear, animate, apply effects, and asset
+ * loading.
  */
 type PixiVNJsonCanvas =
     | PixiVNJsonCanvasShow
     | PixiVNJsonCanvasEdit
     | PixiVNJsonCanvasRemove
+    | PixiVNJsonCanvasClear
     | PixiVNJsonVideoPauseResume
     | PixiVNJsonAssetsLoad
     | PixiVNJsonCanvasAnimate

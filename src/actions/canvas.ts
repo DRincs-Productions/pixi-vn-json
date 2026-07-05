@@ -1,6 +1,7 @@
 import { logger } from "@/utils/log-utility";
 import type {
     PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
@@ -315,6 +316,18 @@ export async function canvasElementOperation(
             break;
         case "remove":
             removeCanvasElement(operation);
+            break;
+    }
+}
+/**
+ * Handles generic canvas-wide operations (e.g. clearing every element).
+ *
+ * @param operation - The canvas operation descriptor.
+ */
+export function canvasOperation(operation: PixiVNJsonCanvasClear) {
+    switch (operation.operationType) {
+        case "clear":
+            canvas.removeAll();
             break;
     }
 }

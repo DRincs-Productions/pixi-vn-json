@@ -54,6 +54,9 @@ export async function runOperation(
         case "canvaselement":
             await JsonUnifier.canvasElementOperation(operation);
             break;
+        case "canvas":
+            JsonUnifier.canvasOperation(operation);
+            break;
         case "value":
             JsonUnifier.setStorageValue(operation, props);
             break;
