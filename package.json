@@ -32,6 +32,12 @@
       "require": "./dist/core.cjs",
       "default": "./dist/core.mjs"
     },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "import": "./dist/constants.mjs",
+      "require": "./dist/constants.cjs",
+      "default": "./dist/constants.mjs"
+    },
     "./importer": {
       "types": "./dist/importer.d.ts",
       "import": "./dist/importer.mjs",
@@ -67,6 +73,9 @@
     "*": {
       "core": [
         "./dist/core.d.ts"
+      ],
+      "constants": [
+        "./dist/constants.d.ts"
       ],
       "importer": [
         "./dist/importer.d.ts"

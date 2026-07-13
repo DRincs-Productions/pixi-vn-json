@@ -13,6 +13,7 @@ export default defineConfig((options) => {
             entry: {
                 core: "src/core/index.ts",
                 schema: "src/schema/index.ts",
+                constants: "src/constants.ts",
             },
             format: ["cjs", "esm"],
             treeshake: true,
@@ -90,6 +91,7 @@ export default defineConfig((options) => {
             entry: {
                 core: "src/core/index.ts",
                 schema: "src/schema/index.ts",
+                constants: "src/constants.ts",
                 translator: "src/translator/index.ts",
                 interpreter: "src/interpreter/index.ts",
                 actions: "src/actions/index.ts",
