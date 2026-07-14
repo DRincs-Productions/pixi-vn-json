@@ -7,12 +7,14 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "scripts"
   ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup --config tsup.config.ts",
     "generate-schema": "node scripts/generate-schema.mjs",
+    "generate-entrance-transition-schemas": "node scripts/generate-entrance-transition-schemas.mjs",
     "lint": "biome lint",
     "check": "biome check",
     "format": "biome format --write",
@@ -67,7 +69,8 @@
       "import": "./dist/schema.mjs",
       "require": "./dist/schema.cjs",
       "default": "./dist/schema.mjs"
-    }
+    },
+    "./schema-generator": "./scripts/schema-generator.mjs"
   },
   "typesVersions": {
     "*": {
