@@ -1,5 +1,6 @@
 export * from "@/actions/assets";
 export * from "@/actions/canvas";
+export * from "@/actions/container-memory";
 export * from "@/actions/entrance-transitions";
 export * from "@/actions/narration";
 export * from "@/actions/sound";
