@@ -57,8 +57,10 @@ export type {
 export type {
     PixiVNJsonSound,
     PixiVNJsonSoundEdit,
+    PixiVNJsonSoundEditProps,
     PixiVNJsonSoundPauseResume,
     PixiVNJsonSoundPlay,
+    PixiVNJsonSoundPlayProps,
     PixiVNJsonSoundRemove,
 } from "@/schema/PixiVNJsonSound";
 export type {

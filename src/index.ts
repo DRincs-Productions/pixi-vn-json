@@ -22,7 +22,6 @@ export {
     PIXIVNJSON_SCHEMA_URL,
     PixiVNJsonComparationOperators,
 } from "@/constants";
-export type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
 export { VariableGetter } from "@drincs/pixi-vn-json/actions";
 export type { VariableGetterHandler } from "@drincs/pixi-vn-json/actions";
 export * from "@drincs/pixi-vn-json/interpreter";

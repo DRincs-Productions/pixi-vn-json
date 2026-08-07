@@ -1,6 +1,10 @@
 import type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
 
 /**
+ * Playback options such as volume, loop, channel, and start offset.
+ */
+export type PixiVNJsonSoundPlayProps = SoundPlayOptionsWithChannel;
+/**
  * Starts playback of a sound asset.
  */
 export type PixiVNJsonSoundPlay = {
@@ -17,7 +21,7 @@ export type PixiVNJsonSoundPlay = {
     /**
      * Playback options such as volume, loop, channel, and start offset.
      */
-    props?: SoundPlayOptionsWithChannel;
+    props?: PixiVNJsonSoundPlayProps;
 };
 /**
  * Stops a playing sound and removes it from the audio context.
@@ -47,6 +51,12 @@ export type PixiVNJsonSoundPauseResume =
           operationType: "pause" | "resume" | "stop";
       };
 /**
+ * Partial set of sound properties that can be applied when editing a currently playing sound.
+ */
+export type PixiVNJsonSoundEditProps = Partial<
+    Pick<MediaInterface, "speed" | "muted" | "loop" | "paused"> & Pick<SoundPlayOptionsWithChannel, "volume">
+>;
+/**
  * Edits the properties of a currently playing sound (volume, speed, muted, loop, etc.).
  */
 export type PixiVNJsonSoundEdit = {
@@ -59,10 +69,7 @@ export type PixiVNJsonSoundEdit = {
     /**
      * Partial set of properties to apply to the sound.
      */
-    props: Partial<
-        Pick<MediaInterface, "speed" | "muted" | "loop" | "paused"> &
-            Pick<SoundPlayOptionsWithChannel, "volume">
-    >;
+    props: PixiVNJsonSoundEditProps;
 };
 
 /**
