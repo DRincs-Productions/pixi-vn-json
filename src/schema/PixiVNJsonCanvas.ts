@@ -15,6 +15,10 @@ import type {
 } from "@drincs/pixi-vn";
 
 /**
+ * Display options (position, scale, alpha, etc.) for an image or video sprite.
+ */
+export interface PixiVNJsonCanvasImageVideoShowProps extends ImageSpriteOptions {}
+/**
  * Shows an image or video asset on the canvas.
  */
 export type PixiVNJsonCanvasImageVideoShow = {
@@ -32,12 +36,17 @@ export type PixiVNJsonCanvasImageVideoShow = {
     /**
      * Display options (position, scale, alpha, etc.) for the image or video sprite.
      */
-    props?: ImageSpriteOptions;
+    props?: PixiVNJsonCanvasImageVideoShowProps;
     /**
      * Optional transition effect applied when the element appears on screen.
      */
     transition?: PixiVNJsonMediaTransiotions;
 };
+/**
+ * Display options for an image container.
+ */
+export interface PixiVNJsonCanvasImageContainerShowProps
+    extends ImageContainerOptions<ImageSprite> {}
 /**
  * Shows an image container (a group of layered images) on the canvas.
  */
@@ -55,12 +64,16 @@ export type PixiVNJsonCanvasImageContainerShow = {
     /**
      * Display options for the image container.
      */
-    props?: ImageContainerOptions<ImageSprite>;
+    props?: PixiVNJsonCanvasImageContainerShowProps;
     /**
      * Optional transition effect applied when the element appears on screen.
      */
     transition?: PixiVNJsonMediaTransiotions;
 };
+/**
+ * Display options (font, style, position, etc.) for a text element.
+ */
+export interface PixiVNJsonCanvasTextShowProps extends TextOptions {}
 /**
  * Shows a text element on the canvas.
  */
@@ -78,7 +91,7 @@ export type PixiVNJsonCanvasTextShow = {
     /**
      * Display options (font, style, position, etc.) for the text element.
      */
-    props?: TextOptions;
+    props?: PixiVNJsonCanvasTextShowProps;
     /**
      * Optional transition effect applied when the element appears on screen.
      */

@@ -8,14 +8,18 @@ import type {
 import type { UPDATE_PRIORITY } from "pixi.js";
 
 /**
+ * Configuration options for the dissolve transition.
+ */
+export interface DissolveTransitionProps extends ShowWithDissolveTransitionProps {}
+/**
  * Cross-dissolve transition — blends the element in or out by gradually changing its opacity.
  */
-type DissolveTransition = {
+export type DissolveTransition = {
     type: "dissolve";
     /**
      * Configuration options for the dissolve transition.
      */
-    props?: ShowWithDissolveTransitionProps;
+    props?: DissolveTransitionProps;
     /**
      * Pixi.js update priority for the transition ticker callback.
      */
@@ -23,14 +27,18 @@ type DissolveTransition = {
 };
 
 /**
+ * Configuration options for the fade transition.
+ */
+export interface FadeTransitionProps extends ShowWithFadeTransitionProps {}
+/**
  * Fade transition — fades the element in or out by animating its alpha value.
  */
-type FadeTransition = {
+export type FadeTransition = {
     type: "fade";
     /**
      * Configuration options for the fade transition.
      */
-    props?: ShowWithFadeTransitionProps;
+    props?: FadeTransitionProps;
     /**
      * Pixi.js update priority for the transition ticker callback.
      */
@@ -38,14 +46,18 @@ type FadeTransition = {
 };
 
 /**
+ * Configuration options for the move transition (direction, duration, easing, etc.).
+ */
+export interface MoveInOutTransitionProps extends MoveInOutProps {}
+/**
  * Move-in / Move-out transition — slides the element into or out of the viewport.
  */
-type MoveInOutTransition = {
+export type MoveInOutTransition = {
     type: "movein" | "moveout";
     /**
      * Configuration options for the move transition (direction, duration, easing, etc.).
      */
-    props?: MoveInOutProps;
+    props?: MoveInOutTransitionProps;
     /**
      * Pixi.js update priority for the transition ticker callback.
      */
@@ -53,14 +65,18 @@ type MoveInOutTransition = {
 };
 
 /**
+ * Configuration options for the zoom transition (scale, duration, easing, etc.).
+ */
+export interface ZoomInOutTransitionProps extends ZoomInOutProps {}
+/**
  * Zoom-in / Zoom-out transition — scales the element into or out of view.
  */
-type ZoomInOutTransition = {
+export type ZoomInOutTransition = {
     type: "zoomin" | "zoomout";
     /**
      * Configuration options for the zoom transition (scale, duration, easing, etc.).
      */
-    props?: ZoomInOutProps;
+    props?: ZoomInOutTransitionProps;
     /**
      * Pixi.js update priority for the transition ticker callback.
      */
@@ -68,14 +84,18 @@ type ZoomInOutTransition = {
 };
 
 /**
+ * Configuration options for the push transition (direction, duration, easing, etc.).
+ */
+export interface PushInOutTransitionProps extends PushInOutProps {}
+/**
  * Push-in / Push-out transition — pushes the element onto or off the viewport, displacing the current content.
  */
-type PushInOutTransition = {
+export type PushInOutTransition = {
     type: "pushin" | "pushout";
     /**
      * Configuration options for the push transition (direction, duration, easing, etc.).
      */
-    props?: PushInOutProps;
+    props?: PushInOutTransitionProps;
     /**
      * Pixi.js update priority for the transition ticker callback.
      */

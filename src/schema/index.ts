@@ -9,10 +9,13 @@ export type {
     PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEdit,
     PixiVNJsonCanvasImageContainerShow,
+    PixiVNJsonCanvasImageContainerShowProps,
     PixiVNJsonCanvasImageVideoShow,
+    PixiVNJsonCanvasImageVideoShowProps,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasShow,
     PixiVNJsonCanvasTextShow,
+    PixiVNJsonCanvasTextShowProps,
     PixiVNJsonImageContainerEdit,
     PixiVNJsonImageEdit,
     PixiVNJsonTextEdit,
@@ -43,7 +46,19 @@ export type {
     default as PixiVNJsonLabelStep,
     PixiVNJsonLabelToOpen,
 } from "@/schema/PixiVNJsonLabelStep";
-export type { default as PixiVNJsonMediaTransiotions } from "@/schema/PixiVNJsonMediaTransiotions";
+export type {
+    default as PixiVNJsonMediaTransiotions,
+    DissolveTransition,
+    DissolveTransitionProps,
+    FadeTransition,
+    FadeTransitionProps,
+    MoveInOutTransition,
+    MoveInOutTransitionProps,
+    PushInOutTransition,
+    PushInOutTransitionProps,
+    ZoomInOutTransition,
+    ZoomInOutTransitionProps,
+} from "@/schema/PixiVNJsonMediaTransiotions";
 export type {
     PixiVNJsonDialogue,
     PixiVNJsonInputRequest,

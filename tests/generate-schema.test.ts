@@ -12,6 +12,14 @@ function readGeneratedSchema() {
     return JSON.parse(readFileSync(schemaPath, "utf-8"));
 }
 
+/** Follows a chain of `$ref`s (e.g. a named `...Props` wrapper pointing at an `External_*` definition). */
+function resolveRef(schema, node) {
+    while (node.$ref) {
+        node = schema.definitions[node.$ref.replace("#/definitions/", "")];
+    }
+    return node;
+}
+
 describe("generate-schema script", () => {
     it(
         "resolves external PixiJS option types instead of leaving them fully unconstrained",
@@ -26,10 +34,7 @@ describe("generate-schema script", () => {
             const imageShow = schema.definitions.PixiVNJsonCanvasImageVideoShow;
             expect(imageShow).toBeDefined();
 
-            const propsSchema = imageShow.properties.props;
-            const resolvedProps = propsSchema.$ref
-                ? schema.definitions[propsSchema.$ref.replace("#/definitions/", "")]
-                : propsSchema;
+            const resolvedProps = resolveRef(schema, imageShow.properties.props);
 
             expect(resolvedProps.properties.x).toEqual({ type: "number" });
             expect(resolvedProps.properties.y).toEqual({ type: "number" });
@@ -49,10 +54,7 @@ describe("generate-schema script", () => {
         const containerShow = schema.definitions.PixiVNJsonCanvasImageContainerShow;
         expect(containerShow).toBeDefined();
 
-        const propsSchema = containerShow.properties.props;
-        const resolvedProps = propsSchema.$ref
-            ? schema.definitions[propsSchema.$ref.replace("#/definitions/", "")]
-            : propsSchema;
+        const resolvedProps = resolveRef(schema, containerShow.properties.props);
 
         expect(resolvedProps.properties.xAlign).toBeDefined();
         expect(resolvedProps.properties.xAlin).toBeUndefined();

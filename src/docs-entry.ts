@@ -8,4 +8,16 @@
  * something to expand into — it is not part of `src/index.ts` and is not bundled
  * into `dist`.
  */
-export type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-vn";
+export type {
+    ImageContainerOptions,
+    ImageSprite,
+    ImageSpriteOptions,
+    MediaInterface,
+    MoveInOutProps,
+    PushInOutProps,
+    ShowWithDissolveTransitionProps,
+    ShowWithFadeTransitionProps,
+    SoundPlayOptionsWithChannel,
+    TextOptions,
+    ZoomInOutProps,
+} from "@drincs/pixi-vn";
