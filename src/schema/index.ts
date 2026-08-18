@@ -25,7 +25,9 @@ export type {
 } from "@/schema/PixiVNJsonCanvas";
 export type {
     PixiVNJsonAnimateBase,
+    PixiVNJsonAnimateBaseOptions,
     PixiVNJsonAnimateSequence,
+    PixiVNJsonAnimateSequenceOptions,
     default as PixiVNJsonCanvasAnimate,
 } from "@/schema/PixiVNJsonCanvasAnimate";
 export type { default as PixiVNJsonCanvasEffect } from "@/schema/PixiVNJsonCanvasEffect";

@@ -21,3 +21,4 @@ export type {
     TextOptions,
     ZoomInOutProps,
 } from "@drincs/pixi-vn";
+export type { AnimationOptions, SequenceOptions } from "@drincs/pixi-vn/motion";

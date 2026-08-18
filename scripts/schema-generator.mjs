@@ -354,7 +354,11 @@ export function generateJsonSchema(options) {
             return mergeUnion(type.types.map((t) => convertExternalType(t, depth)));
         }
         if (type.isIntersection()) {
-            return { allOf: type.types.map((t) => convertExternalType(t, depth)) };
+            // Same unsatisfiable-allOf trap as `mergeObjectSchemas` guards against below: an
+            // intersection like `A & Omit<B, K>` resolves as two members here (one gets its own
+            // named `$ref`, the other doesn't), and wrapping both in a plain `allOf` means each
+            // branch's `additionalProperties: false` rejects the other branch's properties.
+            return mergeObjectSchemas(type.types.map((t) => convertExternalType(t, depth)));
         }
 
         if (checker.isArrayType(type)) {
@@ -608,14 +612,16 @@ export function generateJsonSchema(options) {
     }
 
     /**
-     * Combines heritage (`extends`) schemas with an interface's own members. A plain JSON Schema
-     * `allOf` of several `additionalProperties: false` object schemas is unsatisfiable by anything
-     * but `{}`: each branch rejects every property it doesn't itself declare, including the ones
-     * declared by its siblings. Since this mirrors a TypeScript interface merge — the result has
-     * exactly the union of members, required exactly where any parent required it — flatten instead
-     * of wrapping in `allOf` whenever every branch is a plain object schema (no nested
-     * `allOf`/`anyOf`/`oneOf`/`$ref`). Anything else falls back to a real `allOf`, since it isn't
-     * safe to flatten in general (e.g. a parent that's itself a union).
+     * Combines several object schemas that are meant to merge — an interface's heritage
+     * (`extends`) schemas plus its own members, or the branches of a resolved TS intersection
+     * type. A plain JSON Schema `allOf` of several `additionalProperties: false` object schemas is
+     * unsatisfiable by anything but `{}`: each branch rejects every property it doesn't itself
+     * declare, including the ones declared by its siblings. Since both callers are merging types
+     * that TypeScript itself treats as one flattened object — an interface's resolved member list,
+     * or `A & B` — the result should have exactly the union of members, required exactly where any
+     * branch required it. Flatten instead of wrapping in `allOf` whenever every branch is a plain
+     * object schema (no nested `allOf`/`anyOf`/`oneOf`/`$ref`). Anything else falls back to a real
+     * `allOf`, since it isn't safe to flatten in general (e.g. a branch that's itself a union).
      */
     function mergeObjectSchemas(schemas) {
         // An interface's own body contributes `{ type: "object" }` even when it declares no
@@ -635,7 +641,17 @@ export function generateJsonSchema(options) {
             s.oneOf === undefined &&
             s.$ref === undefined;
 
-        if (!nonTrivial.every(isPlainObjectSchema)) {
+        // A branch that's just a `$ref` (e.g. one side of an intersection got its own named
+        // definition) is still safe to fold in, as long as what it points to is itself a plain
+        // object schema — merge using that dereferenced shape instead of bailing to `allOf`.
+        const dereffed = (s) => {
+            if (!s || s.$ref === undefined) return s;
+            const target = definitions[s.$ref.replace("#/definitions/", "")];
+            return isPlainObjectSchema(target) ? target : s;
+        };
+        const resolved = nonTrivial.map(dereffed);
+
+        if (!resolved.every(isPlainObjectSchema)) {
             return { allOf: nonTrivial };
         }
 
@@ -643,7 +659,7 @@ export function generateJsonSchema(options) {
         const required = new Set();
         let additionalProperties;
         let anyClosed = false;
-        for (const s of nonTrivial) {
+        for (const s of resolved) {
             if (s.properties) Object.assign(properties, s.properties);
             if (s.required) for (const name of s.required) required.add(name);
             if (s.additionalProperties === false) {

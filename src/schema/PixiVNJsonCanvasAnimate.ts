@@ -9,6 +9,10 @@ import type {
 import type { UPDATE_PRIORITY } from "pixi.js";
 
 /**
+ * Additional options controlling the animation (duration, easing, repeat, etc.).
+ */
+export interface PixiVNJsonAnimateBaseOptions extends AnimationOptions {}
+/**
  * Animates one or more canvas elements simultaneously using keyframe-based animation.
  */
 export type PixiVNJsonAnimateBase<T extends CanvasBaseInterface<any>> = {
@@ -24,12 +28,16 @@ export type PixiVNJsonAnimateBase<T extends CanvasBaseInterface<any>> = {
     /**
      * Additional options controlling the animation (duration, easing, repeat, etc.).
      */
-    options?: AnimationOptions;
+    options?: PixiVNJsonAnimateBaseOptions;
     /**
      * Pixi.js update priority for this animation ticker callback.
      */
     priority?: UPDATE_PRIORITY;
 };
+/**
+ * Additional options controlling the sequence playback.
+ */
+export interface PixiVNJsonAnimateSequenceOptions extends SequenceOptions {}
 /**
  * Animates a canvas element using a sequence of segments (timeline-based animation).
  */
@@ -46,7 +54,7 @@ export type PixiVNJsonAnimateSequence<T extends CanvasBaseInterface<any>> = {
     /**
      * Additional options controlling the sequence playback.
      */
-    options?: SequenceOptions;
+    options?: PixiVNJsonAnimateSequenceOptions;
     /**
      * Pixi.js update priority for this animation ticker callback.
      */
