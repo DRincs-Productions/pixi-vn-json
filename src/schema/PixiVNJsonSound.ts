@@ -3,7 +3,7 @@ import type { MediaInterface, SoundPlayOptionsWithChannel } from "@drincs/pixi-v
 /**
  * Playback options such as volume, loop, channel, and start offset.
  */
-export type PixiVNJsonSoundPlayProps = SoundPlayOptionsWithChannel;
+export interface PixiVNJsonSoundPlayProps extends SoundPlayOptionsWithChannel {}
 /**
  * Starts playback of a sound asset.
  */
@@ -53,9 +53,9 @@ export type PixiVNJsonSoundPauseResume =
 /**
  * Partial set of sound properties that can be applied when editing a currently playing sound.
  */
-export type PixiVNJsonSoundEditProps = Partial<
-    Pick<MediaInterface, "speed" | "muted" | "loop" | "paused"> & Pick<SoundPlayOptionsWithChannel, "volume">
->;
+export interface PixiVNJsonSoundEditProps
+    extends Partial<Pick<MediaInterface, "speed" | "muted" | "loop" | "paused">>,
+        Partial<Pick<SoundPlayOptionsWithChannel, "volume">> {}
 /**
  * Edits the properties of a currently playing sound (volume, speed, muted, loop, etc.).
  */

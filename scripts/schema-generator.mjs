@@ -404,7 +404,10 @@ export function generateJsonSchema(options) {
     }
 
     function convertTypeReference(node, ctx) {
-        const name = getTypeName(node.typeName);
+        // `node` is a `TypeReferenceNode` (`.typeName`) when it comes from `convertTypeNode`, but an
+        // `ExpressionWithTypeArguments` (`.expression`) when it comes from an interface's heritage
+        // clause (`extends Foo<Bar>`) — same shape otherwise, just a different property for the name.
+        const name = node.typeName ? getTypeName(node.typeName) : getTypeName(node.expression);
 
         if (ctx.has(name)) {
             const schema = ctx.get(name);
@@ -551,7 +554,7 @@ export function generateJsonSchema(options) {
 
     function convertDeclaration(decl, ctx) {
         if (ts.isInterfaceDeclaration(decl)) {
-            return convertInterface(decl, ctx);
+            return getJsDocAnnotations(decl, convertInterface(decl, ctx));
         }
         if (ts.isTypeAliasDeclaration(decl)) {
             const baseSchema = convertTypeNode(decl.type, ctx);
@@ -599,9 +602,66 @@ export function generateJsonSchema(options) {
         if (additionalProperties !== undefined) schema.additionalProperties = additionalProperties;
 
         if (allOf.length > 0) {
-            return { allOf: [...allOf, schema] };
+            return mergeObjectSchemas([...allOf, schema]);
         }
         return schema;
+    }
+
+    /**
+     * Combines heritage (`extends`) schemas with an interface's own members. A plain JSON Schema
+     * `allOf` of several `additionalProperties: false` object schemas is unsatisfiable by anything
+     * but `{}`: each branch rejects every property it doesn't itself declare, including the ones
+     * declared by its siblings. Since this mirrors a TypeScript interface merge — the result has
+     * exactly the union of members, required exactly where any parent required it — flatten instead
+     * of wrapping in `allOf` whenever every branch is a plain object schema (no nested
+     * `allOf`/`anyOf`/`oneOf`/`$ref`). Anything else falls back to a real `allOf`, since it isn't
+     * safe to flatten in general (e.g. a parent that's itself a union).
+     */
+    function mergeObjectSchemas(schemas) {
+        // An interface's own body contributes `{ type: "object" }` even when it declares no
+        // members of its own (e.g. `interface X extends Y {}`) — drop that no-op contribution
+        // first so a single real heritage schema (however it's shaped, `$ref` included) can be
+        // returned as-is instead of getting wrapped in a pointless `allOf`.
+        const isTrivial = (s) => s && Object.keys(s).length === 1 && s.type === "object";
+        const nonTrivial = schemas.filter((s) => !isTrivial(s));
+        if (nonTrivial.length === 0) return { type: "object" };
+        if (nonTrivial.length === 1) return nonTrivial[0];
+
+        const isPlainObjectSchema = (s) =>
+            s &&
+            s.type === "object" &&
+            s.allOf === undefined &&
+            s.anyOf === undefined &&
+            s.oneOf === undefined &&
+            s.$ref === undefined;
+
+        if (!nonTrivial.every(isPlainObjectSchema)) {
+            return { allOf: nonTrivial };
+        }
+
+        const properties = {};
+        const required = new Set();
+        let additionalProperties;
+        let anyClosed = false;
+        for (const s of nonTrivial) {
+            if (s.properties) Object.assign(properties, s.properties);
+            if (s.required) for (const name of s.required) required.add(name);
+            if (s.additionalProperties === false) {
+                anyClosed = true;
+            } else if (s.additionalProperties !== undefined) {
+                additionalProperties = s.additionalProperties;
+            }
+        }
+        // A closed (`additionalProperties: false`) branch wins over a permissive one: the merged
+        // interface's members are exactly the union already collected above, so nothing outside
+        // that union should validate either — matches how TS itself treats `A & B`.
+        if (anyClosed) additionalProperties = false;
+
+        const merged = { type: "object" };
+        if (Object.keys(properties).length > 0) merged.properties = properties;
+        if (required.size > 0) merged.required = [...required];
+        if (additionalProperties !== undefined) merged.additionalProperties = additionalProperties;
+        return merged;
     }
 
     function getTypeName(entityName) {
