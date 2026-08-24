@@ -54,68 +54,7 @@ export const containerMemorySchema: object = {
             ],
         },
         tint: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "number",
-                },
-                {
-                    type: "object",
-                },
-                {
-                    type: "object",
-                },
-                {
-                    type: "object",
-                },
-                {
-                    type: "object",
-                },
-                {
-                    type: "object",
-                },
-                {
-                    allOf: [
-                        {
-                            type: "object",
-                        },
-                        {
-                            type: "object",
-                        },
-                    ],
-                },
-                {
-                    type: "object",
-                },
-                {
-                    allOf: [
-                        {
-                            type: "object",
-                        },
-                        {
-                            type: "object",
-                        },
-                    ],
-                },
-                {
-                    type: "object",
-                },
-                {
-                    allOf: [
-                        {
-                            type: "object",
-                        },
-                        {
-                            type: "object",
-                        },
-                    ],
-                },
-                {
-                    type: "object",
-                },
-            ],
+            type: ["string", "number", "object"],
         },
         alpha: {
             type: "number",
@@ -431,14 +370,7 @@ export const containerMemorySchema: object = {
                     const: "grabbing",
                 },
                 {
-                    allOf: [
-                        {
-                            type: "string",
-                        },
-                        {
-                            type: "object",
-                        },
-                    ],
+                    type: "string",
                 },
             ],
         },

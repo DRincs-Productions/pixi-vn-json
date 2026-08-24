@@ -206,7 +206,7 @@ test("Params 2", async () => {
     };
     await importPixiVNJson(json);
     await narration.call("start", {});
-    let choices = narration.choices!;
+    let choices = narration.choices.list!;
     expect(choices).toEqual([
         {
             label: "start_|_c-0",
@@ -225,14 +225,14 @@ test("Params 2", async () => {
             choiceIndex: 1,
         },
     ]);
-    await narration.selectChoice(choices[0], {});
+    await narration.choices.select(choices[0], {});
     await narration.continue({});
     expect(narration.dialogue).toEqual({
         text: ["Variable: ", "false", " "],
     });
     await narration.continue({});
     expect(narration.dialogue).toEqual({ text: ["Variable: ", "false", " "] });
-    choices = narration.choices!;
+    choices = narration.choices.list!;
     expect(choices).toEqual([
         {
             choiceIndex: 0,
@@ -243,7 +243,7 @@ test("Params 2", async () => {
             type: "call",
         },
     ]);
-    await narration.selectChoice(choices[0], {});
+    await narration.choices.select(choices[0], {});
     await narration.continue({});
     expect(narration.dialogue).toEqual({
         character: undefined,

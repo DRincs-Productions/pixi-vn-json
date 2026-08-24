@@ -327,15 +327,15 @@ export default class LabelJson<T extends {} = object> extends LabelAbstract<Labe
                     ...label.props,
                 };
                 if (label.type === "jump") {
-                    if (narration.openedLabels.length > 0) narration.closeCurrentLabel();
-                    storage.setTempVariable(
-                        `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
+                    if (narration.labels.opened.length > 0) narration.labels.closeCurrent();
+                    storage.temp.set(
+                        `${PIXIVNJSON_PARAM_ID}${narration.labels.opened.length}`,
                         labelParams as StorageElementType,
                     );
                     await narration.call(labelString, props);
                 } else {
-                    storage.setTempVariable(
-                        `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length}`,
+                    storage.temp.set(
+                        `${PIXIVNJSON_PARAM_ID}${narration.labels.opened.length}`,
                         labelParams as StorageElementType,
                     );
                     await narration.call(labelString, props);
@@ -343,10 +343,10 @@ export default class LabelJson<T extends {} = object> extends LabelAbstract<Labe
             }
 
             if (end === "game_end") {
-                narration.closeAllLabels();
+                narration.labels.closeAll();
                 await narration.continue(props, { runNow: true });
             } else if (end === "label_end") {
-                narration.closeCurrentLabel();
+                narration.labels.closeCurrent();
             }
 
             if (goNextStep) {

@@ -15,7 +15,7 @@ export type PixiVNJsonStorageGet = {
     key: string;
     /**
      * Type of the storage, if it is a flagStorage or a storage.
-     * If it is a flagStorage, the value will be get with the function {@link getFlag}
+     * If it is a flagStorage, the value will be get with the function {@link storage.flags.get}
      */
     storageType: "storage" | "flagStorage" | "tempstorage";
 };
@@ -41,7 +41,7 @@ export type PixiVNJsonLabelGet = {
      */
     label: string;
     /**
-     * If it is a label, the value will be get with the function {@link narration.getTimesLabelOpened}
+     * If it is a label, the value will be get with the function {@link narration.queries.timesLabelOpened}
      */
     storageType: "label";
 };
@@ -56,7 +56,7 @@ export type PixiVNJsonChoiceGet = {
      */
     index: number;
     /**
-     * If it is a choice, the value will be get with the function {@link narration.getTimesChoiceOpened}
+     * If it is a choice, the value will be get with the function {@link narration.queries.timesChoiceMade}
      */
     storageType: "choice";
 };
@@ -151,7 +151,7 @@ type PixiVNJsonOnlyParamSet = {
 
 /**
  * Sets a boolean flag in the flag storage.
- * Flag storage is a dedicated boolean key-value store queried with {@link getFlag}.
+ * Flag storage is a dedicated boolean key-value store queried with {@link storage.flags.get}.
  */
 type PixiVNJsonFlagSet = {
     type: "value";

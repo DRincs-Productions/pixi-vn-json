@@ -14,9 +14,6 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
     dissolve: {
         type: "object",
         properties: {
-            forceCompleteBeforeNext: {
-                type: "boolean",
-            },
             completeOnContinue: {
                 type: "boolean",
             },
@@ -113,21 +110,7 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
                 type: "boolean",
             },
             path: {
-                anyOf: [
-                    {
-                        type: "object",
-                    },
-                    {
-                        allOf: [
-                            {
-                                type: "object",
-                            },
-                            {
-                                type: "object",
-                            },
-                        ],
-                    },
-                ],
+                type: "object",
             },
             when: {
                 anyOf: [
@@ -224,9 +207,6 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
     fade: {
         type: "object",
         properties: {
-            forceCompleteBeforeNext: {
-                type: "boolean",
-            },
             completeOnContinue: {
                 type: "boolean",
             },
@@ -323,21 +303,7 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
                 type: "boolean",
             },
             path: {
-                anyOf: [
-                    {
-                        type: "object",
-                    },
-                    {
-                        allOf: [
-                            {
-                                type: "object",
-                            },
-                            {
-                                type: "object",
-                            },
-                        ],
-                    },
-                ],
+                type: "object",
             },
             when: {
                 anyOf: [
@@ -437,9 +403,6 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
             direction: {
                 enum: ["left", "right", "up", "down"],
             },
-            forceCompleteBeforeNext: {
-                type: "boolean",
-            },
             completeOnContinue: {
                 type: "boolean",
             },
@@ -536,21 +499,7 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
                 type: "boolean",
             },
             path: {
-                anyOf: [
-                    {
-                        type: "object",
-                    },
-                    {
-                        allOf: [
-                            {
-                                type: "object",
-                            },
-                            {
-                                type: "object",
-                            },
-                        ],
-                    },
-                ],
+                type: "object",
             },
             when: {
                 anyOf: [
@@ -650,9 +599,6 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
             direction: {
                 enum: ["left", "right", "up", "down"],
             },
-            forceCompleteBeforeNext: {
-                type: "boolean",
-            },
             completeOnContinue: {
                 type: "boolean",
             },
@@ -749,21 +695,7 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
                 type: "boolean",
             },
             path: {
-                anyOf: [
-                    {
-                        type: "object",
-                    },
-                    {
-                        allOf: [
-                            {
-                                type: "object",
-                            },
-                            {
-                                type: "object",
-                            },
-                        ],
-                    },
-                ],
+                type: "object",
             },
             when: {
                 anyOf: [
@@ -863,9 +795,6 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
             direction: {
                 enum: ["left", "right", "up", "down"],
             },
-            forceCompleteBeforeNext: {
-                type: "boolean",
-            },
             completeOnContinue: {
                 type: "boolean",
             },
@@ -962,21 +891,7 @@ export const entranceTransitionKeySchemas: Record<string, object> = {
                 type: "boolean",
             },
             path: {
-                anyOf: [
-                    {
-                        type: "object",
-                    },
-                    {
-                        allOf: [
-                            {
-                                type: "object",
-                            },
-                            {
-                                type: "object",
-                            },
-                        ],
-                    },
-                ],
+                type: "object",
             },
             when: {
                 anyOf: [

@@ -220,7 +220,7 @@ test("label tracking - getTimesLabelOpened after calls", async () => {
     await importPixiVNJson(json);
     await narration.call("tracked", {});
     // After first call, label has been opened once
-    const times = narration.getTimesLabelOpened("tracked");
+    const times = narration.queries.timesLabelOpened("tracked");
     expect(times).toBeGreaterThanOrEqual(1);
 });
 
@@ -244,12 +244,12 @@ test("choices - basic choices menu", async () => {
     };
     await importPixiVNJson(json);
     await narration.call("start", {});
-    const choices = narration.choices!;
+    const choices = narration.choices.list!;
     expect(choices).toHaveLength(2);
     expect(choices[0].text).toBe("Option A");
     expect(choices[1].text).toBe("Option B");
 
-    await narration.selectChoice(choices[0], {});
+    await narration.choices.select(choices[0], {});
     await narration.continue({});
     expect(narration.dialogue).toEqual({ text: "You chose A" });
 });

@@ -58,26 +58,23 @@ export function setStorageValue(value: PixiVNJsonValueSet, props: StepLabelProps
     const valueToSet = resolveStorageValue(value.value, props);
     switch (value.storageType) {
         case "flagStorage":
-            storage.setFlag(value.key, value.value);
+            storage.flags.set(value.key, value.value);
             break;
         case "storage":
             storage.set(value.key, valueToSet);
             break;
         case "tempstorage":
-            storage.setTempVariable(value.key, valueToSet);
+            storage.temp.set(value.key, valueToSet);
             break;
         case "params": {
             const params: StorageElementType[] =
                 (storage.get(
-                    `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`,
+                    `${PIXIVNJSON_PARAM_ID}${narration.labels.opened.length - 1}`,
                 ) as StorageElementType[]) || [];
             if (params.length > (value.key as number)) {
                 params[value.key as number] = valueToSet;
             }
-            storage.setTempVariable(
-                `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`,
-                params,
-            );
+            storage.temp.set(`${PIXIVNJSON_PARAM_ID}${narration.labels.opened.length - 1}`, params);
             break;
         }
     }
@@ -242,17 +239,19 @@ function getValue<T = any>(
                     case "storage":
                     case "tempstorage":
                         if (value.key === "_input_value_") {
-                            return narration.inputValue as unknown as T;
+                            return narration.input.value as unknown as T;
                         }
                         return storage.get((value as PixiVNJsonStorageGet).key) as unknown as T;
                     case "flagStorage":
-                        return storage.getFlag((value as PixiVNJsonStorageGet).key) as unknown as T;
+                        return storage.flags.get(
+                            (value as PixiVNJsonStorageGet).key,
+                        ) as unknown as T;
                     case "label":
-                        return narration.getTimesLabelOpened(
+                        return narration.queries.timesLabelOpened(
                             (value as PixiVNJsonLabelGet).label,
                         ) as unknown as T;
                     case "choice":
-                        return narration.getTimesChoiceMade(
+                        return narration.queries.timesChoiceMade(
                             (value as PixiVNJsonChoiceGet).index,
                         ) as unknown as T;
                     case "logic":
@@ -263,7 +262,7 @@ function getValue<T = any>(
                     case "params": {
                         const params: any[] =
                             storage.get(
-                                `${PIXIVNJSON_PARAM_ID}${narration.openedLabels.length - 1}`,
+                                `${PIXIVNJSON_PARAM_ID}${narration.labels.opened.length - 1}`,
                             ) || [];
                         if (params && params.length > (value.key as number)) {
                             return params[value.key as number] as unknown as T;

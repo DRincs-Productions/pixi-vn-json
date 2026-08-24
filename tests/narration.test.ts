@@ -63,13 +63,13 @@ test("Request input", async () => {
     await importPixiVNJson(json);
     await narration.call("start", {});
     expect(narration.dialogue).toEqual(undefined);
-    expect(narration.isRequiredInput).toEqual(true);
-    expect(narration.inputType).toEqual("number");
-    narration.inputValue = 0;
+    expect(narration.input.isRequired).toEqual(true);
+    expect(narration.input.type).toEqual("number");
+    narration.input.value = 0;
     await narration.continue({});
     expect(narration.dialogue).toEqual({ text: "Hello" });
-    expect(narration.isRequiredInput).toEqual(true);
-    expect(narration.inputType).toEqual("array of string");
+    expect(narration.input.isRequired).toEqual(true);
+    expect(narration.input.type).toEqual("array of string");
 });
 
 test("glue", async () => {
@@ -129,7 +129,7 @@ test("_input_value_", async () => {
     };
     await importPixiVNJson(json);
     await narration.call("_input_value_", {});
-    narration.inputValue = "new value";
+    narration.input.value = "new value";
     await narration.continue({});
     expect(narration.dialogue).toEqual({ text: "new value" });
 });

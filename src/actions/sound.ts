@@ -32,7 +32,7 @@ export function soundOperation(operation: PixiVNJsonSound) {
                     sound.pause(operation.alias);
                     break;
                 case "channel":
-                    sound.findChannel(operation.alias).pauseAll();
+                    sound.channels.find(operation.alias).pauseAll();
                     break;
                 case "all":
                     sound.pauseAll();
@@ -45,7 +45,7 @@ export function soundOperation(operation: PixiVNJsonSound) {
                     sound.resume(operation.alias);
                     break;
                 case "channel":
-                    sound.findChannel(operation.alias).resumeAll();
+                    sound.channels.find(operation.alias).resumeAll();
                     break;
                 case "all":
                     sound.resumeAll();

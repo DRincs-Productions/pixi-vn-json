@@ -99,7 +99,7 @@ export type PixiVNJsonLabelToOpen<T extends {} = object> = {
     props?: StepLabelPropsType<T>;
     /**
      * **It is not recommended to use it, use it only if necessary**. The parameters to be passed to the label. If you want to pass an object, use the {@link PixiVNJsonLabelToOpen.props} attribute.
-     * "params" attribute will be stored in the temp storage with the key: {@link PIXIVNJSON_PARAM_ID} + ({@link narration.openedLabels.length} - 1).
+     * "params" attribute will be stored in the temp storage with the key: {@link PIXIVNJSON_PARAM_ID} + ({@link narration.labels.opened.length} - 1).
      */
     params?: unknown[];
 };
