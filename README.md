@@ -1,6 +1,6 @@
 # Pixi’VN + Json Integration
 
-<p align="center">
+<p>
   <a href="https://www.npmjs.com/package/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img src="https://img.shields.io/npm/v/@drincs/pixi-vn-json?label=version" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img src="https://img.shields.io/npm/dm/@drincs/pixi-vn-json" alt="npm downloads per month"></a>
   <a target="_blank" href="https://www.jsdelivr.com/package/npm/@drincs/pixi-vn-json" rel="noopener noreferrer nofollow"><img alt="jsDelivr hits (npm)" src="https://img.shields.io/jsdelivr/npm/hm/@drincs/pixi-vn-json?logo=jsdeliver"></a>
