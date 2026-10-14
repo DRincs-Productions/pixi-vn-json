@@ -16,32 +16,24 @@ import type {
     PixiVNJsonVideoEdit,
     PixiVNJsonVideoPauseResume,
 } from "@drincs/pixi-vn-json/schema";
+import type { UPDATE_PRIORITY } from "pixi.js";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     canvas,
     type ContainerChild,
+    effects,
     type ContainerMemory,
     ImageContainer,
     ImageSprite,
     type ImageSpriteMemory,
-    moveIn,
-    moveOut,
-    pushIn,
-    pushOut,
-    removeWithDissolve,
-    removeWithFade,
-    shakeEffect,
     showImage,
     showImageContainer,
     showText,
     showVideo,
-    showWithDissolve,
-    showWithFade,
     Text,
+    transitions,
     VideoSprite,
     type VideoSpriteMemory,
-    zoomIn,
-    zoomOut,
 } from "@drincs/pixi-vn/canvas";
 
 async function showCanvasElement(
@@ -49,60 +41,160 @@ async function showCanvasElement(
     operation: PixiVNJsonCanvasShow,
     transition: PixiVNJsonMediaTransiotions,
 ) {
+    const { alias } = operation;
+    const { props, priority } = transition as { props?: any; priority?: UPDATE_PRIORITY };
     switch (transition.type) {
         case "fade":
-            await showWithFade(operation.alias, element, transition.props, transition.priority);
+            await transitions.showWithFade(alias, element, props, priority);
             break;
         case "dissolve":
-            await showWithDissolve(operation.alias, element, transition.props, transition.priority);
+            await transitions.showWithDissolve(alias, element, props, priority);
             break;
         case "movein":
         case "moveout":
-            await moveIn(operation.alias, element, transition.props, transition.priority);
+            await transitions.moveIn(alias, element, props, priority);
             break;
         case "zoomin":
         case "zoomout":
-            await zoomIn(operation.alias, element, transition.props, transition.priority);
+            await transitions.zoomIn(alias, element, props, priority);
             break;
         case "pushin":
         case "pushout":
-            await pushIn(operation.alias, element, transition.props, transition.priority);
+            await transitions.pushIn(alias, element, props, priority);
+            break;
+        case "wipein":
+        case "wipeout":
+            await transitions.wipeIn(alias, element, props, priority);
+            break;
+        case "irisin":
+        case "irisout":
+            await transitions.irisIn(alias, element, props, priority);
+            break;
+        case "splitin":
+        case "splitout":
+            await transitions.splitIn(alias, element, props, priority);
+            break;
+        case "blurin":
+        case "blurout":
+            await transitions.blurIn(alias, element, props, priority);
+            break;
+        case "pixelatein":
+        case "pixelateout":
+            await transitions.pixelateIn(alias, element, props, priority);
+            break;
+        case "flashin":
+        case "flashout":
+            await transitions.flashIn(alias, element, props, priority);
+            break;
+        case "glitchin":
+        case "glitchout":
+            await transitions.glitchIn(alias, element, props, priority);
+            break;
+        case "twistin":
+        case "twistout":
+            await transitions.twistIn(alias, element, props, priority);
+            break;
+        case "warpin":
+        case "warpout":
+            await transitions.warpIn(alias, element, props, priority);
+            break;
+        case "ripplein":
+        case "rippleout":
+            await transitions.rippleIn(alias, element, props, priority);
+            break;
+        case "noisedissolvein":
+        case "noisedissolveout":
+            await transitions.noiseDissolveIn(alias, element, props, priority);
+            break;
+        case "tvin":
+        case "tvout":
+            await transitions.tvIn(alias, element, props, priority);
+            break;
+        case "pinchin":
+        case "pinchout":
+            await transitions.pinchIn(alias, element, props, priority);
             break;
     }
 }
 
 function removeCanvasElement(operation: PixiVNJsonCanvasRemove) {
-    if (operation.transition) {
-        switch (operation.transition.type) {
-            case "fade":
-                removeWithFade(
-                    operation.alias,
-                    operation.transition.props,
-                    operation.transition.priority,
-                );
-                break;
-            case "dissolve":
-                removeWithDissolve(
-                    operation.alias,
-                    operation.transition.props,
-                    operation.transition.priority,
-                );
-                break;
-            case "movein":
-            case "moveout":
-                moveOut(operation.alias, operation.transition.props, operation.transition.priority);
-                break;
-            case "zoomin":
-            case "zoomout":
-                zoomOut(operation.alias, operation.transition.props, operation.transition.priority);
-                break;
-            case "pushin":
-            case "pushout":
-                pushOut(operation.alias, operation.transition.props, operation.transition.priority);
-                break;
-        }
-    } else {
-        canvas.remove(operation.alias);
+    const { transition, alias } = operation;
+    if (!transition) {
+        canvas.remove(alias);
+        return;
+    }
+    const { props, priority } = transition as { props?: any; priority?: UPDATE_PRIORITY };
+    switch (transition.type) {
+        case "fade":
+            transitions.removeWithFade(alias, props, priority);
+            break;
+        case "dissolve":
+            transitions.removeWithDissolve(alias, props, priority);
+            break;
+        case "movein":
+        case "moveout":
+            transitions.moveOut(alias, props, priority);
+            break;
+        case "zoomin":
+        case "zoomout":
+            transitions.zoomOut(alias, props, priority);
+            break;
+        case "pushin":
+        case "pushout":
+            transitions.pushOut(alias, props, priority);
+            break;
+        case "wipein":
+        case "wipeout":
+            transitions.wipeOut(alias, props, priority);
+            break;
+        case "irisin":
+        case "irisout":
+            transitions.irisOut(alias, props, priority);
+            break;
+        case "splitin":
+        case "splitout":
+            transitions.splitOut(alias, props, priority);
+            break;
+        case "blurin":
+        case "blurout":
+            transitions.blurOut(alias, props, priority);
+            break;
+        case "pixelatein":
+        case "pixelateout":
+            transitions.pixelateOut(alias, props, priority);
+            break;
+        case "flashin":
+        case "flashout":
+            transitions.flashOut(alias, props, priority);
+            break;
+        case "glitchin":
+        case "glitchout":
+            transitions.glitchOut(alias, props, priority);
+            break;
+        case "twistin":
+        case "twistout":
+            transitions.twistOut(alias, props, priority);
+            break;
+        case "warpin":
+        case "warpout":
+            transitions.warpOut(alias, props, priority);
+            break;
+        case "ripplein":
+        case "rippleout":
+            transitions.rippleOut(alias, props, priority);
+            break;
+        case "noisedissolvein":
+        case "noisedissolveout":
+            transitions.noiseDissolveOut(alias, props, priority);
+            break;
+        case "tvin":
+        case "tvout":
+            transitions.tvOut(alias, props, priority);
+            break;
+        case "pinchin":
+        case "pinchout":
+            transitions.pinchOut(alias, props, priority);
+            break;
     }
 }
 
@@ -339,7 +431,56 @@ export function canvasOperation(operation: PixiVNJsonCanvasClear) {
 export async function effectOperation(operation: PixiVNJsonCanvasEffect) {
     switch (operation.type) {
         case "shake":
-            await shakeEffect(operation.alias, operation.props, operation.priority);
+            await effects.shakeEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "bounce":
+            await effects.bounceEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "pulse":
+            await effects.pulseEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "hop":
+            await effects.hopEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "wiggle":
+            await effects.wiggleEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "nod":
+            await effects.nodEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "sway":
+            await effects.swayEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "punch":
+            await effects.punchEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "glitch":
+            await effects.glitchEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "chromatic-aberration":
+            await effects.chromaticAberrationEffect(
+                operation.alias,
+                operation.props,
+                operation.priority,
+            );
+            break;
+        case "shockwave":
+            await effects.shockwaveEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "radial-blur":
+            await effects.radialBlurEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "blur-pulse":
+            await effects.blurPulseEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "vignette-pulse":
+            await effects.vignettePulseEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "desaturate":
+            await effects.desaturateEffect(operation.alias, operation.props, operation.priority);
+            break;
+        case "glow-pulse":
+            await effects.glowPulseEffect(operation.alias, operation.props, operation.priority);
             break;
     }
 }

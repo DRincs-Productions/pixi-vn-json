@@ -3,10 +3,10 @@
  * Generates the JSON Schemas used by `entranceTransitionKeySchemas`
  * (src/actions/entrance-transitions.ts) from `@drincs/pixi-vn`'s own transition prop types —
  * `ShowWithDissolveTransitionProps`, `ShowWithFadeTransitionProps`, `MoveInOutProps`,
- * `ZoomInOutProps`, `PushInOutProps` — via this package's own generic
+ * `ZoomInOutProps`, `PushInOutProps` and the filter/mask based `*InOutProps` — via this package's own generic
  * TypeScript-interface-to-JSON-Schema generator (`schema-generator.mjs`).
  *
- * These 5 types are read straight off `@drincs/pixi-vn`'s own `.d.ts` (they're not declared
+ * These types are read straight off `@drincs/pixi-vn`'s own `.d.ts` (they're not declared
  * anywhere in this package), so no `interfaceDir` is passed — every one of them is generated via
  * the depth-capped "external" path, at the default `maxDepth: 1` ("branching" = 1): each prop
  * type's own direct properties (duration, delay, ease, direction, ...) are typed correctly, but
@@ -33,6 +33,19 @@ const ROOT_TYPE_NAMES = [
     "MoveInOutProps",
     "ZoomInOutProps",
     "PushInOutProps",
+    "WipeInOutProps",
+    "IrisInOutProps",
+    "SplitInOutProps",
+    "BlurInOutProps",
+    "PixelateInOutProps",
+    "FlashInOutProps",
+    "GlitchInOutProps",
+    "TwistInOutProps",
+    "WarpInOutProps",
+    "RippleInOutProps",
+    "NoiseDissolveInOutProps",
+    "TvInOutProps",
+    "PinchInOutProps",
 ];
 
 const { schemas, definitions } = generateJsonSchema({
@@ -67,6 +80,19 @@ const entranceTransitionKeySchemas = {
     movein: toStandaloneSchema(schemas.MoveInOutProps),
     zoomin: toStandaloneSchema(schemas.ZoomInOutProps),
     pushin: toStandaloneSchema(schemas.PushInOutProps),
+    wipein: toStandaloneSchema(schemas.WipeInOutProps),
+    irisin: toStandaloneSchema(schemas.IrisInOutProps),
+    splitin: toStandaloneSchema(schemas.SplitInOutProps),
+    blurin: toStandaloneSchema(schemas.BlurInOutProps),
+    pixelatein: toStandaloneSchema(schemas.PixelateInOutProps),
+    flashin: toStandaloneSchema(schemas.FlashInOutProps),
+    glitchin: toStandaloneSchema(schemas.GlitchInOutProps),
+    twistin: toStandaloneSchema(schemas.TwistInOutProps),
+    warpin: toStandaloneSchema(schemas.WarpInOutProps),
+    ripplein: toStandaloneSchema(schemas.RippleInOutProps),
+    noisedissolvein: toStandaloneSchema(schemas.NoiseDissolveInOutProps),
+    tvin: toStandaloneSchema(schemas.TvInOutProps),
+    pinchin: toStandaloneSchema(schemas.PinchInOutProps),
 };
 
 const outPath = join(rootDir, "src", "actions", "entrance-transition-schemas.generated.ts");

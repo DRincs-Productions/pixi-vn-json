@@ -54,10 +54,10 @@ export type PixiVNJsonSoundPauseResume =
  * Partial set of sound properties that can be applied when editing a currently playing sound.
  */
 export interface PixiVNJsonSoundEditProps
-    extends Partial<Pick<MediaInterface, "speed" | "muted" | "loop" | "paused">>,
+    extends Partial<Pick<MediaInterface, "playbackRate" | "mute" | "loop" | "paused">>,
         Partial<Pick<SoundPlayOptionsWithChannel, "volume">> {}
 /**
- * Edits the properties of a currently playing sound (volume, speed, muted, loop, etc.).
+ * Edits the properties of a currently playing sound (volume, playbackRate, mute, loop, etc.).
  */
 export type PixiVNJsonSoundEdit = {
     type: "sound";

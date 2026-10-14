@@ -1,11 +1,4 @@
-import {
-    type CanvasBaseInterface,
-    moveIn,
-    pushIn,
-    showWithDissolve,
-    showWithFade,
-    zoomIn,
-} from "@drincs/pixi-vn/canvas";
+import { type CanvasBaseInterface, transitions } from "@drincs/pixi-vn/canvas";
 
 export { entranceTransitionKeySchemas } from "@/actions/entrance-transition-schemas.generated";
 
@@ -21,6 +14,19 @@ export const ENTRANCE_TRANSITION_TYPES = [
     "movein",
     "zoomin",
     "pushin",
+    "wipein",
+    "irisin",
+    "splitin",
+    "blurin",
+    "pixelatein",
+    "flashin",
+    "glitchin",
+    "twistin",
+    "warpin",
+    "ripplein",
+    "noisedissolvein",
+    "tvin",
+    "pinchin",
 ] as const;
 
 /**
@@ -31,8 +37,8 @@ export type EntranceTransitionType = (typeof ENTRANCE_TRANSITION_TYPES)[number];
 /**
  * Runs an entrance transition on a canvas element — the same dispatch this package's own
  * interpreter uses internally (see `@/actions/canvas`) for the built-in
- * `image`/`video`/`text`/`imagecontainer` `show` operations (`showWithDissolve`, `showWithFade`,
- * `moveIn`, `zoomIn`, `pushIn`), exposed here so a third-party canvas-component library (e.g.
+ * `image`/`video`/`text`/`imagecontainer` `show` operations (`transitions.showWithDissolve`,
+ * `transitions.showWithFade`, `transitions.moveIn`, `transitions.zoomIn`, ...), exposed here so a third-party canvas-component library (e.g.
  * `pixi-vn-spine`) can reuse it for its own custom operation/command instead of re-implementing
  * the type → function mapping.
  *
@@ -53,14 +59,40 @@ export async function executeEntranceTransition(
 ): Promise<string[] | undefined> {
     switch (transitionType) {
         case "dissolve":
-            return showWithDissolve(alias, component, props);
+            return transitions.showWithDissolve(alias, component, props);
         case "fade":
-            return showWithFade(alias, component, props);
+            return transitions.showWithFade(alias, component, props);
         case "movein":
-            return moveIn(alias, component, props);
+            return transitions.moveIn(alias, component, props);
         case "zoomin":
-            return zoomIn(alias, component, props);
+            return transitions.zoomIn(alias, component, props);
         case "pushin":
-            return pushIn(alias, component, props);
+            return transitions.pushIn(alias, component, props);
+        case "wipein":
+            return transitions.wipeIn(alias, component, props);
+        case "irisin":
+            return transitions.irisIn(alias, component, props);
+        case "splitin":
+            return transitions.splitIn(alias, component, props);
+        case "blurin":
+            return transitions.blurIn(alias, component, props);
+        case "pixelatein":
+            return transitions.pixelateIn(alias, component, props);
+        case "flashin":
+            return transitions.flashIn(alias, component, props);
+        case "glitchin":
+            return transitions.glitchIn(alias, component, props);
+        case "twistin":
+            return transitions.twistIn(alias, component, props);
+        case "warpin":
+            return transitions.warpIn(alias, component, props);
+        case "ripplein":
+            return transitions.rippleIn(alias, component, props);
+        case "noisedissolvein":
+            return transitions.noiseDissolveIn(alias, component, props);
+        case "tvin":
+            return transitions.tvIn(alias, component, props);
+        case "pinchin":
+            return transitions.pinchIn(alias, component, props);
     }
 }

@@ -52,20 +52,29 @@ export function soundOperation(operation: PixiVNJsonSound) {
                     break;
             }
             break;
-        case "edit":
-            Object.entries(operation.props).forEach(([key, value]) => {
-                const mediaInstance = sound.find(operation.alias);
-                if (mediaInstance) {
-                    switch (key) {
-                        case "volume":
-                            mediaInstance.volume.value = value as any;
-                            break;
-                        default:
-                            mediaInstance.paused = value as any;
-                            break;
-                    }
+        case "edit": {
+            const mediaInstance = sound.find(operation.alias);
+            if (!mediaInstance) break;
+            for (const [key, value] of Object.entries(operation.props)) {
+                switch (key) {
+                    case "volume":
+                        mediaInstance.volume.value = value as number;
+                        break;
+                    case "playbackRate":
+                        mediaInstance.playbackRate = value as number;
+                        break;
+                    case "mute":
+                        mediaInstance.mute = value as boolean;
+                        break;
+                    case "loop":
+                        mediaInstance.loop = value as boolean;
+                        break;
+                    case "paused":
+                        mediaInstance.paused = value as boolean;
+                        break;
                 }
-            });
+            }
             break;
+        }
     }
 }

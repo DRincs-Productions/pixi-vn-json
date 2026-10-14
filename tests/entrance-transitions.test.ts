@@ -1,29 +1,41 @@
 import { beforeEach, expect, test, vi } from "vitest";
 
-vi.mock("@drincs/pixi-vn/canvas", () => ({
-    showWithDissolve: vi.fn(async () => ["ticker-dissolve"]),
-    showWithFade: vi.fn(async () => ["ticker-fade"]),
-    moveIn: vi.fn(async () => ["ticker-movein"]),
-    zoomIn: vi.fn(async () => ["ticker-zoomin"]),
-    pushIn: vi.fn(async () => ["ticker-pushin"]),
-}));
+vi.mock("@drincs/pixi-vn/canvas", () => {
+    const fn = (name: string) => vi.fn(async () => [`ticker-${name}`]);
+    return {
+        transitions: {
+            showWithDissolve: fn("dissolve"),
+            showWithFade: fn("fade"),
+            moveIn: fn("movein"),
+            zoomIn: fn("zoomin"),
+            pushIn: fn("pushin"),
+            wipeIn: fn("wipein"),
+            irisIn: fn("irisin"),
+            splitIn: fn("splitin"),
+            blurIn: fn("blurin"),
+            pixelateIn: fn("pixelatein"),
+            flashIn: fn("flashin"),
+            glitchIn: fn("glitchin"),
+            twistIn: fn("twistin"),
+            warpIn: fn("warpin"),
+            rippleIn: fn("ripplein"),
+            noiseDissolveIn: fn("noisedissolvein"),
+            tvIn: fn("tvin"),
+            pinchIn: fn("pinchin"),
+        },
+    };
+});
 
 // `tests/setup.ts` (a global `setupFiles` entry) already imported the *real*
-// `@drincs/pixi-vn/canvas` transitively (via `@/index` → `@drincs/pixi-vn-json/actions` →
-// `@/actions/entrance-transitions`) before this file's `vi.mock` above could register — a fresh
-// dynamic import after `vi.resetModules()` is needed to actually pick up the mock.
+// `@drincs/pixi-vn/canvas` transitively before this file's `vi.mock` above could register — a
+// fresh dynamic import after `vi.resetModules()` is needed to actually pick up the mock.
 vi.resetModules();
-const { showWithDissolve, showWithFade, moveIn, zoomIn, pushIn } =
-    await import("@drincs/pixi-vn/canvas");
+const { transitions } = await import("@drincs/pixi-vn/canvas");
 const { ENTRANCE_TRANSITION_TYPES, entranceTransitionKeySchemas, executeEntranceTransition } =
     await import("@/actions/entrance-transitions");
 
 beforeEach(() => {
-    vi.mocked(showWithDissolve).mockClear();
-    vi.mocked(showWithFade).mockClear();
-    vi.mocked(moveIn).mockClear();
-    vi.mocked(zoomIn).mockClear();
-    vi.mocked(pushIn).mockClear();
+    for (const fn of Object.values(transitions)) vi.mocked(fn).mockClear();
 });
 
 test("entranceTransitionKeySchemas has one entry per entrance transition type", () => {
@@ -56,25 +68,38 @@ test("entranceTransitionKeySchemas types 'duration' as a number for every entran
 });
 
 test.each([
-    ["dissolve", () => showWithDissolve],
-    ["fade", () => showWithFade],
-    ["movein", () => moveIn],
-    ["zoomin", () => zoomIn],
-    ["pushin", () => pushIn],
+    ["dissolve", "showWithDissolve"],
+    ["fade", "showWithFade"],
+    ["movein", "moveIn"],
+    ["zoomin", "zoomIn"],
+    ["pushin", "pushIn"],
+    ["wipein", "wipeIn"],
+    ["irisin", "irisIn"],
+    ["splitin", "splitIn"],
+    ["blurin", "blurIn"],
+    ["pixelatein", "pixelateIn"],
+    ["flashin", "flashIn"],
+    ["glitchin", "glitchIn"],
+    ["twistin", "twistIn"],
+    ["warpin", "warpIn"],
+    ["ripplein", "rippleIn"],
+    ["noisedissolvein", "noiseDissolveIn"],
+    ["tvin", "tvIn"],
+    ["pinchin", "pinchIn"],
 ] as const)(
-    "executeEntranceTransition('%s') dispatches to the matching @drincs/pixi-vn/canvas function",
-    async (type, getFn) => {
+    "executeEntranceTransition('%s') dispatches to transitions.%s",
+    async (type, fnName) => {
         const component = { id: "flowerTop-component" } as never;
         const props = { duration: 2 };
 
         const result = await executeEntranceTransition("flowerTop", component, type, props);
 
-        expect(getFn()).toHaveBeenCalledWith("flowerTop", component, props);
+        expect(transitions[fnName]).toHaveBeenCalledWith("flowerTop", component, props);
         expect(result).toEqual([`ticker-${type}`]);
     },
 );
 
 test("executeEntranceTransition forwards undefined props (no props given) untouched", async () => {
     await executeEntranceTransition("flowerTop", undefined, "dissolve");
-    expect(showWithDissolve).toHaveBeenCalledWith("flowerTop", undefined, undefined);
+    expect(transitions.showWithDissolve).toHaveBeenCalledWith("flowerTop", undefined, undefined);
 });
