@@ -22,11 +22,14 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    strategy:
+      matrix:
+        node-version: [20.x, 24.12.0]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 24.12.0
+          node-version: ${{ matrix.node-version }}
       - run: npm i
       - run: npm ci
       - run: npm run build

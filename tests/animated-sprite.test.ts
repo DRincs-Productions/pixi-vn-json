@@ -1,13 +1,38 @@
-import { animatedSpriteOperation } from "@/actions/canvas";
-import * as canvasApi from "@drincs/pixi-vn/canvas";
-import { afterEach, expect, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 
-afterEach(() => {
-    vi.restoreAllMocks();
+const mocks = vi.hoisted(() => ({
+    showAnimatedSprite: vi.fn(async () => ({})),
+    find: vi.fn(),
+    remove: vi.fn(),
+    showWithFade: vi.fn(async () => undefined),
+    load: vi.fn(async () => {}),
+}));
+
+vi.mock("@drincs/pixi-vn/canvas", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("@drincs/pixi-vn/canvas")>();
+    class AnimatedSprite extends actual.AnimatedSprite {
+        override async load() {
+            await mocks.load();
+        }
+    }
+    return {
+        ...actual,
+        AnimatedSprite,
+        showAnimatedSprite: mocks.showAnimatedSprite,
+        canvas: { ...actual.canvas, find: mocks.find, remove: mocks.remove },
+        transitions: { ...actual.transitions, showWithFade: mocks.showWithFade },
+    };
+});
+
+vi.resetModules();
+const canvasApi = await import("@drincs/pixi-vn/canvas");
+const { animatedSpriteOperation } = await import("@/actions/canvas");
+
+beforeEach(() => {
+    vi.clearAllMocks();
 });
 
 test("asprite show delegates to showAnimatedSprite", async () => {
-    const show = vi.spyOn(canvasApi, "showAnimatedSprite").mockResolvedValue({} as never);
     const source = "hero";
     const props = { animationSpeed: 0.5 };
 
@@ -19,15 +44,10 @@ test("asprite show delegates to showAnimatedSprite", async () => {
         props,
     });
 
-    expect(show).toHaveBeenCalledWith("walk", source, props);
+    expect(mocks.showAnimatedSprite).toHaveBeenCalledWith("walk", source, props);
 });
 
 test("asprite show with a transition loads and starts the sprite", async () => {
-    const load = vi.spyOn(canvasApi.AnimatedSprite.prototype, "load").mockResolvedValue();
-    const showWithFade = vi
-        .spyOn(canvasApi.transitions, "showWithFade")
-        .mockResolvedValue(undefined as never);
-
     await animatedSpriteOperation({
         type: "asprite",
         operationType: "show",
@@ -35,8 +55,8 @@ test("asprite show with a transition loads and starts the sprite", async () => {
         transition: { type: "fade" },
     });
 
-    expect(load).toHaveBeenCalledOnce();
-    const [alias, sprite] = showWithFade.mock.calls[0] as unknown[];
+    expect(mocks.load).toHaveBeenCalledOnce();
+    const [alias, sprite] = mocks.showWithFade.mock.calls[0] as unknown[];
     expect(alias).toBe("walk");
     expect(sprite).toBeInstanceOf(canvasApi.AnimatedSprite);
     expect((sprite as canvasApi.AnimatedSprite).playing).toBe(true);
@@ -48,7 +68,7 @@ test("asprite edit merges properties into the sprite memory", async () => {
         memory: { x: 10, animationSpeed: 1 },
         setMemory: vi.fn().mockResolvedValue(undefined),
     };
-    vi.spyOn(canvasApi.canvas, "find").mockReturnValue(sprite as never);
+    mocks.find.mockReturnValue(sprite);
 
     await animatedSpriteOperation({
         type: "asprite",
@@ -61,11 +81,9 @@ test("asprite edit merges properties into the sprite memory", async () => {
 });
 
 test("asprite remove delegates to canvas.remove", async () => {
-    const remove = vi.spyOn(canvasApi.canvas, "remove").mockImplementation(() => {});
-
     await animatedSpriteOperation({ type: "asprite", operationType: "remove", alias: "walk" });
 
-    expect(remove).toHaveBeenCalledWith("walk");
+    expect(mocks.remove).toHaveBeenCalledWith("walk");
 });
 
 test.each([
@@ -73,7 +91,7 @@ test.each([
     ["resume", "play"],
 ] as const)("asprite %s calls sprite.%s", async (operationType, method) => {
     const sprite = { stop: vi.fn(), play: vi.fn() };
-    vi.spyOn(canvasApi.canvas, "find").mockReturnValue(sprite as never);
+    mocks.find.mockReturnValue(sprite);
 
     await animatedSpriteOperation({ type: "asprite", operationType, alias: "walk" });
 
@@ -82,7 +100,7 @@ test.each([
 
 test("asprite goto selects a zero-based frame and preserves the playing state", async () => {
     const sprite = { haveEmptyTexture: true, totalFrames: 3, setFrame: vi.fn() };
-    vi.spyOn(canvasApi.canvas, "find").mockReturnValue(sprite as never);
+    mocks.find.mockReturnValue(sprite);
 
     await animatedSpriteOperation({ type: "asprite", operationType: "goto", alias: "walk", frame: 2 });
 
@@ -91,7 +109,7 @@ test("asprite goto selects a zero-based frame and preserves the playing state", 
 
 test("asprite goto rejects a frame outside a loaded animation", async () => {
     const sprite = { haveEmptyTexture: false, totalFrames: 3, setFrame: vi.fn() };
-    vi.spyOn(canvasApi.canvas, "find").mockReturnValue(sprite as never);
+    mocks.find.mockReturnValue(sprite);
 
     await expect(
         animatedSpriteOperation({ type: "asprite", operationType: "goto", alias: "walk", frame: 3 }),
