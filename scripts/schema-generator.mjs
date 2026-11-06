@@ -122,8 +122,20 @@ export function generateJsonSchema(options) {
     const typeParams = new Map();
 
     if (interfaceDir) {
+        const path = require("node:path");
+        const normalizedInterfaceDir = `${path.resolve(interfaceDir).replaceAll("\\", "/").replace(/\/$/, "")}/`;
         for (const sourceFile of program.getSourceFiles()) {
-            if (!sourceFile.fileName.startsWith(interfaceDir)) continue;
+            const fileName = sourceFile.fileName.replaceAll("\\", "/");
+            const directory =
+                process.platform === "win32"
+                    ? normalizedInterfaceDir.toLowerCase()
+                    : normalizedInterfaceDir;
+            if (
+                !(process.platform === "win32" ? fileName.toLowerCase() : fileName).startsWith(
+                    directory,
+                )
+            )
+                continue;
             collectDeclarations(sourceFile);
         }
     }

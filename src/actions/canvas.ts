@@ -1,6 +1,7 @@
 import { logger } from "@/utils/log-utility";
 import type {
     PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasAnimatedSpriteShow,
     PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasImageContainerShow,
@@ -9,6 +10,8 @@ import type {
     PixiVNJsonCanvasShow,
     PixiVNJsonCanvasTextShow,
     PixiVNJsonImageContainerEdit,
+    PixiVNJsonAnimatedSpriteControl,
+    PixiVNJsonAnimatedSpriteEdit,
     PixiVNJsonImageEdit,
     PixiVNJsonMediaTransiotions,
     PixiVNJsonTextEdit,
@@ -20,14 +23,17 @@ import type { UPDATE_PRIORITY } from "pixi.js";
 import { translator } from "@drincs/pixi-vn-json/translator";
 import {
     canvas,
+    AnimatedSprite,
     type ContainerChild,
     effects,
     type ContainerMemory,
     ImageContainer,
     ImageSprite,
     type ImageSpriteMemory,
+    type AnimatedSpriteSource,
     showImage,
     showImageContainer,
+    showAnimatedSprite,
     showText,
     showVideo,
     Text,
@@ -37,7 +43,7 @@ import {
 } from "@drincs/pixi-vn/canvas";
 
 async function showCanvasElement(
-    element: ImageSprite | VideoSprite | ImageContainer | Text,
+    element: ImageSprite | VideoSprite | ImageContainer | Text | AnimatedSprite,
     operation: PixiVNJsonCanvasShow,
     transition: PixiVNJsonMediaTransiotions,
 ) {
@@ -114,6 +120,79 @@ async function showCanvasElement(
         case "pinchout":
             await transitions.pinchIn(alias, element, props, priority);
             break;
+    }
+}
+
+/** Handles show, edit, remove, pause, resume, and frame selection for animated sprites. */
+export async function animatedSpriteOperation(
+    operation:
+        | PixiVNJsonCanvasAnimatedSpriteShow
+        | PixiVNJsonAnimatedSpriteEdit
+        | PixiVNJsonAnimatedSpriteControl
+        | PixiVNJsonCanvasRemove,
+) {
+    switch (operation.operationType) {
+        case "show":
+            if (operation.transition) {
+                const source = operation.source;
+                let resolvedSource: AnimatedSpriteSource;
+                if (typeof source === "string") {
+                    resolvedSource = { spritesheet: source };
+                } else if (source?.spritesheet || source?.frames?.length) {
+                    resolvedSource = source;
+                } else {
+                    resolvedSource = { ...source, spritesheet: operation.alias };
+                }
+                const sprite = new AnimatedSprite(
+                    { autoPlay: true, ...operation.props },
+                    resolvedSource,
+                );
+                await sprite.load();
+                await showCanvasElement(sprite, operation, operation.transition);
+            } else {
+                await showAnimatedSprite(operation.alias, operation.source, operation.props);
+            }
+            break;
+        case "edit": {
+            const sprite = canvas.find<AnimatedSprite>(operation.alias);
+            if (sprite && operation.props) {
+                await sprite.setMemory({ ...sprite.memory, ...operation.props });
+            } else if (!sprite) {
+                logger.error(`AnimatedSprite with alias ${operation.alias} not found.`);
+            }
+            break;
+        }
+        case "remove":
+            removeCanvasElement(operation);
+            break;
+        case "pause":
+        case "resume": {
+            const sprite = canvas.find<AnimatedSprite>(operation.alias);
+            if (sprite) {
+                if (operation.operationType === "pause") sprite.stop();
+                else sprite.play();
+            } else {
+                logger.error(`AnimatedSprite with alias ${operation.alias} not found.`);
+            }
+            break;
+        }
+        case "goto": {
+            if (!Number.isInteger(operation.frame) || operation.frame < 0) {
+                throw new RangeError("AnimatedSprite frame must be a non-negative integer.");
+            }
+            const sprite = canvas.find<AnimatedSprite>(operation.alias);
+            if (sprite) {
+                if (!sprite.haveEmptyTexture && operation.frame >= sprite.totalFrames) {
+                    throw new RangeError(
+                        `AnimatedSprite frame must be less than ${sprite.totalFrames}.`,
+                    );
+                }
+                sprite.setFrame(operation.frame);
+            } else {
+                logger.error(`AnimatedSprite with alias ${operation.alias} not found.`);
+            }
+            break;
+        }
     }
 }
 

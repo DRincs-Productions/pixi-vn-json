@@ -13,6 +13,11 @@ import type {
     TextOptions,
     VideoSpriteMemory,
 } from "@drincs/pixi-vn";
+import type {
+    AnimatedSpriteMemory,
+    AnimatedSpriteOptions,
+    AnimatedSpriteSource,
+} from "@drincs/pixi-vn/canvas";
 
 /**
  * Display options (position, scale, alpha, etc.) for an image or video sprite.
@@ -98,6 +103,21 @@ export type PixiVNJsonCanvasTextShow = {
     transition?: PixiVNJsonMediaTransiotions;
 };
 /**
+ * Shows a spritesheet animation on the canvas.
+ */
+export type PixiVNJsonCanvasAnimatedSpriteShow = {
+    type: "asprite";
+    operationType: "show";
+    /** Unique identifier (alias) used to reference this element on the canvas. */
+    alias: string;
+    /** Spritesheet alias or serializable description of its animation frames. */
+    source?: AnimatedSpriteSource | string;
+    /** Display and playback options for the animated sprite. */
+    props?: AnimatedSpriteOptions;
+    /** Optional transition effect applied when the element appears on screen. */
+    transition?: PixiVNJsonMediaTransiotions;
+};
+/**
  * Edits the properties of an existing image sprite on the canvas.
  */
 export type PixiVNJsonImageEdit = {
@@ -158,6 +178,17 @@ export type PixiVNJsonTextEdit = {
     props?: Partial<TextMemory>;
 };
 /**
+ * Edits the properties or frame source of an existing animated sprite.
+ */
+export type PixiVNJsonAnimatedSpriteEdit = {
+    type: "asprite";
+    operationType: "edit";
+    /** Alias of the animated sprite to edit. */
+    alias: string;
+    /** Partial memory/state properties to update on the animated sprite. */
+    props?: Partial<AnimatedSpriteMemory>;
+};
+/**
  * Edits the properties of an unknown/generic canvas element.
  * Use this when the specific element type is not one of the built-in kinds.
  */
@@ -177,7 +208,7 @@ export type PixiVNJsonUnknownEdit<T extends ContainerOptions<any>> = {
  * Removes a canvas element from the stage, optionally with a transition.
  */
 export type PixiVNJsonCanvasRemove = {
-    type: "image" | "video" | "imagecontainer" | "canvaselement" | "text";
+    type: "image" | "video" | "imagecontainer" | "canvaselement" | "text" | "asprite";
     operationType: "remove";
     /**
      * Alias of the canvas element to remove.
@@ -207,6 +238,24 @@ export type PixiVNJsonVideoPauseResume = {
     alias: string;
 };
 /**
+ * Pauses, resumes, or selects a frame in an animated sprite.
+ */
+export type PixiVNJsonAnimatedSpriteControl =
+    | {
+          type: "asprite";
+          operationType: "pause" | "resume";
+          /** Alias of the animated sprite to control. */
+          alias: string;
+      }
+    | {
+          type: "asprite";
+          operationType: "goto";
+          /** Alias of the animated sprite to control. */
+          alias: string;
+          /** Zero-based frame index. */
+          frame: number;
+      };
+/**
  * Loads or lazy-loads asset bundles or individual assets into memory.
  */
 type PixiVNJsonAssetsLoad = {
@@ -221,7 +270,8 @@ type PixiVNJsonAssetsLoad = {
 export type PixiVNJsonCanvasShow =
     | PixiVNJsonCanvasImageContainerShow
     | PixiVNJsonCanvasImageVideoShow
-    | PixiVNJsonCanvasTextShow;
+    | PixiVNJsonCanvasTextShow
+    | PixiVNJsonCanvasAnimatedSpriteShow;
 /**
  * Union of all canvas-element edit operations.
  */
@@ -230,6 +280,7 @@ export type PixiVNJsonCanvasEdit =
     | PixiVNJsonVideoEdit
     | PixiVNJsonImageContainerEdit
     | PixiVNJsonTextEdit
+    | PixiVNJsonAnimatedSpriteEdit
     | PixiVNJsonUnknownEdit<ImageSpriteMemory | VideoSpriteMemory | ContainerMemory | TextMemory>;
 
 /**
@@ -242,6 +293,7 @@ type PixiVNJsonCanvas =
     | PixiVNJsonCanvasRemove
     | PixiVNJsonCanvasClear
     | PixiVNJsonVideoPauseResume
+    | PixiVNJsonAnimatedSpriteControl
     | PixiVNJsonAssetsLoad
     | PixiVNJsonCanvasAnimate
     | PixiVNJsonCanvasEffect;

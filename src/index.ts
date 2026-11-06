@@ -1,6 +1,7 @@
 import {
     VariableGetter,
     animateOperation,
+    animatedSpriteOperation,
     canvasElementOperation,
     canvasOperation,
     effectOperation,
@@ -37,6 +38,7 @@ export * from "@drincs/pixi-vn-json/translator";
 export function init() {
     JsonUnifier.init({
         animateOperation,
+        animatedSpriteOperation,
         canvasElementOperation,
         canvasOperation,
         effectOperation,

@@ -45,6 +45,9 @@ export async function runOperation(
         case "video":
             await JsonUnifier.videoOperation(operation);
             break;
+        case "asprite":
+            await JsonUnifier.animatedSpriteOperation(operation);
+            break;
         case "imagecontainer":
             await JsonUnifier.imageContainerOperation(operation);
             break;
