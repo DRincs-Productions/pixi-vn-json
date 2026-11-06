@@ -10,12 +10,15 @@ import {
 import type {
     PixiVNJsonArithmeticOperations,
     PixiVNJsonCanvasAnimate,
+    PixiVNJsonCanvasAnimatedSpriteShow,
     PixiVNJsonCanvasClear,
     PixiVNJsonCanvasEffect,
     PixiVNJsonCanvasImageContainerShow,
     PixiVNJsonCanvasImageVideoShow,
     PixiVNJsonCanvasRemove,
     PixiVNJsonCanvasTextShow,
+    PixiVNJsonAnimatedSpriteEdit,
+    PixiVNJsonAnimatedSpriteControl,
     PixiVNJsonConditionalStatements,
     PixiVNJsonConditions,
     PixiVNJsonIfElse,
@@ -65,6 +68,13 @@ export default class JsonUnifier {
                 | PixiVNJsonVideoEdit
                 | PixiVNJsonVideoPauseResume,
         ) => Promise<void>;
+        animatedSpriteOperation?: (
+            operation:
+                | PixiVNJsonCanvasAnimatedSpriteShow
+                | PixiVNJsonAnimatedSpriteEdit
+                | PixiVNJsonAnimatedSpriteControl
+                | PixiVNJsonCanvasRemove,
+        ) => Promise<void>;
         imageContainerOperation?: (
             operation:
                 | PixiVNJsonCanvasRemove
@@ -110,6 +120,8 @@ export default class JsonUnifier {
         if (options.soundOperation) JsonUnifier._soundOperation = options.soundOperation;
         if (options.imageOperation) JsonUnifier._imageOperation = options.imageOperation;
         if (options.videoOperation) JsonUnifier._videoOperation = options.videoOperation;
+        if (options.animatedSpriteOperation)
+            JsonUnifier._animatedSpriteOperation = options.animatedSpriteOperation;
         if (options.imageContainerOperation)
             JsonUnifier._imageContainerOperation = options.imageContainerOperation;
         if (options.textOperation) JsonUnifier._textOperation = options.textOperation;
@@ -183,6 +195,25 @@ export default class JsonUnifier {
     /** Registered handler for {@link VideoSprite} show/edit/remove/pause/resume operations. */
     static get videoOperation() {
         return JsonUnifier._videoOperation;
+    }
+    private static _animatedSpriteOperation: (
+        operation:
+            | PixiVNJsonCanvasAnimatedSpriteShow
+            | PixiVNJsonAnimatedSpriteEdit
+            | PixiVNJsonAnimatedSpriteControl
+            | PixiVNJsonCanvasRemove,
+    ) => Promise<void> = () => {
+        logger.error(
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+        throw new PixiError(
+            "invalid_usage",
+            "An error occurred! pixi-vn-json was not initialized. Please contact the Pixi'VN team to report the issue.",
+        );
+    };
+    /** Registered handler for AnimatedSprite show/edit/remove/pause/resume/goto operations. */
+    static get animatedSpriteOperation() {
+        return JsonUnifier._animatedSpriteOperation;
     }
     private static _imageContainerOperation: (
         operation:

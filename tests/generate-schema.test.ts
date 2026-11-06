@@ -38,6 +38,10 @@ describe("generate-schema script", () => {
 
             expect(resolvedProps.properties.x).toEqual({ type: "number" });
             expect(resolvedProps.properties.y).toEqual({ type: "number" });
+
+            const animatedSpriteShow = schema.definitions.PixiVNJsonCanvasAnimatedSpriteShow;
+            expect(animatedSpriteShow.properties.type.const).toBe("asprite");
+            expect(animatedSpriteShow.properties.operationType.const).toBe("show");
         },
         30_000,
     );
